@@ -1,0 +1,56 @@
+#!/bin/sh
+#
+# $FreeBSD$
+#
+# PROVIDE: swtoolz-core
+# REQUIRE: NETWORK
+# REQUIRE: DAEMON %%RCLDCONFIG%%
+# BEFORE: LOGIN
+# KEYWORD: shutdown
+#
+# Add the following line to /etc/rc.conf to enable swtoolz-core:
+#
+# swtoolz_core_enable="YES"
+#
+
+# Version: 2015.11.30
+
+. /etc/rc.subr
+
+name="swtoolz_core"
+rcvar=swtoolz_core_enable
+
+load_rc_config $name
+
+: ${swtoolz_core_enable="NO"}
+
+command_interpreter="/usr/local/bin/python2"
+command="/usr/local/etc/swtoolz-core/swtoolz-core.py"
+command_args="$1"
+start_precmd="swtoolz_core_prestart"
+stop_postcmd="swtoolz_core_poststop"
+swtoolz_core_pidfile="/var/run/swtoolz-core.pid" # Do not change it, pls!
+
+swtoolz_core_prestart() {
+    chk_pid=`check_pidfile $swtoolz_core_pidfile $command_interpreter`  # Getting PID of process. If no such process PID will be empty.
+    if [ "$chk_pid" == "" ]; then					# If empty PID ...
+        {
+        if [ -f $swtoolz_core_pidfile ]; then					# ... checking PID-file presence. If file exists...
+            {
+            /bin/rm -f $swtoolz_core_pidfile					# ... remove this file.
+            }
+        fi
+        }
+    fi
+    }
+
+
+swtoolz_core_poststop() {
+    if [ -f $swtoolz_core_pidfile ]; then # Checking PID-file presence. If file exists...
+        {
+        /bin/rm -f $swtoolz_core_pidfile # ... remove this file
+        }
+    fi
+    }
+
+run_rc_command "$1"
