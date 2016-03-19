@@ -7,7 +7,7 @@ SWToolz-Core - перерождение [SWToolz](https://github.com/xcme/swtool
 
 Это позволяет использовать swtoolz-core для интеграции с биллингом и системами отслеживания заявок, а также упрощает разработку собственного WEB-интерфейса для управления сетевым оборудованием.
 
-Ниже приведен скриншот web-страницы проекта PortViewer 2.0, основанного на swtoolz-core:
+Ниже приведен скриншот web-страницы проекта PortViewer 2, основанного на swtoolz-core:
 <p align="center">
   <img src="https://github.com/xcme/swtoolz-core/blob/master/portviewer2.png?raw=true" alt="PortViewer 2.0 based on swtoolz-core"/>
 </p>
@@ -408,4 +408,4 @@ SWToolz-Core позволяет использовать внутри OID пар
 
 ## P.S.
 
-Обсудить проект можно в конференции ccna@conference.jabber.ru
+Обсудить проект можно в jabber-конференции ccna@conference.jabber.ru
