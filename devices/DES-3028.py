@@ -93,16 +93,21 @@ AdminFlow = ({
     '3' : 'enabled',
     },)
 
-# swEtherCableDiagPortType
+# ifType
 PortType = ({
-    '0' : 'fastEthernet',
-    '1' : 'gigaEthernet',
-    '2' : 'other',
+    '1'   : 'other',
+    '6'   : 'fastEthernet',
+    '117' : 'gigaEthernet',
     },)
 
 # UnitModuleName (placeholder)
 BoardDescr = ({
     '1' : 'DES-3028',
+    },)
+
+# get_HardwareRev (placeholder for Slava's Hardcode. not working but necessary)
+get_HardwareRev = ({
+    '0' : 'n/a',
     },)
 
 # swEtherCableDiagLinkStatus
@@ -185,8 +190,8 @@ get_SinglePort = {
     'AdminFlow..f'    : '.1.3.6.1.4.1.171.11.63.6.2.2.2.1.5.%s.101',
 #    PortDescr           .1.3.6.1.2.1.31.1.1.1.18			ifAlias
     'PortDescr.'      : '.1.3.6.1.2.1.31.1.1.1.18.%s',
-#    PortType            .1.3.6.1.4.1.171.12.58.1.1.1.2			swEtherCableDiagPortType
-    'PortType.'       : '.1.3.6.1.4.1.171.12.58.1.1.1.2.%s',
+#    PortType            .1.3.6.1.2.1.2.2.1.3				ifType
+    'PortType.'       : '.1.3.6.1.2.1.2.2.1.3.%s',
     }
 
 walk_AllPorts = {
@@ -214,6 +219,13 @@ walk_FDB_VLAN = {
     'FDB'             : '.1.3.6.1.2.1.17.7.1.2.2.1.2.%s',
     }
 
+walk_VlanMap = {
+#    VlanName            .1.3.6.1.2.1.17.7.1.4.3.1.1			dot1qVlanStaticName
+    'VlanName'        : '.1.3.6.1.2.1.17.7.1.4.3.1.1',
+#    EgressPorts         .1.3.6.1.2.1.17.7.1.4.3.1.2			dot1qVlanStaticEgressPorts
+    'EgressPorts'     : '.1.3.6.1.2.1.17.7.1.4.3.1.2',
+    }
+
 walk_VlanEgressPorts = {
 #    VEP                 .1.3.6.1.2.1.17.7.1.4.3.1.2			dot1qVlanStaticEgressPorts
     'VEP'             : '.1.3.6.1.2.1.17.7.1.4.3.1.2',
@@ -222,11 +234,6 @@ walk_VlanEgressPorts = {
 walk_VlanUntaggedPorts = {
 #    VUP                 .1.3.6.1.2.1.17.7.1.4.3.1.4			dot1qVlanStaticUntaggedPorts
     'VUP'             : '.1.3.6.1.2.1.17.7.1.4.3.1.4',
-    }
-
-walk_PortType = {
-#    PortType            .1.3.6.1.4.1.171.12.58.1.1.1.2                 swEtherCableDiagPortType
-    'PortType'        : '.1.3.6.1.4.1.171.12.58.1.1.1.2',
     }
 
 get_CableDiag = {
@@ -298,4 +305,29 @@ set_CableDiagInit = [
 set_SaveConfig = [
 #     .1.3.6.1.4.1.171.12.1.2.6						agentSaveCfg
     ['.1.3.6.1.4.1.171.12.1.2.6', '0', '2', 'INTEGER'],
+    ]
+
+set_CreateVlan = [
+#     .1.3.6.1.2.1.17.7.1.4.3.1.1					dot1qVlanStaticName
+    ['.1.3.6.1.2.1.17.7.1.4.3.1.1', '{1}', '{2}', 'OCTETSTR'],
+#     .1.3.6.1.2.1.17.7.1.4.3.1.2					dot1qVlanStaticEgressPorts
+    ['.1.3.6.1.2.1.17.7.1.4.3.1.2', '{1}', '{3}', 'OCTETSTR'],
+#     .1.3.6.1.2.1.17.7.1.4.3.1.5					dot1qVlanStaticRowStatus
+    ['.1.3.6.1.2.1.17.7.1.4.3.1.5', '{1}', '4', 'INTEGER'],
+    ]
+
+set_IpifCfg = [
+#     .1.3.6.1.4.1.171.11.63.6.2.1.2.2					swL2DevCtrlSystemIP
+    ['.1.3.6.1.4.1.171.11.63.6.2.1.2.2', '0', '{1}', 'IPADDR'],
+#     .1.3.6.1.4.1.171.11.63.6.2.1.2.3					swL2DevCtrlSubnetMask
+    ['.1.3.6.1.4.1.171.11.63.6.2.1.2.3', '0', '{2}', 'IPADDR'],
+#     .1.3.6.1.4.1.171.11.63.6.2.1.2.4					swL2DevCtrlDefaultGateway
+    ['.1.3.6.1.4.1.171.11.63.6.2.1.2.4', '0', '{3}', 'IPADDR'],
+#     .1.3.6.1.4.1.171.11.63.6.2.1.2.5					swL2DevCtrlManagementVlanId
+    ['.1.3.6.1.4.1.171.11.63.6.2.1.2.5', '0', '{4}', 'INTEGER'],
+    ]
+
+set_DHCP_RemoteID = [
+#     .1.3.6.1.4.1.171.12.42.3.2.5					swDHCPRelayOption82RemoteID
+    ['.1.3.6.1.4.1.171.12.42.3.2.5', '0', '{1}', 'OCTETSTR'],
     ]

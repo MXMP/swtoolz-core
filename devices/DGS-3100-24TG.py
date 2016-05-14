@@ -3,7 +3,7 @@
 
 # Корректирующий множитель для таймаута SNMP-операций. Чем медленнее CPU устройства, тем больше должен быть множитель.
 # Этот параметр используется (если задан) для swtoolz-core. Остальные параметры целиком определяются пользователем.
-timeout_mf = 10
+timeout_mf = 20
 
 # Карта портов устройства. Преставлена в виде списков слотов. Каждый слот содержит список рядов. Каждый ряд содержит список портов.
 DeviceMap = ([
@@ -89,6 +89,11 @@ AdminFlow = ({
     '1' : 'enabled',
     '2' : 'disabled',
     '3' : 'auto',
+    },)
+
+# get_HardwareRev (placeholder for Slava's Hardcode. not working but necessary)
+get_HardwareRev = ({
+    '0' : 'n/a',
     },)
 
 walk_PortIndex = {
@@ -242,6 +247,13 @@ walk_ifAlias = {
 walk_FDB_VLAN = {
 #    FDB                 .1.3.6.1.2.1.17.7.1.2.2.1.2			dot1qTpFdbPort
     'FDB'             : '.1.3.6.1.2.1.17.7.1.2.2.1.2.%s',
+    }
+
+walk_VlanMap = {
+#    VlanName            .1.3.6.1.2.1.17.7.1.4.3.1.1			dot1qVlanStaticName
+    'VlanName'        : '.1.3.6.1.2.1.17.7.1.4.3.1.1',
+#    EgressPorts         .1.3.6.1.2.1.17.7.1.4.3.1.2			dot1qVlanStaticEgressPorts
+    'EgressPorts'     : '.1.3.6.1.2.1.17.7.1.4.3.1.2',
     }
 
 walk_VlanEgressPorts = {

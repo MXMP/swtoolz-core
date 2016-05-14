@@ -180,13 +180,13 @@ walk_ifName = {
 
 walk_VlanMap = {
 #    VLanId              .1.3.6.1.4.1.1991.1.1.3.2.1.1.2		snVLanByPortVLanId
-#    'VLanId'          : '.1.3.6.1.4.1.1991.1.1.3.2.1.1.2',
+    'VLanId'          : '.1.3.6.1.4.1.1991.1.1.3.2.1.1.2',
 #    VLanName            .1.3.6.1.4.1.1991.1.1.3.2.1.1.25		snVLanByPortVLanName
-#    'VLanName'        : '.1.3.6.1.4.1.1991.1.1.3.2.1.1.25',
+    'VLanName'        : '.1.3.6.1.4.1.1991.1.1.3.2.1.1.25',
 #    RouterIntf          .1.3.6.1.4.1.1991.1.1.3.2.1.1.26		snVLanByPortRouterIntf
     'RouterIntf'      : '.1.3.6.1.4.1.1991.1.1.3.2.1.1.26',
 #    PortList            .1.3.6.1.4.1.1991.1.1.3.2.1.1.28		snVLanByPortPortList
-#    'PortList'        : '.1.3.6.1.4.1.1991.1.1.3.2.1.1.28',
+    'PortList'        : '.1.3.6.1.4.1.1991.1.1.3.2.1.1.28',
 #    VlanName            .1.3.6.1.2.1.17.7.1.4.3.1.1			dot1qVlanStaticName
     'VlanName'        : '.1.3.6.1.2.1.17.7.1.4.3.1.1',
 #    EgressPorts         .1.3.6.1.2.1.17.7.1.4.3.1.2			dot1qVlanStaticEgressPorts

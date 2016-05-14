@@ -1,13 +1,13 @@
 #!/usr/local/bin/python2
 #coding=UTF8
-#version 1.0.0 (2016.03.18)
+#version 1.5.2 (2016.05.14)
 
-import sys, socket, time, datetime, struct, logging, threading, netsnmp, string, json
+import sys, socket, time, datetime, struct, logging, threading, netsnmp, string, json, urllib
 from os import sep
 from daemon import Daemon
 from swconfig import interface, port, sleep_int, stats_int, set_iter_delay, snmp_timeout
-from swconfig import snmp_retries, no_retries, logfile,  users, default_info, models_by_desc
-from swconfig import http_header, debug_mode
+from swconfig import snmp_retries, no_retries, forced_mtd, logfile,  users, default_info
+from swconfig import models_by_desc, http_header, debug_mode
 
 logging.basicConfig(filename = logfile, level = logging.DEBUG, format = '%(asctime)s  %(message)s')
 
@@ -32,17 +32,28 @@ def is_valid_ipv4_address(address):
 
 
 # Функция для подстановки параметров пользователя в OID. Последовательно заменяет '%s' на параметры с ключами кроме '0' (первый параметр)
+# Также функция заменяет все {№} на элемент № из словаря с данными
 # Вообще, это достаточно подозрительная функция и она уже сломала мне мозг, но этот вариант вроде приемлимый :)
 def prepare_oid(my_dict, my_data):
-    # Первым параметром передается словарь с данными из запроса. Пример: {"1": "2", "0": "swL2PortCtrlAdminState"}
+    # Первым параметром передается словарь с данными из запроса. Пример: {"1": "24", "0": "set_AdminStatus", "2": "2"}
+    # Перебираем и раскодируем значения элементов словаря, заменяя последовательности '%xx' на их односимвольный эквивалент
+    for key in my_dict.keys():
+	my_dict[key] = urllib.unquote(my_dict[key])
+
     # При Walk/Get операциях вторым параметром передается строка, содержащая OID
     if isinstance(my_data, str):
-	for k in sorted(my_dict.keys())[1:]:
+	# Перебираем весь словарь с данными. Ключи при этом сортируем
+	for i,k in enumerate(sorted(my_dict.keys())[1:]):
+	    # Заменяем одну следующую последовательность '%s' на соответствующий элемент словаря
 	    my_data = my_data.replace('%s', my_dict[k], 1)
+	    # Заменяем все последовательности '{№}' на соответствующий элемент словаря. Здесь № - номер элемента в сортированном списке ключей
+	    # Например, все последовательности '{2}' заменяются на второй элемент словаря. Это используется когда нужно подставить одно значение несколько раз
+	    my_data = my_data.replace('{%s}' % (i+1), my_dict[k])
 	return my_data
+
     # При Set операциях вторым параметром передается список, содержащий tag, iid, value, type. Пример: ['.1.3.6.1.4.1.171.12.58.1.1.1.12', '1','1','INTEGER']
     if isinstance(my_data, list):
-	# Указатель на элемент словаря из первого параметра
+	# Указатель на элемент словаря из первого параметра. Используется, чтобы в каждом элементе my_data не начинать перебор элементов my_dict сначала
 	shft = 1
 	# Перебираем список, причем ориентируемся на индекс, который затем потребуется для замены
 	for indx,item in enumerate(my_data):
@@ -50,8 +61,14 @@ def prepare_oid(my_dict, my_data):
 	    for i in range(my_data[indx].count('%s')):
 		# Если указатель не достиг максимально возможного значения, значит замена еще возможна
 		if shft < len(my_dict):
+		    # Заменяем одну следующую последовательность '%s' на соответствующий элемент словаря. При замене ориентируемся на позицию shft
 		    my_data[indx] = my_data[indx].replace('%s', my_dict[ sorted(my_dict.keys()) [shft:] [0] ], 1)
 		    shft += 1
+	    # Для каждого элемента, который является строкой, выполняем такую же процедуру, как если бы изначально получили строку в my_data
+	    for i,k in enumerate(sorted(my_dict.keys())[1:]):
+		# Заменяем все последовательности '{№}' на соответствующий элемент словаря. Здесь № - номер элемента в сортированном списке ключей
+		# Например, все последовательности '{2}' заменяются на второй элемент словаря. Это используется когда нужно подставить одно значение несколько раз
+		my_data[indx] = my_data[indx].replace('{%s}' % (i+1), my_dict[k])
 	return my_data
 
 
@@ -94,8 +111,7 @@ def parse_request(request):
     if json_req['user'] not in users:
 	json_req['errors'].append(2)
     else:
-	# Если пользователь найден, но для него не найдено snmp-коммунити с соответствующим индексом,->
-	# -> добавляем соответствующий код в список ошибок
+	# Если пользователь найден, но для него не найдено snmp-коммунити с соответствующим индексом, добавляем соответствующий код в список ошибок
 	if json_req['comm_index'] not in users[json_req['user']].keys():
 	    json_req['errors'].append(3)
     # Если IP-адрес имеет неправильный формат, добавляем соответствующий код в список ошибок
@@ -142,19 +158,26 @@ class thrPoller(threading.Thread):
 	# Проверка идет до первого соответствия. Сначала проверяется sysName
 	model = 'None'
 	for item in models_by_desc:
-	    for dev_model in item:
+	    for desc_model in item:
 		if json_resp['sys_name'] is not None:
-		    if dev_model in json_resp['sys_name']:
-			model = item[dev_model]
-			break
+		    if desc_model in json_resp['sys_name']:
+			model = item[desc_model]
 		if json_resp['sys_descr'] is not None:
-		    if dev_model in json_resp['sys_descr']:
-			model = item[dev_model]
-			break
+		    if desc_model in json_resp['sys_descr']:
+			model = item[desc_model]
+	    if model != 'None':
+		break
 	json_resp['model']        = model
 	json_resp['query_time']   = snmp_query_time
 
-	if model != 'None':
+	# Если в списке команд (методов) есть зарезервированная команда (метод), то выполняем опрос оборудования даже если оно недоступно
+	forced = False
+	for data_param in data_params:
+	    if len( set(data_param.values()) & set(forced_mtd) ) > 0:
+		forced = True
+
+	# Работаем, если устройство доступно (определили модель) или выставлен флаг 'forced'
+	if model != 'None' or forced:
 	    # Пробуем импортировать модуль, описывающий методы для данной модели
 	    try:
 		device = __import__(model)
@@ -180,7 +203,7 @@ class thrPoller(threading.Thread):
 			    dataset = getattr(device, data_param['0'])
 			except:
 			    if data_param['0'] == 'list':
-				logging.info("INFO: Requested 'list' command from client %s:%s.", self.client_ip, self.client_port)
+#				logging.info("INFO: Requested 'list' command from client %s:%s.", self.client_ip, self.client_port)
 				json_resp['data']['list'] = [str(d) for d in dir(device) if d[0]!='_']
 			    else:
 				logging.info("WARNING: Can't find param '%s' from module '%s'!", data_param['0'], model)
@@ -188,8 +211,8 @@ class thrPoller(threading.Thread):
 			    # Для режима отладки пишем в лог кто и что у нас запросил
 			    if debug_mode:
 				logging.info("DEBUG: Request from %s:%s. Dataset: '%s', URL Params: %s", self.client_ip, self.client_port, str(dataset), str(data_param))
-			    # Если параметр находится в списке 'no_retries', сбрасываем для него число дополнительных попыток в 0
 			    current_snmp_retries = snmp_retries
+			    # Если параметр находится в списке 'no_retries', сбрасываем для него число дополнительных попыток в 0
 			    if data_param['0'] in no_retries:
 				current_snmp_retries = 0
 			    # dataset может быть как словарем (для get/walk) так и списком (для set) и кортежем (для неизменяемых пользовательских данных). Обрабатываем эти случаи отдельно
@@ -199,7 +222,7 @@ class thrPoller(threading.Thread):
 				    if '.' in paramname:
 					get_notwalk = True
 				big_bada_boom = False
-				snmp_var = netsnmp.VarList(*[ netsnmp.Varbind(prepare_oid(data_param, dataset[paramname])) for paramname in dataset.keys() ])
+				snmp_var = netsnmp.VarList(*[ netsnmp.Varbind(prepare_oid(data_param.copy(), dataset[paramname])) for paramname in dataset.keys() ])
 				# Формируем структуру varlist/varbind в зависимости о метода запроса (get или walk)
 				if get_notwalk:
 				    snmp_query   = netsnmp.snmpget(*snmp_var,Version = 2, DestHost = target_ip, Community = snmp_comm, Timeout = current_snmp_timeout, Retries = current_snmp_retries, UseNumeric = 1)
@@ -242,7 +265,7 @@ class thrPoller(threading.Thread):
 						# full_oid: .1.3.6.1.2.1.31.1.1.1.1.1,  tmp_oid: .1.3.6.1.2.1.31.1.1.1.1  (вместе с трейлером '.' входит в full_oid)
 
 						# Временный OID, полученный из конфигурационного файла, и в который уже подставлены пользовательские параметры
-						tmp_oid = prepare_oid(data_param,dataset[k])
+						tmp_oid = prepare_oid(data_param.copy(),dataset[k])
 						# Проверяем, есть ли значение временного OID в полном OID
 						if (tmp_oid+trailer in full_oid+trailer):
 						    # Получаем оставшуюся часть от OID
@@ -266,7 +289,7 @@ class thrPoller(threading.Thread):
 			    # Если dataset является списком, выполняем для него set-операции
 			    if isinstance(dataset, list):
 				query = 'skipped'
-				varlist = netsnmp.VarList(*[netsnmp.Varbind(*prepare_oid(data_param, VarBindItem[:])) for VarBindItem in dataset])
+				varlist = netsnmp.VarList(*[netsnmp.Varbind(*prepare_oid(data_param.copy(), VarBindItem[:])) for VarBindItem in dataset])
 				query   = netsnmp.snmpset(*varlist, Version = 2, DestHost = target_ip, Community = snmp_comm, Timeout = current_snmp_timeout, Retries = current_snmp_retries, UseNumeric = 1)
 				time.sleep(set_iter_delay)
 				json_resp['data'][data_param['0']] = query
@@ -367,6 +390,9 @@ def main():
 				request = data_raw.split(" ")[1]
 			    except:
 				request = ""
+			    # Для режима отладки пишем в лог исходный запрос 'как есть'
+			    if debug_mode:
+				logging.info("DEBUG: Request from %s:%s - %s", client_ip, client_port, request)
 			    # Формируем словарь вида {IP:{Port:Request}}
 			    # Если для данного IP уже был определен запрос, обновляем словарь, а если нет - создаем
 			    if client_ip in requests.keys():
