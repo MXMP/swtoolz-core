@@ -5,10 +5,11 @@
 # Этот параметр используется (если задан) для swtoolz-core. Остальные параметры целиком определяются пользователем.
 timeout_mf = 1.2
 
-# Карта портов устройства. Представлена в виде списков слотов. Каждый слот содержит список рядов. Каждый ряд содержит список портов.
+# Карта портов устройства. Преставлена в виде списков слотов. Каждый слот содержит список рядов. Каждый ряд содержит список портов.
 DeviceMap = ([
     [
-	['0','0','0','2','0','0','0']
+	['1','3','5','7','9', '11'],
+	['2','4','6','8','10','12']
     ],
     ],)
 
@@ -16,9 +17,9 @@ DeviceMap = ([
 # ShiftIndex - смещение, которое нужно прибавить к индексу. У некоторых устройств первый индекс может начинаться, например, с 256.
 # MaxIndex - Максимальный индекс, который нужно обработать. Индексы с большими номерами игнорируются.
 StackInfo = ({
-    'SlotSize'   : '3',
+    'SlotSize'   : '100',
     'ShiftIndex' : '0',
-    'MaxIndex'   : '12',
+    'MaxIndex'   : '64',
     },)
 
 # Список рекомендуемых команд
@@ -27,12 +28,14 @@ Commands = ([
     'StackInfo',
     'MediumType',
     'ActualStatus',
-#    'ActualSpeed',
+    'ActualSpeed',
     'AdminStatus',
-#    'AdminSpeed',
-#    'AdminFlow',
+    'AdminSpeed',
+    'AdminFlow',
     'BoardDescr',
     'walk_PortIndex',
+    'walk_ifName',
+    'walk_ifAlias',
     ],)
 
 # ifType
@@ -60,13 +63,13 @@ ActualSpeed = ({
     '10'   : '10M',
     '100'  : '100M',
     '1000' : '1G',
+    '10000': '10G',
     },)
 
 # ifAdminStatus
 AdminStatus = ({
     '1' : 'enabled',
     '2' : 'disabled',
-    '3' : 'testing',
     },)
 
 # ifType (placeholder)
@@ -87,12 +90,7 @@ AdminFlow = ({
 
 # UnitModuleName (placeholder)
 BoardDescr = ({
-    '1' : 'APC Smart-UPS',
-    },)
-
-# get_HardwareRev (placeholder for Slava's Hardcode. not working but necessary)
-get_HardwareRev = ({
-    '0' : 'n/a',
+    '1' : 'QSW-8370-28F',
     },)
 
 # walk_VlanEgressPorts (placeholder for Slava's Hardcode. not working but necessary)
@@ -100,39 +98,59 @@ walk_VlanEgressPorts = ({
     '0' : '',
     },)
 
+get_HardwareRev = {
+#    HardwareRev         .1.3.6.1.2.1.16.19.3.0				probeHardwareRev
+    'HardwareRev.'    : '.1.3.6.1.2.1.16.19.3.0',
+    }
+
 walk_PortIndex = {
-#    PortIndex           .1.3.6.1.2.1.2.2.1.1			ifIndex
+#    PortIndex           .1.3.6.1.2.1.2.2.1.1				ifIndex
     'PortIndex'       : '.1.3.6.1.2.1.2.2.1.1',
     }
 
 get_SinglePort = {
-#    MediumType          .1.3.6.1.2.1.2.2.1.3			ifType
+#    MediumType          .1.3.6.1.2.1.2.2.1.3				ifType
     'MediumType.'     : '.1.3.6.1.2.1.2.2.1.3.%s',
-#    ActualStatus        .1.3.6.1.2.1.2.2.1.8			ifOperStatus
+#    ActualStatus        .1.3.6.1.2.1.2.2.1.8				ifOperStatus
     'ActualStatus.'   : '.1.3.6.1.2.1.2.2.1.8.%s',
-#    ActualSpeed         .1.3.6.1.2.1.31.1.1.1.15		ifHighSpeed
-#    'ActualSpeed.'    : '.1.3.6.1.2.1.31.1.1.1.15.%s',
-#    AdminStatus         .1.3.6.1.2.1.2.2.1.7			ifAdminStatus
+#    ActualSpeed         .1.3.6.1.2.1.31.1.1.1.15			ifHighSpeed
+    'ActualSpeed.'    : '.1.3.6.1.2.1.31.1.1.1.15.%s',
+#    AdminStatus         .1.3.6.1.2.1.2.2.1.7				ifAdminStatus
     'AdminStatus.'    : '.1.3.6.1.2.1.2.2.1.7.%s',
-#    AdminSpeed          .1.3.6.1.2.1.2.2.1.3			ifType (placeholder)
+#    AdminSpeed          .1.3.6.1.2.1.2.2.1.3				ifType (placeholder)
 #    'AdminSpeed.'     : '.1.3.6.1.2.1.2.2.1.3.%s',
-#    AdminFlow           .1.3.6.1.2.1.2.2.1.3			ifType (placeholder)
+#    AdminFlow           .1.3.6.1.2.1.2.2.1.3				ifType (placeholder)
 #    'AdminFlow.'      : '.1.3.6.1.2.1.2.2.1.3.%s',
-#    PortDescr           .1.3.6.1.2.1.31.1.1.1.18		ifAlias
-#    'PortDescr.'      : '.1.3.6.1.2.1.31.1.1.1.18.%s',
+#    PortDescr           .1.3.6.1.2.1.31.1.1.1.18			ifAlias
+    'PortDescr.'      : '.1.3.6.1.2.1.31.1.1.1.18.%s',
     }
 
 walk_AllPorts = {
-#    MediumType          .1.3.6.1.2.1.2.2.1.3			ifType
+#    MediumType          .1.3.6.1.2.1.2.2.1.3				ifType
     'MediumType'      : '.1.3.6.1.2.1.2.2.1.3',
-#    ActualStatus        .1.3.6.1.2.1.2.2.1.8			ifOperStatus
+#    ActualStatus        .1.3.6.1.2.1.2.2.1.8				ifOperStatus
     'ActualStatus'    : '.1.3.6.1.2.1.2.2.1.8',
-#    ActualSpeed         .1.3.6.1.2.1.31.1.1.1.15		ifHighSpeed
-#    'ActualSpeed'     : '.1.3.6.1.2.1.31.1.1.1.15',
-#    AdminStatus         .1.3.6.1.2.1.2.2.1.7			ifAdminStatus
+#    ActualSpeed         .1.3.6.1.2.1.31.1.1.1.15			ifHighSpeed
+    'ActualSpeed'     : '.1.3.6.1.2.1.31.1.1.1.15',
+#    AdminStatus         .1.3.6.1.2.1.2.2.1.7				ifAdminStatus
     'AdminStatus'     : '.1.3.6.1.2.1.2.2.1.7',
-#    AdminSpeed          .1.3.6.1.2.1.2.2.1.3			ifType (placeholder)
+#    AdminSpeed          .1.3.6.1.2.1.2.2.1.3				ifType (placeholder)
 #    'AdminSpeed'      : '.1.3.6.1.2.1.2.2.1.3',
-#    AdminFlow           .1.3.6.1.2.1.2.2.1.3			ifType (placeholder)
+#    AdminFlow           .1.3.6.1.2.1.2.2.1.3				ifType (placeholder)
 #    'AdminFlow'       : '.1.3.6.1.2.1.2.2.1.3',
     }
+
+walk_ifName = {
+#    PortName            .1.3.6.1.2.1.31.1.1.1.1			ifName
+    'PortName'        : '.1.3.6.1.2.1.31.1.1.1.1',
+    }
+
+walk_ifAlias = {
+#    PortDescr           .1.3.6.1.2.1.31.1.1.1.18			ifAlias
+    'PortDescr'       : '.1.3.6.1.2.1.31.1.1.1.18',
+    }
+
+set_AdminStatus = [
+#     .1.3.6.1.2.1.2.2.1.7						ifAdminStatus
+    ['.1.3.6.1.2.1.2.2.1.7.%s', '', '%s', 'INTEGER'],
+    ]

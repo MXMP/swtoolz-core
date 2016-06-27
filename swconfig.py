@@ -23,7 +23,7 @@ snmp_retries  = 1
 no_retries = ['set_SaveConfig']
 
 # Список методов, которые будут вызваны даже если устройство недоступно
-forced_mtd = ['set_CreateVlan', 'set_IpifCfg']
+forced_mtd = ['Commands', 'OfflineDeviceMaps', 'set_CreateVlan', 'set_IpifCfg']
 
 # Файл журнала
 logfile   = "/var/log/swtoolz-core.log"
@@ -60,14 +60,16 @@ models_by_desc = [
     {'DGS-3120-24SC'  : 'DGS-3120-24SC'},
     {'DGS-3000-28SC'  : 'DGS-3000-28SC'},
     {'DGS-3000-24TC'  : 'DGS-3000-24TC'},
+    {'DGS-3000-26TC'  : 'DGS-3000-26TC'},
     {'DGS-3612G'      : 'DGS-3612G'},
     {'DGS-3627G'      : 'DGS-3627G'},
+    {'DGS-3620-28SC'  : 'DGS-3620-28SC'},
     {'BigIron RX'     : 'BigIron-RX'},
     {'BigIron 8000'   : 'Foundry'},
     {'BigIron 4000'   : 'Foundry'},
     {'FastIron 800'   : 'Foundry'},
     {'FastIron 400'   : 'Foundry'},
-    {'FastIron SX 800': 'Foundry'},
+    {'FastIron SX 800': 'SX-800'},
     {'NetIron 800'    : 'Foundry'},
     {'IronWare'       : 'Foundry'},
     {'TurboIron-X24'  : 'Foundry'},
@@ -80,12 +82,13 @@ models_by_desc = [
     {'CiscoWisi'      : 'WS-C3560X-24'},
     {'AdmRack-c3750'  : 'WS-C3750-24PS-S'},
     {'Cat3750-48_TV'  : 'WS-C3750-48TS-S'},
-    {'GGC-3750G-16TD' : 'WS-C3750G-16TD'},
+    {'ATS10-5A.2_RoS' : 'WS-C3750G-16TD'},
     {'SCE8000'        : 'SCE8000'},
     {'Redback'        : 'Redback'},
     {'MES2124'        : 'MES-2124'},
     {'MES3124F'       : 'MES-3124F'},
     {'APC Web/SNMP'   : 'APC-Smart-UPS'},
+    {'QSW-8370'       : 'QSW-8370'},
     ]
 
 # Шаблон HTTP-заголовка для ответа клиенту

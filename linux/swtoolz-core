@@ -9,13 +9,13 @@
 # Description:       Start swtoolz-core daemon
 ### END INIT INFO
 
-PATH=/sbin:/usr/sbin:/bin:/usr/bin
+PATH="/sbin:/usr/sbin:/bin:/usr/bin"
 DESC="SWToolz-Core"
-NAME=swtoolz-core
-DAEMON=/usr/bin/python2
+NAME="swtoolz-core"
+DAEMON="/usr/bin/python2"
 DAEMON_ARGS="/usr/local/etc/swtoolz-core/swtoolz-core.py"
-PIDFILE=/var/run/swtoolz-core.pid
-SCRIPTNAME=/etc/init.d/swtoolz-core
+PIDFILE="/var/run/swtoolz-core.pid"
+SCRIPTNAME="/etc/init.d/swtoolz-core"
 
 . /lib/init/vars.sh
 
@@ -62,7 +62,7 @@ case "$1" in
 	esac
 	;;
   status)
-	status_of_proc "$DAEMON" "$NAME" && exit 0 || exit $?
+	status_of_proc -p "$PIDFILE" "$DAEMON" "$NAME" && exit 0 || exit $?
 	;;
   restart|force-reload)
 	log_daemon_msg "Restarting $DESC"

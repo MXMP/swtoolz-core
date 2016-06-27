@@ -5,39 +5,43 @@
 # Этот параметр используется (если задан) для swtoolz-core. Остальные параметры целиком определяются пользователем.
 timeout_mf = 1.2
 
-# Карта портов устройства. Преставлена в виде списков слотов. Каждый слот содержит список рядов. Каждый ряд содержит список портов.
+# Карта портов устройства. Представлена в виде списков слотов. Каждый слот содержит список рядов. Каждый ряд содержит список портов.
 DeviceMap = ([
     [
-	['1','3','5','7','9', '11'],
-	['2','4','6','8','10','12']
+	['1/1','1/2','1/3','1/4'],
+	['2/1','2/2','2/3','2/4'],
+	['3/1','3/2','3/3','3/4'],
+	['4/1','4/2','4/3','4/4'],
+	['5/1','5/2','5/3','5/4'],
+	['6/1','6/2','6/3','6/4'],
+	['7/1','7/2','7/3','7/4'],
+	['8/1','8/2','8/3','8/4']
     ],
     ],)
 
 # SlotSize - количество индексов, отведенное на слот. Обычно это 64, то есть слот №1 - 1..64, слот №2 - 65..128, слот №3 - 129..192 и так далее.
 # ShiftIndex - смещение, которое нужно прибавить к индексу. У некоторых устройств первый индекс может начинаться, например, с 256.
 # MaxIndex - Максимальный индекс, который нужно обработать. Индексы с большими номерами игнорируются.
-# Stackable - поддерживает ли устройство стекирование.
-# Chassis - является ли устройство модульным шасси.
 StackInfo = ({
-    'SlotSize'   : '100',
+    'SlotSize'   : '4',
     'ShiftIndex' : '0',
-    'MaxIndex'   : '12',
-    'Stackable'  : 'False',
-    'Chassis'    : 'False',
+    'MaxIndex'   : '32',
     },)
 
 # Список рекомендуемых команд
 Commands = ([
+    'DeviceMap',
     'StackInfo',
     'MediumType',
     'ActualStatus',
     'ActualSpeed',
     'AdminStatus',
-#    'AdminSpeed',
-#    'AdminFlow',
+    'AdminSpeed',
+    'AdminFlow',
     'BoardDescr',
     'walk_PortIndex',
     'walk_ifName',
+    'walk_ifAlias',
     ],)
 
 # ifType
@@ -65,6 +69,7 @@ ActualSpeed = ({
     '10'   : '10M',
     '100'  : '100M',
     '1000' : '1G',
+    '10000': '10G',
     },)
 
 # ifAdminStatus
@@ -93,6 +98,16 @@ AdminFlow = ({
 # UnitModuleName (placeholder)
 BoardDescr = ({
     '1' : 'Redback',
+    },)
+
+# get_HardwareRev (placeholder for Slava's Hardcode. not working but necessary)
+get_HardwareRev = ({
+    '0' : 'n/a',
+    },)
+
+# walk_VlanEgressPorts (placeholder for Slava's Hardcode. not working but necessary)
+walk_VlanEgressPorts = ({
+    '0' : '',
     },)
 
 walk_PortIndex = {
@@ -132,12 +147,12 @@ walk_AllPorts = {
 #    'AdminFlow'       : '.1.3.6.1.2.1.2.2.1.3',
     }
 
+walk_ifName = {
+#    PortName            .1.3.6.1.2.1.31.1.1.1.1		ifName
+    'PortName'        : '.1.3.6.1.2.1.31.1.1.1.1',
+    }
+
 walk_ifAlias = {
 #    PortDescr           .1.3.6.1.2.1.31.1.1.1.18		ifAlias
     'PortDescr'       : '.1.3.6.1.2.1.31.1.1.1.18',
-    }
-
-walk_ifName = {
-#    PortName           .1.3.6.1.2.1.31.1.1.1.1			ifName
-    'PortName'       : '.1.3.6.1.2.1.31.1.1.1.1',
     }

@@ -1,6 +1,6 @@
 #!/usr/local/bin/python2
 #coding=UTF8
-#version 1.5.2 (2016.05.14)
+#version 1.6.27 (2016.06.27)
 
 import sys, socket, time, datetime, struct, logging, threading, netsnmp, string, json, urllib
 from os import sep
@@ -133,7 +133,7 @@ class thrPoller(threading.Thread):
 	self.users = users
     def run(self):
 	# Задаем структуру словаря, который будет добавляться в общий словарь ответов
-	json_resp   = {'user':'', 'target':'', 'sys_descr':'', 'sys_name':'', 'sys_location':'', 'sys_uptime':'', 'model':'', 'query_time':'', 'data':{}}
+	json_resp   = {'target':'', 'sys_descr':'', 'sys_uptime':'', 'sys_name':'', 'sys_location':'', 'model':'', 'query_time':'', 'data':{}}
 	# Получаем IP адрес устройства
 	target_ip   = self.requests[self.client_ip][self.client_port]['target']
 	# Получаем список параметров (данные) для устройства
@@ -149,7 +149,6 @@ class thrPoller(threading.Thread):
 	# Время, затраченное на опрос
 	snmp_query_time = str(int((time.time()-start_time)*1000))
 	# Заполняем словарь данными
-	json_resp['user']         = self.requests[self.client_ip][self.client_port]['user']
 	json_resp['target']       = self.requests[self.client_ip][self.client_port]['target']
 	# Помещаем в словарь результаты опроса параметров из default_info
 	for def_param_index, def_param in enumerate(default_info):
@@ -273,7 +272,7 @@ class thrPoller(threading.Thread):
 						    # Если используем метод get, оставшаяся часть будет равна iid
 						    if get_notwalk:
 							remainder = var_.iid
-							# Альтернативный вариант для использования несколько последних чисел OID в имени подраздела, например '7.100'
+							# Альтернативный вариант для использования нескольких последних чисел OID в имени подраздела, например '7.100'
 							if k.count('.')>1:
 							    remainder = ".".join(full_oid.split(".")[-k.count('.'):])
 						    # Например в конфиге указан OID 1.2.3.2.1, tag будет 1.2.3.2.1.X, iid - Y (может быть пустым). Полный OID (full_oid) будет 1.2.3.2.1.X.Y
