@@ -373,3 +373,29 @@ set_DHCP_RemoteID = [
 #     .1.3.6.1.4.1.171.12.42.3.2.5					swDHCPRelayOption82RemoteID
     ['.1.3.6.1.4.1.171.12.42.3.2.5', '0', '{1}', 'OCTETSTR'],
     ]
+
+set_CfgDownload = [
+#     .1.3.6.1.4.1.171.12.1.2.18.1.1.3					agentBscFileSystemServerAddr
+    ['.1.3.6.1.4.1.171.12.1.2.18.1.1.3', '3','{1}','IPADDR'],
+#     .1.3.6.1.4.1.171.12.1.2.18.1.1.5					agentBscFileSystemServerFileName
+    ['.1.3.6.1.4.1.171.12.1.2.18.1.1.5', '3','{2}','OCTETSTR'],
+#     .1.3.6.1.4.1.171.12.1.2.18.1.1.8					agentBscFileSystemLoadType
+    ['.1.3.6.1.4.1.171.12.1.2.18.1.1.8', '3','3','INTEGER'],
+#     .1.3.6.1.4.1.171.12.1.2.18.1.1.12					agentBscFileSystemCtrl
+    ['.1.3.6.1.4.1.171.12.1.2.18.1.1.12','3','3','INTEGER'],
+#     .1.3.6.1.4.1.171.12.1.2.18.1.1.15					agentBscFileSystemIncrement
+    ['.1.3.6.1.4.1.171.12.1.2.18.1.1.15','3','1','INTEGER'],
+    ]
+
+set_CfgUpload = [
+#     .1.3.6.1.4.1.171.12.1.2.18.1.1.3					agentBscFileSystemServerAddr
+    ['.1.3.6.1.4.1.171.12.1.2.18.1.1.3', '3','{1}','IPADDR'],
+#     .1.3.6.1.4.1.171.12.1.2.18.1.1.5					agentBscFileSystemServerFileName
+    ['.1.3.6.1.4.1.171.12.1.2.18.1.1.5', '3','{2}','OCTETSTR'],
+#     .1.3.6.1.4.1.171.12.1.2.18.1.1.8					agentBscFileSystemLoadType
+    ['.1.3.6.1.4.1.171.12.1.2.18.1.1.8', '3','2','INTEGER'],
+#     .1.3.6.1.4.1.171.12.1.2.18.1.1.12					agentBscFileSystemCtrl
+    ['.1.3.6.1.4.1.171.12.1.2.18.1.1.12','3','3','INTEGER'],
+#     .1.3.6.1.4.1.171.12.1.2.18.1.1.15					agentBscFileSystemIncrement
+    ['.1.3.6.1.4.1.171.12.1.2.18.1.1.15','3','1','INTEGER'],
+    ]

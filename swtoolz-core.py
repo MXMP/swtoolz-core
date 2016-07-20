@@ -1,11 +1,11 @@
 #!/usr/local/bin/python2
 #coding=UTF8
-#version 1.6.27 (2016.06.27)
+#version 1.7.20 (2016.07.20)
 
 import sys, socket, time, datetime, struct, logging, threading, netsnmp, string, json, urllib
 from os import sep
 from daemon import Daemon
-from swconfig import interface, port, sleep_int, stats_int, set_iter_delay, snmp_timeout
+from swconfig import interface_ip, port, sleep_int, stats_int, set_iter_delay, snmp_timeout
 from swconfig import snmp_retries, no_retries, forced_mtd, logfile,  users, default_info
 from swconfig import models_by_desc, http_header, debug_mode
 
@@ -336,7 +336,7 @@ def main():
 
     # Пробуем открыть сокет
     try:
-	tcps.bind((interface,port))
+	tcps.bind((interface_ip, port))
     # Обрабатываем возможную ошибку сокета (сокет уже занят), делаем запись в лог и завершаем работу:
     except socket.error as err:
 	logging.info("ERROR: Socket Error: {}. Exiting...".format(err.args[1]))
