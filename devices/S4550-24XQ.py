@@ -119,7 +119,7 @@ AdminFlow = ({
 
 # UnitModuleName (placeholder)
 BoardDescr = ({
-                  '1': 'SNR S4550-24XQ',
+                  '1': 'SNR-S4550-24XQ-AC',
               },)
 
 # ifName (placeholder)

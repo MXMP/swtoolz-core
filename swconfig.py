@@ -97,6 +97,7 @@ models_by_desc = [
     {'APC Web/SNMP': 'APC-Smart-UPS'},
     {'QSW-8370': 'QSW-8370'},
     {'SNR-S300G-24FX': 'S300G-24FX'},
+    {'SNR-S4550-24XQ-AC': 'S4550-24XQ'},
     {'SNR-S2985G-24T': 'S2985G-24T'},
 ]
 
