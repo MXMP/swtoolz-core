@@ -208,6 +208,28 @@ walk_ifAlias = {
     'PortDescr': '.1.3.6.1.2.1.31.1.1.1.18',
 }
 
+walk_FDB_VLAN = {
+    # FDB   .1.3.6.1.2.1.17.7.1.2.2.1.2 dot1qTpFdbPort
+    'FDB': '.1.3.6.1.2.1.17.7.1.2.2.1.2.%s',
+}
+
+walk_VlanMap = {
+    # VlanName   .1.3.6.1.2.1.17.7.1.4.3.1.1 dot1qVlanStaticName
+    'VlanName': '.1.3.6.1.2.1.17.7.1.4.3.1.1',
+    # EgressPorts   .1.3.6.1.2.1.17.7.1.4.3.1.2 dot1qVlanStaticEgressPorts
+    'EgressPorts': '.1.3.6.1.2.1.17.7.1.4.3.1.2',
+}
+
+walk_VlanEgressPorts = {
+    # VEP   .1.3.6.1.2.1.17.7.1.4.3.1.2 dot1qVlanStaticEgressPorts
+    'VEP': '.1.3.6.1.2.1.17.7.1.4.3.1.2',
+}
+
+walk_VlanUntaggedPorts = {
+    # VUP   .1.3.6.1.2.1.17.7.1.4.3.1.4 dot1qVlanStaticUntaggedPorts
+    'VUP': '.1.3.6.1.2.1.17.7.1.4.3.1.4',
+}
+
 walk_ifName = {
     # PortName   .1.3.6.1.4.1.6339.100.3.2.1.2   portName
     'PortName': '.1.3.6.1.4.1.6339.100.3.2.1.2',
