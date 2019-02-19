@@ -161,7 +161,12 @@ get_HardwareRev = {
 
 get_SoftwareVer = {
     # SoftwareVer    .1.3.6.1.4.1.6339.100.1.3   sysSoftwareVersion
-    'SoftwareVer.': '.1.3.6.1.4.1.6339.100.1.3.0',
+    'SoftwareVer.': '.1.3.6.1.4.1.6339.100.1.3.0'
+}
+
+get_CableDiag = {
+    # cableDiag    .1.3.6.1.4.1.6339.100.3.2.1.19.2  vctLastStatus
+    'cableDiag.': '.1.3.6.1.4.1.6339.100.3.2.1.19.2.%s'
 }
 
 walk_PortIndex = {
@@ -243,4 +248,9 @@ set_AdminStatus = [
 set_AdminSpeed = [
     # .1.3.6.1.4.1.6339.100.3.2.1.14    speedDuplex
     ['.1.3.6.1.4.1.6339.100.3.2.1.14', '%s', '%s', 'INTEGER'],
+]
+
+set_CableDiagInit = [
+    # .1.3.6.1.4.1.6339.100.3.2.1.18.2  vctAction
+    ['.1.3.6.1.4.1.6339.100.3.2.1.18.2', '%s', '1', 'INTEGER'],
 ]
