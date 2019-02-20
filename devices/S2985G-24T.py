@@ -225,6 +225,7 @@ walk_VlanMap = {
     'EgressPorts': '.1.3.6.1.2.1.17.7.1.4.3.1.2',
 }
 
+# пока для untagged и egress один oid
 walk_VlanEgressPorts = {
     # VEP   .1.3.6.1.2.1.17.7.1.4.3.1.2 dot1qVlanStaticEgressPorts
     'VEP': '.1.3.6.1.2.1.17.7.1.4.3.1.2',
@@ -232,7 +233,7 @@ walk_VlanEgressPorts = {
 
 walk_VlanUntaggedPorts = {
     # VUP   .1.3.6.1.2.1.17.7.1.4.3.1.4 dot1qVlanStaticUntaggedPorts
-    'VUP': '.1.3.6.1.2.1.17.7.1.4.3.1.4',
+    'VUP': '.1.3.6.1.2.1.17.7.1.4.3.1.2',
 }
 
 walk_ifName = {
