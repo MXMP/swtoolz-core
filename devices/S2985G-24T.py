@@ -155,55 +155,56 @@ PortName = ({
             },)
 
 get_HardwareRev = {
-    # HardwareRev    .1.3.6.1.4.1.6339.100.1.2   sysHardwareVersion
-    'HardwareRev.': '.1.3.6.1.4.1.6339.100.1.2.0',
+    # HardwareRev    .1.3.6.1.4.1.40418.7.100.1.2   sysHardwareVersion
+    'HardwareRev.': '.1.3.6.1.4.1.40418.7.100.1.2.0',
 }
 
 get_SoftwareVer = {
-    # SoftwareVer    .1.3.6.1.4.1.6339.100.1.3   sysSoftwareVersion
-    'SoftwareVer.': '.1.3.6.1.4.1.6339.100.1.3.0'
+    # SoftwareVer    .1.3.6.1.4.1.40418.7.100.1.3   sysSoftwareVersion
+    'SoftwareVer.': '.1.3.6.1.4.1.40418.7.100.1.3.0'
 }
 
 get_CableDiag = {
-    # cableDiag    .1.3.6.1.4.1.6339.100.3.2.1.19.2  vctLastStatus
-    'cableDiag.': '.1.3.6.1.4.1.6339.100.3.2.1.19.2.%s'
+    # cableDiag    .1.3.6.1.4.1.40418.7.100.3.2.1.19.2  vctLastStatus
+    'cableDiag.': '.1.3.6.1.4.1.40418.7.100.3.2.1.19.2.%s'
 }
 
 walk_PortIndex = {
-    # PortIndex   .1.3.6.1.4.1.6339.100.3.2.1.1  portIndex
-    'PortIndex': '.1.3.6.1.4.1.6339.100.3.2.1.1',
+    # PortIndex   .1.3.6.1.4.1.40418.7.100.3.2.1.1  portIndex
+    # PortIndex   .1.3.6.1.4.1.40418.7.100.3.2.1.1  portIndex
+    'PortIndex': '.1.3.6.1.4.1.40418.7.100.3.2.1.1',
 }
 
 get_SinglePort = {
-    # MediumType    .1.3.6.1.4.1.6339.100.3.2.1.17   indicatesType
-    'MediumType.': '.1.3.6.1.4.1.6339.100.3.2.1.17.%s',
+    # MediumType    .1.3.6.1.4.1.40418.7.100.3.2.1.17   indicatesType
+    'MediumType.': '.1.3.6.1.4.1.40418.7.100.3.2.1.17.%s',
     # ActualStatus    .1.3.6.1.2.1.2.2.1.8  ifOperStatus
     'ActualStatus.': '.1.3.6.1.2.1.2.2.1.8.%s',
     # ActualSpeed    .1.3.6.1.2.1.31.1.1.1.15   ifHighSpeed
     'ActualSpeed.': '.1.3.6.1.2.1.31.1.1.1.15.%s',
-    # AdminStatus    .1.3.6.1.4.1.6339.100.3.2.1.12 shutdown
-    'AdminStatus.': '.1.3.6.1.4.1.6339.100.3.2.1.12.%s',
-    # AdminSpeed    .1.3.6.1.4.1.6339.100.3.2.1.14  speedDuplex
-    'AdminSpeed.': '.1.3.6.1.4.1.6339.100.3.2.1.14.%s',
-    # AdminFlow    .1.3.6.1.4.1.6339.100.3.2.1.6 flowControlStatus
-    'AdminFlow.': '.1.3.6.1.4.1.6339.100.3.2.1.6.%s',
+    # AdminStatus    .1.3.6.1.4.1.40418.7.100.3.2.1.12 shutdown
+    'AdminStatus.': '.1.3.6.1.4.1.40418.7.100.3.2.1.12.%s',
+    # AdminSpeed    .1.3.6.1.4.1.40418.7.100.3.2.1.14  speedDuplex
+    'AdminSpeed.': '.1.3.6.1.4.1.40418.7.100.3.2.1.14.%s',
+    # AdminFlow    .1.3.6.1.4.1.40418.7.100.3.2.1.6 flowControlStatus
+    'AdminFlow.': '.1.3.6.1.4.1.40418.7.100.3.2.1.6.%s',
     # PortDescr    .1.3.6.1.2.1.31.1.1.1.18 ifAlias
     'PortDescr.': '.1.3.6.1.2.1.31.1.1.1.18.%s',
 }
 
 walk_AllPorts = {
-    # MediumType   .1.3.6.1.4.1.6339.100.3.2.1.17   indicatesType
-    'MediumType': '.1.3.6.1.4.1.6339.100.3.2.1.17',
+    # MediumType   .1.3.6.1.4.1.40418.7.100.3.2.1.17   indicatesType
+    'MediumType': '.1.3.6.1.4.1.40418.7.100.3.2.1.17',
     # ActualStatus   .1.3.6.1.2.1.2.2.1.8   ifOperStatus
     'ActualStatus': '.1.3.6.1.2.1.2.2.1.8',
     # ActualSpeed   .1.3.6.1.2.1.31.1.1.1.15    ifHighSpeed
     'ActualSpeed': '.1.3.6.1.2.1.31.1.1.1.15',
-    # AdminStatus    .1.3.6.1.4.1.6339.100.3.2.1.12 shutdown
-    'AdminStatus': '.1.3.6.1.4.1.6339.100.3.2.1.12',
-    # AdminSpeed   .1.3.6.1.4.1.6339.100.3.2.1.14   speedDuplex
-    'AdminSpeed': '.1.3.6.1.4.1.6339.100.3.2.1.14',
-    # AdminFlow   .1.3.6.1.4.1.6339.100.3.2.1.6 flowControlStatus
-    'AdminFlow': '.1.3.6.1.4.1.6339.100.3.2.1.6',
+    # AdminStatus    .1.3.6.1.4.1.40418.7.100.3.2.1.12 shutdown
+    'AdminStatus': '.1.3.6.1.4.1.40418.7.100.3.2.1.12',
+    # AdminSpeed   .1.3.6.1.4.1.40418.7.100.3.2.1.14   speedDuplex
+    'AdminSpeed': '.1.3.6.1.4.1.40418.7.100.3.2.1.14',
+    # AdminFlow   .1.3.6.1.4.1.40418.7.100.3.2.1.6 flowControlStatus
+    'AdminFlow': '.1.3.6.1.4.1.40418.7.100.3.2.1.6',
     # PortDescr   .1.3.6.1.2.1.31.1.1.1.18  ifAlias
     'PortDescr': '.1.3.6.1.2.1.31.1.1.1.18',
 }
@@ -237,21 +238,21 @@ walk_VlanUntaggedPorts = {
 }
 
 walk_ifName = {
-    # PortName   .1.3.6.1.4.1.6339.100.3.2.1.2   portName
-    'PortName': '.1.3.6.1.4.1.6339.100.3.2.1.2',
+    # PortName   .1.3.6.1.4.1.40418.7.100.3.2.1.2   portName
+    'PortName': '.1.3.6.1.4.1.40418.7.100.3.2.1.2',
 }
 
 set_AdminStatus = [
-    # .1.3.6.1.4.1.6339.100.3.2.1.12 shutdown
-    ['.1.3.6.1.4.1.6339.100.3.2.1.12', '%s', '%s', 'INTEGER'],
+    # .1.3.6.1.4.1.40418.7.100.3.2.1.12 shutdown
+    ['.1.3.6.1.4.1.40418.7.100.3.2.1.12', '%s', '%s', 'INTEGER'],
 ]
 
 set_AdminSpeed = [
-    # .1.3.6.1.4.1.6339.100.3.2.1.14    speedDuplex
-    ['.1.3.6.1.4.1.6339.100.3.2.1.14', '%s', '%s', 'INTEGER'],
+    # .1.3.6.1.4.1.40418.7.100.3.2.1.14    speedDuplex
+    ['.1.3.6.1.4.1.40418.7.100.3.2.1.14', '%s', '%s', 'INTEGER'],
 ]
 
 set_CableDiagInit = [
-    # .1.3.6.1.4.1.6339.100.3.2.1.18.2  vctAction
-    ['.1.3.6.1.4.1.6339.100.3.2.1.18.2', '%s', '1', 'INTEGER'],
+    # .1.3.6.1.4.1.40418.7.100.3.2.1.18.2  vctAction
+    ['.1.3.6.1.4.1.40418.7.100.3.2.1.18.2', '%s', '1', 'INTEGER'],
 ]
