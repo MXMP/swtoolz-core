@@ -252,6 +252,12 @@ class ThrPoller(threading.Thread):
                             # dataset может быть как словарем (для get/walk) так и списком (для set) и
                             # кортежем (для неизменяемых пользовательских данных). Обрабатываем эти случаи отдельно
                             if isinstance(dataset, dict):
+                                # Получаем название функции-хелпера и удаляем этот элемент, чтобы не мешался
+                                helper_name = dataset.get('helper')
+                                try:
+                                    del(dataset['helper'])
+                                except KeyError:
+                                    pass
                                 get_notwalk = False
                                 for paramname in dataset.keys():
                                     if '.' in paramname:
@@ -350,11 +356,17 @@ class ThrPoller(threading.Thread):
                                                         json_resp['data'][prep_k] = {}
                                                     # Выполняем проверку на наличие непечатаемых символов. Если таких
                                                     # нет, возвращаем исходную строку, а иначе возвращаем hex-string
+                                                    value = ''
                                                     if var_.val == filter(lambda x: x in string.printable, var_.val):
-                                                        json_resp['data'][prep_k][remainder] = var_.val.replace('\"',
-                                                                                                                '')
+                                                        value = var_.val.replace('\"', '')
                                                     else:
-                                                        json_resp['data'][prep_k][remainder] = var_.val.encode("hex")
+                                                        value = var_.val.encode("hex")
+
+                                                    # вызываем функцию хелпер, если она была указана
+                                                    if helper_name:
+                                                        value = helper_name(value)
+
+                                                    json_resp['data'][prep_k][remainder] = value
 
                             # Если dataset является списком, выполняем для него set-операции
                             if isinstance(dataset, list):
