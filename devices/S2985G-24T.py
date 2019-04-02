@@ -36,6 +36,7 @@ Commands = ([
                 'AdminSpeed',
                 'AdminFlow',
                 'BoardDescr',
+                'cdLinkStatus',
                 'walk_PortIndex',
                 'PortName',
             ],)
@@ -116,6 +117,17 @@ AdminFlow = ({
                  '0': 'disabled',
                  '1': 'enabled',
              },)
+
+# ifOperStatus
+cdLinkStatus = ({
+                    '1': 'linkup',
+                    '2': 'linkdown',
+                    '3': 'testing',
+                    '4': 'unknown',
+                    '5': 'dormant',
+                    '6': 'notPresent',
+                    '7': 'lowerLayerDown',
+                },)
 
 # UnitModuleName (placeholder)
 BoardDescr = ({
