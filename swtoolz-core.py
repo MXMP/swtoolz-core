@@ -365,10 +365,10 @@ class ThrPoller(threading.Thread):
                                                     # Полный OID (full_oid) будет 1.2.3.2.1.X.Y
                                                     # Имя раздела (словаря) будет k, а подраздела
                                                     # (ключа метрики) - remainder
-                                                    if prep_k not in json_resp['data']:
-                                                        json_resp['data'][prep_k] = {}
                                                     if helper and prep_k not in data_for_helper:
                                                         data_for_helper[prep_k] = {}
+                                                    elif prep_k not in json_resp['data']:
+                                                        json_resp['data'][prep_k] = {}
 
                                                     # Выполняем проверку на наличие непечатаемых символов. Если таких
                                                     # нет, возвращаем исходную строку, а иначе возвращаем hex-string
