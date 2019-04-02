@@ -19,12 +19,14 @@ def snr_diag_parser(incoming_value):
     # паттерн для строк вида "(1, 2)          open\t\t          0"
     pair_pattern = re.compile(r'^(?P<pair>\(\d,\s\d\))\s+(?P<status>\S+)\s+(?P<length>\d+)$')
 
-    vct_result = {'cdLinkStatus': {str(port_index): incoming_value['ActualStatus']}}
+    vct_result = {'cdLinkStatus': incoming_value['ActualStatus']}
 
-    for line_index, line in enumerate(input_diag.splitlines(), start=1):
+    diag_line_index = 0  # индекс строки с состоянием пары (для определения номера пары)
+    for line in input_diag.splitlines():
         pair_match = pair_pattern.match(line)
         if pair_match:
-            vct_result['cdPair{}Status'.format(line_index)] = {str(port_index): pair_match.group('status')}
-            vct_result['cdPair{}Length'.format(line_index)] = {str(port_index): pair_match.group('length')}
+            diag_line_index += 1
+            vct_result['cdPair{}Status'.format(diag_line_index)] = {str(port_index): pair_match.group('status')}
+            vct_result['cdPair{}Length'.format(diag_line_index)] = {str(port_index): pair_match.group('length')}
 
     return vct_result
