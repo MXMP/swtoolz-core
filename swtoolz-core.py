@@ -258,15 +258,20 @@ class ThrPoller(threading.Thread):
                                 try:
                                     helper_name = dataset.get('helper')
                                     del(dataset['helper'])
-                                    helper = getattr(helpers, helper_name)
+                                    helper = getattr(helpers, helper_name, None)
+                                    # временный словарь, в котором собираем данные для передачи в helper
+                                    data_for_helper = {}
+                                    logging.debug("DEBUG: Fond {} helper function.")
                                 except KeyError:
                                     pass
                                 except AttributeError:
-                                    logging.error("ERROR: Can't find {} helper function".format(helper_name))
+                                    logging.error("ERROR: Can't find {} helper function.".format(helper_name))
+
                                 get_notwalk = False
                                 for paramname in dataset.keys():
                                     if '.' in paramname:
                                         get_notwalk = True
+
                                 big_bada_boom = False
                                 snmp_var = netsnmp.VarList(
                                     *[netsnmp.Varbind(prepare_oid(data_param.copy(), dataset[paramname])) for paramname
@@ -280,6 +285,7 @@ class ThrPoller(threading.Thread):
                                     snmp_query = netsnmp.snmpwalk(snmp_var, Version=2, DestHost=target_ip,
                                                                   Community=snmp_comm, Timeout=current_snmp_timeout,
                                                                   Retries=current_snmp_retries, UseNumeric=1)
+
                                 # ВНИМАНИЕ! Это обход бага. _Если в конфиге (модуле) задать OID задать без
                                 # точки в самом начале_, то при формировании varlist/varbind может возникнуть проблема
                                 # Заключается она в том, что нельзя перебрать snmp_var, хотя по формальным
@@ -290,8 +296,10 @@ class ThrPoller(threading.Thread):
                                 try:
                                     for var_ in snmp_var:
                                         pass
-                                except:
+                                except Exception as e:
+                                    logging.exception(e)
                                     big_bada_boom = True
+
                                 if not big_bada_boom:
                                     for var_ in snmp_var:
                                         # Убеждаемся, что ответ распознан, т.е. не None
@@ -367,11 +375,14 @@ class ThrPoller(threading.Thread):
                                                     else:
                                                         value = var_.val.encode("hex")
 
-                                                    # вызываем функцию хелпер, если она была указана
                                                     if helper:
-                                                        value = helper(value)
+                                                        data_for_helper = [prep_k][remainder] = value
+                                                    else:
+                                                        json_resp['data'][prep_k][remainder] = value
 
-                                                    json_resp['data'][prep_k][remainder] = value
+                                    # вызываем функцию хелпер, если она была указана
+                                    if helper:
+                                        json_resp['data'] += helper(data_for_helper)
 
                             # Если dataset является списком, выполняем для него set-операции
                             if isinstance(dataset, list):
