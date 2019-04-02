@@ -376,7 +376,7 @@ class ThrPoller(threading.Thread):
                                                         value = var_.val.encode("hex")
 
                                                     if helper:
-                                                        data_for_helper = [prep_k][remainder] = value
+                                                        data_for_helper[prep_k][remainder] = value
                                                     else:
                                                         json_resp['data'][prep_k][remainder] = value
 
