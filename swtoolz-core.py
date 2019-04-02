@@ -261,7 +261,7 @@ class ThrPoller(threading.Thread):
                                     helper_name = dataset.get('helper')
                                     del(dataset['helper'])
                                     helper = getattr(helpers, helper_name)
-                                    logging.debug("DEBUG: Fond {} helper function.")
+                                    logging.debug("DEBUG: Fond {} helper function.".format(helper_name))
                                 except KeyError:
                                     pass
                                 except AttributeError:
@@ -367,9 +367,11 @@ class ThrPoller(threading.Thread):
                                                     # (ключа метрики) - remainder
                                                     if prep_k not in json_resp['data']:
                                                         json_resp['data'][prep_k] = {}
+                                                    if helper and prep_k not in data_for_helper:
+                                                        data_for_helper[prep_k] = {}
+
                                                     # Выполняем проверку на наличие непечатаемых символов. Если таких
                                                     # нет, возвращаем исходную строку, а иначе возвращаем hex-string
-                                                    value = ''
                                                     if var_.val == filter(lambda x: x in string.printable, var_.val):
                                                         value = var_.val.replace('\"', '')
                                                     else:
