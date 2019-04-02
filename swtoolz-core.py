@@ -255,12 +255,12 @@ class ThrPoller(threading.Thread):
                             # кортежем (для неизменяемых пользовательских данных). Обрабатываем эти случаи отдельно
                             if isinstance(dataset, dict):
                                 # Получаем функцию-хелпер и удаляем этот элемент, чтобы не мешался
+                                helper = None
+                                data_for_helper = {}
                                 try:
                                     helper_name = dataset.get('helper')
                                     del(dataset['helper'])
-                                    helper = getattr(helpers, helper_name, None)
-                                    # временный словарь, в котором собираем данные для передачи в helper
-                                    data_for_helper = {}
+                                    helper = getattr(helpers, helper_name)
                                     logging.debug("DEBUG: Fond {} helper function.")
                                 except KeyError:
                                     pass
