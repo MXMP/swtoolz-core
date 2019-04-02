@@ -13,6 +13,8 @@ import string
 import json
 import urllib
 from os import sep
+
+import helpers
 from daemon import Daemon
 from swconfig import interface_ip, port, sleep_int, stats_int, set_iter_delay, snmp_timeout
 from swconfig import snmp_retries, no_retries, forced_mtd, logfile, users, default_info
@@ -252,12 +254,15 @@ class ThrPoller(threading.Thread):
                             # dataset может быть как словарем (для get/walk) так и списком (для set) и
                             # кортежем (для неизменяемых пользовательских данных). Обрабатываем эти случаи отдельно
                             if isinstance(dataset, dict):
-                                # Получаем название функции-хелпера и удаляем этот элемент, чтобы не мешался
-                                helper_name = dataset.get('helper')
+                                # Получаем функцию-хелпер и удаляем этот элемент, чтобы не мешался
                                 try:
+                                    helper_name = dataset.get('helper')
                                     del(dataset['helper'])
+                                    helper = getattr(helpers, helper_name)
                                 except KeyError:
                                     pass
+                                except AttributeError:
+                                    logging.error("ERROR: Can't find {} helper function".format(helper_name))
                                 get_notwalk = False
                                 for paramname in dataset.keys():
                                     if '.' in paramname:
@@ -363,8 +368,8 @@ class ThrPoller(threading.Thread):
                                                         value = var_.val.encode("hex")
 
                                                     # вызываем функцию хелпер, если она была указана
-                                                    if helper_name:
-                                                        value = helper_name(value)
+                                                    if helper:
+                                                        value = helper(value)
 
                                                     json_resp['data'][prep_k][remainder] = value
 
