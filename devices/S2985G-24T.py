@@ -181,8 +181,8 @@ get_CableDiag = {
     'helper': 'snr_diag_parser',
     # ActualStatus    .1.3.6.1.2.1.2.2.1.8  ifOperStatus
     'ActualStatus.': '.1.3.6.1.2.1.2.2.1.8.%s',
-    # cableDiag    .1.3.6.1.4.1.40418.7.100.3.2.1.19.2  vctLastStatus
-    'cableDiag.': '.1.3.6.1.4.1.40418.7.100.3.2.1.19.2.%s'
+    # cableDiag    .1.3.6.1.4.1.40418.7.100.3.2.1.19  vctLastStatus
+    'cableDiag.': '.1.3.6.1.4.1.40418.7.100.3.2.1.19.%s'
 }
 
 walk_PortIndex = {
