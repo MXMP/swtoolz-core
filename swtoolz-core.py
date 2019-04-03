@@ -13,6 +13,8 @@ import string
 import json
 import urllib
 from os import sep
+
+import helpers
 from daemon import Daemon
 from swconfig import interface_ip, port, sleep_int, stats_int, set_iter_delay, snmp_timeout
 from swconfig import snmp_retries, no_retries, forced_mtd, logfile, users, default_info
@@ -93,13 +95,19 @@ def prepare_oid(my_dict, my_data):
         return my_data
 
 
-# Функция для преобразования адресной строки в словарь и определения ошибок
-# В адресной строке каждый параметр идет после символа '/'. Группы параметров разделяются символом '+'
-# Первые три параметра первой группы зарезервированы: /user, /target, /comm_index.
-# Каждая группа параметров описывает одно задание.
-# Первым параметров в каждой группе является имя словаря или функции в конфигурационном файле
-# Далее следуют параметры для постановки в этот словарь или функцию
 def parse_request(request):
+    """
+    Функция для преобразования адресной строки в словарь и определения ошибок
+    В адресной строке каждый параметр идет после символа '/'. Группы параметров разделяются символом '+'
+    Первые три параметра первой группы зарезервированы: /user, /target, /comm_index.
+    Каждая группа параметров описывает одно задание.
+    Первым параметров в каждой группе является имя словаря или функции в конфигурационном файле
+    Далее следуют параметры для постановки в этот словарь или функцию
+
+    :param request:
+    :return:
+    """
+
     # Задаем структуру словаря, которую затем изменяем в процессе обработки
     json_req = {'user': '', 'target': '', 'comm_index': '', 'data': [], 'errors': []}
     # Разделяем весь запрос на несколько групп. В каждой группе находится отдельное задание
@@ -157,10 +165,17 @@ class ThrPoller(threading.Thread):
 
     def run(self):
         # Задаем структуру словаря, который будет добавляться в общий словарь ответов
-        json_resp = {'target': '', 'sys_descr': '', 'sys_uptime': '', 'sys_name': '', 'sys_location': '', 'model': '',
-                     'query_time': '', 'data': {}}
+        json_resp = {'target': '',
+                     'sys_descr': '',
+                     'sys_uptime': '',
+                     'sys_name': '',
+                     'sys_location': '',
+                     'model': '',
+                     'query_time': '',
+                     'data': {}}
         # Получаем IP адрес устройства
         target_ip = self.requests[self.client_ip][self.client_port]['target']
+        json_resp['target'] = target_ip
         # Получаем список параметров (данные) для устройства
         data_params = self.requests[self.client_ip][self.client_port]['data']
         # Получаем SNMP-Community для устройства
@@ -170,31 +185,20 @@ class ThrPoller(threading.Thread):
         snmp_var = netsnmp.VarList(*[netsnmp.Varbind(default_info[def_param]) for def_param in default_info])
         # Фиксируем текущее время
         start_time = time.time()
-        # Выполняем опрос устройства
+        # Выполняем опрос устройства параметров из default_info
         snmp_query = netsnmp.snmpget(*snmp_var, Version=2, DestHost=target_ip, Community=snmp_comm,
                                      Timeout=snmp_timeout, Retries=snmp_retries, UseNumeric=1)
         # Время, затраченное на опрос
         snmp_query_time = str(int((time.time() - start_time) * 1000))
-        # Заполняем словарь данными
-        json_resp['target'] = self.requests[self.client_ip][self.client_port]['target']
+        json_resp['query_time'] = snmp_query_time
+
         # Помещаем в словарь результаты опроса параметров из default_info
         for def_param_index, def_param in enumerate(default_info):
             json_resp[def_param] = snmp_query[def_param_index]
-        # Определяем модель по вхождению подстроки в значения sysDescr и sysName
-        # Проверка идет до первого соответствия. Сначала проверяется sysName
-        model = 'None'
-        for item in models_by_desc:
-            for desc_model in item:
-                if json_resp['sys_name'] is not None:
-                    if desc_model in json_resp['sys_name']:
-                        model = item[desc_model]
-                if json_resp['sys_descr'] is not None:
-                    if desc_model in json_resp['sys_descr']:
-                        model = item[desc_model]
-            if model != 'None':
-                break
+
+        # Получаем идентификатор модели
+        model = ThrPoller.get_model(json_resp['sys_name'], json_resp['sys_descr'], models_by_desc)
         json_resp['model'] = model
-        json_resp['query_time'] = snmp_query_time
 
         # Если в списке команд (методов) есть зарезервированная команда (метод), то выполняем опрос
         # оборудования даже если оно недоступно
@@ -209,17 +213,14 @@ class ThrPoller(threading.Thread):
             try:
                 device = __import__(model)
                 reload(device)
-            except:
-                logging.info("WARNING: Can't import module '%s' for '%s'!", model, target_ip)
+            except ImportError:
+                logging.error("WARNING: Can't import module '%s' for '%s'!", model, target_ip)
             else:
                 # Пробуем получить из модуля множитель 'timeout_mf' и применить его. При неудаче
-                # используем таймаут из файла конфигурации сервиса
-                try:
-                    timeout_mf = getattr(device, 'timeout_mf')
-                    current_snmp_timeout = int(snmp_timeout * timeout_mf)
-                except:
-                    current_snmp_timeout = snmp_timeout
-                # data_params - все, что содержится в ключе 'data' из запроса ('request'). Представлен в виде списка
+                # будет использован таймаут из файла конфигурации сервиса
+                current_snmp_timeout = int(snmp_timeout * getattr(device, 'timeout_mf', 1))
+
+                # data_params - все, что содержится в ключе 'data' из запроса ('request'). Представлен в виде списка.
                 # data_param - конкретный элемент списка, содержащий параметры конкретного запроса. Представлен в
                 # виде словаря. В debug-лог пишется как 'URL Params'.
                 # "data": [{"1": "2", "0": "swL2PortCtrlAdminState"}, {"0": ""}]
@@ -231,30 +232,46 @@ class ThrPoller(threading.Thread):
                         # Пробуем извлечь параметр (метод) из файла модуля
                         try:
                             dataset = getattr(device, data_param['0'])
-                        except:
+                        except AttributeError:
                             if data_param['0'] == 'list':
                                 # logging.info("INFO: Requested 'list' command from client %s:%s.",
                                 # self.client_ip, self.client_port)
                                 json_resp['data']['list'] = [str(d) for d in dir(device) if d[0] != '_']
                             else:
-                                logging.info("WARNING: Can't find param '%s' from module '%s'!", data_param['0'], model)
+                                logging.error("WARNING: Can't find param '%s' from module '%s'!", data_param['0'],
+                                              model)
                         else:
                             # Для режима отладки пишем в лог кто и что у нас запросил
                             if debug_mode:
-                                logging.info("DEBUG: Request from %s:%s. Dataset: '%s', URL Params: %s", self.client_ip,
-                                             self.client_port, str(dataset), str(data_param))
+                                logging.debug("DEBUG: Request from %s:%s. Dataset: '%s', URL Params: %s",
+                                              self.client_ip, self.client_port, str(dataset), str(data_param))
                             current_snmp_retries = snmp_retries
                             # Если параметр находится в списке 'no_retries', сбрасываем для него число дополнительных
                             # попыток в 0
                             if data_param['0'] in no_retries:
                                 current_snmp_retries = 0
+
                             # dataset может быть как словарем (для get/walk) так и списком (для set) и
                             # кортежем (для неизменяемых пользовательских данных). Обрабатываем эти случаи отдельно
                             if isinstance(dataset, dict):
+                                # Получаем функцию-хелпер и удаляем этот элемент, чтобы не мешался
+                                helper = None
+                                data_for_helper = {}
+                                try:
+                                    helper_name = dataset.get('helper')
+                                    del(dataset['helper'])
+                                    helper = getattr(helpers, helper_name)
+                                    logging.debug("DEBUG: Fond {} helper function.".format(helper_name))
+                                except KeyError:
+                                    pass
+                                except AttributeError:
+                                    logging.error("ERROR: Can't find {} helper function.".format(helper_name))
+
                                 get_notwalk = False
                                 for paramname in dataset.keys():
                                     if '.' in paramname:
                                         get_notwalk = True
+
                                 big_bada_boom = False
                                 snmp_var = netsnmp.VarList(
                                     *[netsnmp.Varbind(prepare_oid(data_param.copy(), dataset[paramname])) for paramname
@@ -268,6 +285,7 @@ class ThrPoller(threading.Thread):
                                     snmp_query = netsnmp.snmpwalk(snmp_var, Version=2, DestHost=target_ip,
                                                                   Community=snmp_comm, Timeout=current_snmp_timeout,
                                                                   Retries=current_snmp_retries, UseNumeric=1)
+
                                 # ВНИМАНИЕ! Это обход бага. _Если в конфиге (модуле) задать OID задать без
                                 # точки в самом начале_, то при формировании varlist/varbind может возникнуть проблема
                                 # Заключается она в том, что нельзя перебрать snmp_var, хотя по формальным
@@ -278,8 +296,10 @@ class ThrPoller(threading.Thread):
                                 try:
                                     for var_ in snmp_var:
                                         pass
-                                except:
+                                except Exception as e:
+                                    logging.exception(e)
                                     big_bada_boom = True
+
                                 if not big_bada_boom:
                                     for var_ in snmp_var:
                                         # Убеждаемся, что ответ распознан, т.е. не None
@@ -345,15 +365,26 @@ class ThrPoller(threading.Thread):
                                                     # Полный OID (full_oid) будет 1.2.3.2.1.X.Y
                                                     # Имя раздела (словаря) будет k, а подраздела
                                                     # (ключа метрики) - remainder
-                                                    if prep_k not in json_resp['data']:
+                                                    if helper and prep_k not in data_for_helper:
+                                                        data_for_helper[prep_k] = {}
+                                                    elif prep_k not in json_resp['data']:
                                                         json_resp['data'][prep_k] = {}
+
                                                     # Выполняем проверку на наличие непечатаемых символов. Если таких
                                                     # нет, возвращаем исходную строку, а иначе возвращаем hex-string
                                                     if var_.val == filter(lambda x: x in string.printable, var_.val):
-                                                        json_resp['data'][prep_k][remainder] = var_.val.replace('\"',
-                                                                                                                '')
+                                                        value = var_.val.replace('\"', '')
                                                     else:
-                                                        json_resp['data'][prep_k][remainder] = var_.val.encode("hex")
+                                                        value = var_.val.encode("hex")
+
+                                                    if helper:
+                                                        data_for_helper[prep_k][remainder] = value
+                                                    else:
+                                                        json_resp['data'][prep_k][remainder] = value
+
+                                    # вызываем функцию хелпер, если она была указана
+                                    if helper:
+                                        json_resp['data'].update(helper(data_for_helper))
 
                             # Если dataset является списком, выполняем для него set-операции
                             if isinstance(dataset, list):
@@ -377,6 +408,32 @@ class ThrPoller(threading.Thread):
             self.responses[self.client_ip].update({self.client_port: json_resp})
         else:
             self.responses[self.client_ip] = {self.client_port: json_resp}
+
+    @staticmethod
+    def get_model(sys_name, sys_descr, models_list):
+        """
+        Определяем модель по вхождению подстроки в значения sysDescr и sysName. Проверка идет до первого соответствия.
+        Сначала проверяется sysName.
+
+        :param list models_list: список словарей моделей, как в models_by_desc в конфиге
+        :param str sys_descr: sysDescr, полученный с устройства
+        :param str sys_name: sysName, полученный с устройства
+        :return: идентификатор модели или None если совпадений не найдено
+        """
+
+        model = 'None'
+        for item in models_list:
+            for desc_model in item:
+                if sys_name is not None:
+                    if desc_model in sys_name:
+                        model = item[desc_model]
+                if sys_descr is not None:
+                    if desc_model in sys_descr:
+                        model = item[desc_model]
+            if model != 'None':
+                break
+
+        return model
 
 
 def main():
@@ -434,8 +491,8 @@ def main():
             res_cnt = 0
             # В режиме отладки пишем в лог кол-во вопросов и ответов
             if debug_mode:
-                logging.info("DEBUG: Requests queue - %s, Responses queue - %s", sum(map(len, requests)),
-                             sum(map(len, responses)))
+                logging.debug("DEBUG: Requests queue - %s, Responses queue - %s", sum(map(len, requests)),
+                              sum(map(len, responses)))
             if len(clients) > 0:
                 logging.info("WARNING: Currently %s active connections. Possible %s dead clients", len(clients),
                              len(dead_clients))

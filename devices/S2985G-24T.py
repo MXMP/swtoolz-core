@@ -36,6 +36,7 @@ Commands = ([
                 'AdminSpeed',
                 'AdminFlow',
                 'BoardDescr',
+                'cdLinkStatus',
                 'walk_PortIndex',
                 'PortName',
             ],)
@@ -117,6 +118,17 @@ AdminFlow = ({
                  '1': 'enabled',
              },)
 
+# ifOperStatus
+cdLinkStatus = ({
+                    '1': 'linkup',
+                    '2': 'linkdown',
+                    '3': 'testing',
+                    '4': 'unknown',
+                    '5': 'dormant',
+                    '6': 'notPresent',
+                    '7': 'lowerLayerDown',
+                },)
+
 # UnitModuleName (placeholder)
 BoardDescr = ({
                   '1': 'SNR S2985G-24T',
@@ -165,8 +177,12 @@ get_SoftwareVer = {
 }
 
 get_CableDiag = {
-    # cableDiag    .1.3.6.1.4.1.40418.7.100.3.2.1.19.2  vctLastStatus
-    'cableDiag.': '.1.3.6.1.4.1.40418.7.100.3.2.1.19.2.%s'
+    # helper function converts VCT results to D-Link format
+    'helper': 'snr_diag_parser',
+    # ActualStatus    .1.3.6.1.2.1.2.2.1.8  ifOperStatus
+    'ActualStatus.': '.1.3.6.1.2.1.2.2.1.8.%s',
+    # cableDiag    .1.3.6.1.4.1.40418.7.100.3.2.1.19  vctLastStatus
+    'cableDiag.': '.1.3.6.1.4.1.40418.7.100.3.2.1.19.%s'
 }
 
 walk_PortIndex = {
