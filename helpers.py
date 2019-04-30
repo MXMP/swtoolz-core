@@ -39,7 +39,7 @@ def snr_diag_parser(incoming_value, host):
 
 def dlink_clear_errors_on_port(incoming_value, host):
     """
-    Посылает на коммутатор команды для сброса количества ошибок на порту.
+    Посылает на коммутатор D-Link команды для сброса количества ошибок на порту.
 
     :param dict incoming_value: словарь с входящими данными
     :param str host: ip-адрес устройства для которого выполняется запрос
@@ -63,6 +63,40 @@ def dlink_clear_errors_on_port(incoming_value, host):
 
         # разлогиниваемся
         conn.write(b'logout\n')
+        logging.debug(conn.read_all())
+    except Exception as err:
+        logging.exception(err)
+        return {'clear_erors': {str(port_index): 'Failed'}}
+    else:
+        return {'clear_erors': {str(port_index): 'Success'}}
+
+
+def snr_clear_errors_on_port(incoming_value, host):
+    """
+    Посылает на коммутатор SNR команды для сброса количества ошибок на порту.
+
+    :param dict incoming_value: словарь с входящими данными
+    :param str host: ip-адрес устройства для которого выполняется запрос
+    :rtype: dict
+    :return: словать с результатом выполнения сброса
+    """
+
+    # получаем индекс порта и количество CRC ошибок
+    port_index, input_crc_count = incoming_value['CRC'].popitem()
+
+    try:
+        conn = Telnet(host, port=23, timeout=3)
+
+        # если подключение прошло успешно, то передаем логин/пароль пользователя
+        conn.write(telnet_user.encode('ascii') + b'\n')
+        conn.write(telnet_password.encode('ascii') + b'\n')
+
+        # шлем команду на сброс счетчиков
+        clear_command = 'clear counters interface ethernet 1/0/{}'.format(port_index)
+        conn.write(clear_command.encode('ascii') + b'\n')
+
+        # разлогиниваемся
+        conn.write(b'exit\n')
         logging.debug(conn.read_all())
     except Exception as err:
         logging.exception(err)
