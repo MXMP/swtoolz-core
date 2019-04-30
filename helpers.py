@@ -66,9 +66,9 @@ def dlink_clear_errors_on_port(incoming_value, host):
         logging.debug(conn.read_all())
     except Exception as err:
         logging.exception(err)
-        return {'clear_erors': {str(port_index): 'Failed'}}
+        return {'clear_errors': {str(port_index): 'Failed'}}
     else:
-        return {'clear_erors': {str(port_index): 'Success'}}
+        return {'clear_errors': {str(port_index): 'Success'}}
 
 
 def snr_clear_errors_on_port(incoming_value, host):
@@ -101,6 +101,6 @@ def snr_clear_errors_on_port(incoming_value, host):
         logging.debug(conn.read_all())
     except Exception as err:
         logging.exception(err)
-        return {'clear_erors': {str(port_index): 'Failed'}}
+        return {'clear_errors': {str(port_index): 'Failed'}}
     else:
-        return {'clear_erors': {str(port_index): 'Success'}}
+        return {'clear_errors': {str(port_index): 'Success'}}
