@@ -344,6 +344,13 @@ get_InOutOctets = {
     'Outoctets.'      : '.1.3.6.1.2.1.31.1.1.1.10.%s',
     }
 
+clear_errors = {
+    # Send telnet commands to device
+    'helper': 'dlink_clear_errors_on_port',
+    # CRC    .1.3.6.1.2.1.16.1.1.1.8    etherStatsCRCAlignErrors
+    'CRC.': '.1.3.6.1.2.1.16.1.1.1.8.%s',
+}
+
 set_AdminStatus = [
 #     .1.3.6.1.4.1.171.11.63.3.2.2.2.1.2				swL2PortCtrlAdminState
     ['.1.3.6.1.4.1.171.11.63.3.2.2.2.1.2.%s', '', '%s', 'INTEGER'],
