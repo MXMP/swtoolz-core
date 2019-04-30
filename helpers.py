@@ -2,13 +2,16 @@
 # coding=UTF8
 
 import re
+from telnetlib import Telnet
+from swconfig import telnet_user, telnet_password
 
 
-def snr_diag_parser(incoming_value):
+def snr_diag_parser(incoming_value, host):
     """
     Приводит диагностику порта в формате SNR к виду похожему на формат D-Link.
 
     :param dict incoming_value: словарь с диагностикой от SNR
+    :param str host: ip-адрес устройства для которого выполняется запрос
     :rtype: dict
     :return: словарь с диагностикой в формате D-Link
     """
@@ -30,3 +33,35 @@ def snr_diag_parser(incoming_value):
             vct_result['cdPair{}Length'.format(diag_line_index)] = {str(port_index): pair_match.group('length')}
 
     return vct_result
+
+
+def dlink_clear_errors_on_port(incoming_value, host):
+    """
+    Посылает на коммутатор команды для сброса количества ошибок на порту.
+
+    :param dict incoming_value: словарь с входящими данными
+    :param str host: ip-адрес устройства для которого выполняется запрос
+    :rtype: dict
+    :return: словать с результатом выполнения сброса
+    """
+
+    # получаем индекс порта и количество CRC ошибок
+    port_index, input_crc_count = incoming_value['CRC'].popitem()
+
+    try:
+        conn = Telnet(host, timeout=3)
+
+        # если подключение прошло успешно, то передаем логин/пароль пользователя
+        conn.write(telnet_user.encode('ascii') + b'\n')
+        conn.write(telnet_password.encode('ascii') + b'\n')
+
+        # шлем команду на сброс счетчиков
+        clear_command = 'clear counters ports %i' % port_index
+        conn.write(clear_command.encode('ascii') + b'\n')
+
+        # разлогиниваемся
+        conn.write(b'logout\n')
+    except:
+        return {'clear_erors': {str(port_index): 'Failed'}}
+    else:
+        return {'clear_erors': {str(port_index): 'Success'}}
