@@ -58,7 +58,7 @@ def dlink_clear_errors_on_port(incoming_value, host):
         conn.write(telnet_password.encode('ascii') + b'\n')
 
         # шлем команду на сброс счетчиков
-        clear_command = 'clear counters ports %i' % port_index
+        clear_command = 'clear counters ports {}'.format(port_index)
         conn.write(clear_command.encode('ascii') + b'\n')
 
         # разлогиниваемся
