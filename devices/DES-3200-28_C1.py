@@ -332,7 +332,7 @@ get_InOutOctets = {
     'Outoctets.': '.1.3.6.1.2.1.31.1.1.1.10.%s',
 }
 
-clear_erors = {
+clear_errors = {
     # Send telnet commands to device
     'helper': 'dlink_clear_errors_on_port',
     # CRC    .1.3.6.1.2.1.16.1.1.1.8    etherStatsCRCAlignErrors
