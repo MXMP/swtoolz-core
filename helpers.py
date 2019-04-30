@@ -86,6 +86,7 @@ def snr_clear_errors_on_port(incoming_value, host):
 
     try:
         conn = Telnet(host, port=23, timeout=3)
+        conn.read_until(b'login:', timeout=3)
 
         # если подключение прошло успешно, то передаем логин/пароль пользователя
         conn.write(telnet_user.encode('ascii') + b'\n')
