@@ -384,7 +384,7 @@ class ThrPoller(threading.Thread):
 
                                     # вызываем функцию хелпер, если она была указана
                                     if helper:
-                                        json_resp['data'].update(helper(data_for_helper))
+                                        json_resp['data'].update(helper(data_for_helper, target_ip))
 
                             # Если dataset является списком, выполняем для него set-операции
                             if isinstance(dataset, list):

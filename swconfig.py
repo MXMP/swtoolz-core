@@ -113,3 +113,6 @@ Content-Length: {$datalen}
 
 # Режим отладки
 debug_mode = False
+
+telnet_user = 'user'
+telnet_password = 'pass'

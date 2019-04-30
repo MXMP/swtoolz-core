@@ -185,6 +185,13 @@ get_CableDiag = {
     'cableDiag.': '.1.3.6.1.4.1.40418.7.100.3.2.1.19.%s'
 }
 
+clear_errors = {
+    # Send telnet commands to device
+    'helper': 'snr_clear_errors_on_port',
+    # CRC    .1.3.6.1.2.1.16.1.1.1.8    etherStatsCRCAlignErrors
+    'CRC.': '.1.3.6.1.2.1.16.1.1.1.8.%s',
+}
+
 walk_PortIndex = {
     # PortIndex   .1.3.6.1.4.1.40418.7.100.3.2.1.1  portIndex
     # PortIndex   .1.3.6.1.4.1.40418.7.100.3.2.1.1  portIndex
