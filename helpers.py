@@ -3,6 +3,8 @@
 
 import re
 from telnetlib import Telnet
+import logging
+
 from swconfig import telnet_user, telnet_password
 
 
@@ -49,7 +51,7 @@ def dlink_clear_errors_on_port(incoming_value, host):
     port_index, input_crc_count = incoming_value['CRC'].popitem()
 
     try:
-        conn = Telnet(host, timeout=3)
+        conn = Telnet(host, port=23, timeout=3)
 
         # если подключение прошло успешно, то передаем логин/пароль пользователя
         conn.write(telnet_user.encode('ascii') + b'\n')
@@ -61,7 +63,9 @@ def dlink_clear_errors_on_port(incoming_value, host):
 
         # разлогиниваемся
         conn.write(b'logout\n')
-    except:
+        logging.debug(conn.read_all())
+    except Exception as err:
+        logging.exception(err)
         return {'clear_erors': {str(port_index): 'Failed'}}
     else:
         return {'clear_erors': {str(port_index): 'Success'}}
