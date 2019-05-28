@@ -129,6 +129,15 @@ cdLinkStatus = ({
                     '7': 'lowerLayerDown',
                 },)
 
+# About statuses you can read on documentation. Also look to `snr_diag_parser` helper.
+cdPairStatus = ({
+                    '0': 'ok',  # "well" in documentation
+                    '1': 'open',
+                    '2': 'short',
+                    '3': 'abnormal',
+                    '4': 'fail',
+                },)
+
 # UnitModuleName (placeholder)
 BoardDescr = ({
                   '1': 'SNR S2985G-24T',
