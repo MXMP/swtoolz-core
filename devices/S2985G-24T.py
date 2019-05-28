@@ -194,6 +194,29 @@ get_CableDiag = {
     'cableDiag.': '.1.3.6.1.4.1.40418.7.100.3.2.1.19.%s'
 }
 
+get_Errors = {
+    # CRC    .1.3.6.1.2.1.16.1.1.1.8    etherStatsCRCAlignErrors
+    'CRC.': '.1.3.6.1.2.1.16.1.1.1.8.%s',
+    # Undersize    .1.3.6.1.2.1.16.1.1.1.9  etherStatsUndersizePkts
+    'Undersize.': '.1.3.6.1.2.1.16.1.1.1.9.%s',
+    # Oversize    .1.3.6.1.2.1.16.1.1.1.10  etherStatsOversizePkts
+    'Oversize.': '.1.3.6.1.2.1.16.1.1.1.10.%s',
+    # Fragment    .1.3.6.1.2.1.16.1.1.1.11  etherStatsFragments
+    'Fragment.': '.1.3.6.1.2.1.16.1.1.1.11.%s',
+    # Jabber    .1.3.6.1.2.1.16.1.1.1.12    etherStatsJabbers
+    'Jabber.': '.1.3.6.1.2.1.16.1.1.1.12.%s',
+    # ExcessiveDefferal    .1.3.6.1.2.1.10.7.2.1.7  dot3StatsDeferredTransmissions
+    'ExcessiveDefferal.': '.1.3.6.1.2.1.10.7.2.1.7.%s',
+    # LateCollision    .1.3.6.1.2.1.10.7.2.1.8  dot3StatsLateCollisions
+    'LateCollision.': '.1.3.6.1.2.1.10.7.2.1.8.%s',
+    # ExcessiveCollision    .1.3.6.1.2.1.10.7.2.1.9 dot3StatsExcessiveCollisions
+    'ExcessiveCollision.': '.1.3.6.1.2.1.10.7.2.1.9.%s',
+    # SingleCollision    .1.3.6.1.2.1.10.7.2.1.4    dot3StatsSingleCollisionFrames
+    'SingleCollision.': '.1.3.6.1.2.1.10.7.2.1.4.%s',
+    # Collision    .1.3.6.1.2.1.16.1.1.1.13 etherStatsCollisions
+    'Collision.': '.1.3.6.1.2.1.16.1.1.1.13.%s',
+}
+
 clear_errors = {
     # Send telnet commands to device
     'helper': 'snr_clear_errors_on_port',
