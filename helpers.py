@@ -18,6 +18,13 @@ def snr_diag_parser(incoming_value, host):
     :return: словарь с диагностикой в формате D-Link
     """
 
+    # словарик для сопоставления числового и строкового статусов
+    statuses = {'well': 0,
+                'open': 1,
+                'short': 2,
+                'abnormal': 3,
+                'fail': 4}
+
     # получаем индекс порта и строку с результатами диагностики из входящих данных
     port_index, input_diag = incoming_value['cableDiag'].popitem()
 
@@ -31,7 +38,7 @@ def snr_diag_parser(incoming_value, host):
         pair_match = pair_pattern.match(line)
         if pair_match:
             diag_line_index += 1
-            vct_result['cdPair{}Status'.format(diag_line_index)] = {str(port_index): pair_match.group('status')}
+            vct_result['cdPair{}Status'.format(diag_line_index)] = {str(port_index): statuses[pair_match.group('status')]}
             vct_result['cdPair{}Length'.format(diag_line_index)] = {str(port_index): pair_match.group('length')}
 
     return vct_result
