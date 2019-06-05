@@ -217,6 +217,13 @@ get_Errors = {
     'Collision.': '.1.3.6.1.2.1.16.1.1.1.13.%s',
 }
 
+get_InOutOctets = {
+    # InOctets    .1.3.6.1.2.1.31.1.1.1.6 ifHCInOctets
+    'InOctets.': '.1.3.6.1.2.1.31.1.1.1.6.%s',
+    # OutOctets    .1.3.6.1.2.1.31.1.1.1.10 ifHCOutOctets
+    'Outoctets.': '.1.3.6.1.2.1.31.1.1.1.10.%s',
+}
+
 clear_errors = {
     # Send telnet commands to device
     'helper': 'snr_clear_errors_on_port',
