@@ -1,4 +1,5 @@
-version: '3'
+version: '3.7'
+
 services:
   worker:
     build: .
@@ -6,3 +7,6 @@ services:
     command: [python, swtoolz-core.py, nodaemon]
     ports:
       - "7377:7377"
+    volumes:
+      - ~/swconfig.py:/app/swconfig.py
+      - ~/swtoolz-core.log:/var/log/swtoolz-core.log
