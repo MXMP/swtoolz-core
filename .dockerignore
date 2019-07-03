@@ -1,0 +1,10 @@
+*.png
+.gitignore
+docker-compose.yml
+LICENSE
+Dockerfile
+tests/
+venv/
+linux/
+freebsd/
+*.pyc

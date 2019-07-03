@@ -1,0 +1,8 @@
+version: '3'
+services:
+  worker:
+    build: .
+    image: mxmp/swtoolz-core
+    command: [python, swtoolz-core.py, nodaemon]
+    ports:
+      - "7377:7377"

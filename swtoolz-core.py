@@ -653,6 +653,8 @@ if __name__ == "__main__":
             daemon.stop()
         elif 'restart' == sys.argv[1]:
             daemon.restart()
+        elif 'nodaemon' == sys.argv[1]:
+            main()
         else:
             print "swtoolz-core: " + sys.argv[1] + " - unknown command"
             sys.exit(2)
