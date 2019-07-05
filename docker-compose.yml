@@ -10,6 +10,7 @@ services:
     volumes:
       - ~/swconfig.py:/app/swconfig.py
       - ~/swtoolz-core.log:/var/log/swtoolz-core.log
+      - ./devices:/app/devices
 
 networks:
   default:
