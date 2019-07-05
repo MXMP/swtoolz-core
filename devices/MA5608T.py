@@ -39,8 +39,81 @@ StackInfo = ({
 Commands = ([
                 'DeviceMap',
                 'walk_PortIndex',
-                'walk_BoardDescr'
+                'walk_BoardDescr',
+                'primary_status',
+                'load_state',
+                'xml_load_state',
             ],)
+
+# hwXponDeviceOntControlPrimaryStatus   .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.6
+primary_status = ({
+                      '1': 'Normal',
+                      '2': 'Abnormal',
+                      '3': 'Restricted',
+                      '4': 'Abnormal & Restricted',
+                      '5': 'Autonomous',
+                      '6': 'Management',
+                      '7': 'Autonomous & Management',
+                      '8': 'Autonomous & Restricted',
+                      '9': 'Management & Abnormal',
+                  },)
+
+# hwXponOntInfoAppLoadState  .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.9
+load_state = ({
+                  '1': 'initstate',
+                  '2': 'process %0',
+                  '3': 'ftp load fail',
+                  '4': 'loaded to mainboard process %10',
+                  '5': 'loaded to ponboard process %20',
+                  '6': 'loaded to ponboard fail',
+                  '7': 'process %80',
+                  '8': 'fail:user stop',
+                  '9': 'fail:ont offline',
+                  '10': 'fail:ont response fail',
+                  '11': 'fail:ont response timeout',
+                  '12': 'fail:pon inner error',
+                  '13': 'process %100,ont restart',
+                  '14': 'Process %100 the ont now is in survival mode',
+                  '15': 'fail:system is busy because the ponboard\'s channel is occupied',
+                  '16': 'fail:failed to verify the version information',
+                  '17': 'fail:processing the loading task timed out',
+                  '18': 'fail:ont file check failure',
+                  '19': 'fail:code file validate failure',
+                  '20': 'fail:system buffer is insufficient',
+                  '21': 'fail:ont not support load',
+                  '22': 'fail:ont storage space insufficient',
+                  '23': 'fail:ont image file error',
+                  '24': 'fail:ont image file existed',
+                  '25': 'fail:ont activate image file fail',
+                  '26': 'fail:ont commit image file fail',
+                  '27': 'fail:ont image file crc error',
+                  '28': 'fail:unknown reason',
+              },)
+
+# hwXponOntInfoXmlLoadState .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.10
+xml_load_state = ({
+                      '1': 'initstate',
+                      '2': 'process %0',
+                      '3': 'ftp load fail',
+                      '4': 'loaded to mainboard process %10',
+                      '5': 'loaded to ponboard process %20',
+                      '6': 'loaded to ponboard fail',
+                      '7': 'process %80',
+                      '8': 'process %100',
+                      '9': 'fail:user stop',
+                      '10': 'fail:ont not support xml',
+                      '11': 'fail:ont offline',
+                      '12': 'fail:ont response unknown fail',
+                      '13': 'fail:ont response timeout',
+                      '14': 'fail:xml error ont will reconfigure fail',
+                      '15': 'fail:xml format error',
+                      '16': 'fail:xml content error',
+                      '17': 'fail:ont find xml transfer error',
+                      '18': 'fail:unknown error from ont',
+                      '19': 'fail:unknown error from ponboard',
+                      '20': 'fail:system is busy because the ponboard\'s channel is occupied',
+                      '21': 'fail:unknown reason',
+                  },)
 
 walk_PortIndex = {
     # PortIndex   .1.3.6.1.2.1.2.2.1.1  ifIndex
@@ -69,3 +142,25 @@ create_vlan = [
     # .1.3.6.1.4.1.2011.5.6.1.1.1.13  hwVlanRowStatus
     ['.1.3.6.1.4.1.2011.5.6.1.1.1.13.{1}', '{1}', 4, 'INTEGER'],
 ]
+
+# Получение информации о ONU. На вход обязательно нужно передать: ifIndex GPON-порта и порядковый номер ONU
+get_onu_info = {
+    # description     .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.5   hwXponOntInfoProductDescription
+    'description..': '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.5.{1}.{2}',
+    # online     .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.1    hwXponOntInfoOnlineDuration
+    'online..': '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.1.{1}.{2}',
+    # memory     .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.2    hwXponOntInfoMemoryOccupation
+    'memory..': '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.2.{1}.{2}',
+    # cpu     .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.3   hwXponOntInfoCpuOccupation
+    'cpu..': '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.3.{1}.{2}',
+    # primary_status     .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.6    hwXponDeviceOntControlPrimaryStatus
+    'primary_status..': '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.6.{1}.{2}',
+    # load_state     .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.9     hwXponOntInfoAppLoadState
+    'load_state..': '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.9.{1}.{2}',
+    # distance     .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.12    hwXponOntLastDistance
+    'distance..': '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.12.{1}.{2}',
+    # xml_load_state     .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.10    hwXponOntInfoXmlLoadState
+    'xml_load_state..': '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.10.{1}.{2}',
+    # xml_load_error     .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.14  hwXponOntInfoXmlLoadErrorInfo
+    'xml_load_error..': '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.14.{1}.{2}',
+}
