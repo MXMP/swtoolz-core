@@ -38,8 +38,16 @@ StackInfo = ({
 # Список рекомендуемых команд
 Commands = ([
                 'DeviceMap',
+                'AdminStatus',
+                'ActualStatus',
+                'ActualSpeed',
+                'AdminSpeed',
+                'PortType',
                 'walk_PortIndex',
+                'walk_AllPorts',
                 'walk_BoardDescr',
+                'walk_ifAlias',
+                'walk_ifName',
                 'primary_status',
                 'load_state',
                 'xml_load_state',
@@ -115,9 +123,87 @@ xml_load_state = ({
                       '21': 'fail:unknown reason',
                   },)
 
+# ifAdminStatus .1.3.6.1.2.1.2.2.1.7
+AdminStatus = ({
+                   '1': 'enabled',
+                   '2': 'disabled',
+                   '3': 'testing',
+               },)
+
+# ifOperStatus  .1.3.6.1.2.1.2.2.1.8
+ActualStatus = ({
+                    '1': 'linkup',
+                    '2': 'linkdown',
+                    '3': 'testing',
+                    '4': 'unknown',
+                    '5': 'dormant',
+                    '6': 'notPresent',
+                    '7': 'lowerLayerDown',
+                },)
+
+# ifSpeed   .1.3.6.1.2.1.2.2.1.5
+ActualSpeed = ({
+                   '100000000': '100M',
+                   '1000000000': '1G',
+                   '2488320000': '2,5G',
+               },)
+
+# ifHighSpeed   .1.3.6.1.2.1.31.1.1.1.15
+AdminSpeed = ({
+                  '100': '100M',
+                  '1000': '1G',
+                  '2488': '2,5G',
+              },)
+
+# ifType    .1.3.6.1.2.1.2.2.1.3
+MediumType = ({
+                  '6': 'fiber',
+                  '250': 'fiber',
+              },)
+
 walk_PortIndex = {
     # PortIndex   .1.3.6.1.2.1.2.2.1.1  ifIndex
     'PortIndex': '.1.3.6.1.2.1.2.2.1.1',
+}
+
+walk_AllPorts = {
+    # ActualStatus   .1.3.6.1.2.1.2.2.1.8  ifOperStatus
+    'ActualStatus': '.1.3.6.1.2.1.2.2.1.8',
+    # ActualSpeed   .1.3.6.1.2.1.2.2.1.5    ifSpeed
+    'ActualSpeed': '.1.3.6.1.2.1.2.2.1.5',
+    # AdminStatus   .1.3.6.1.2.1.2.2.1.7    ifAdminStatus
+    'AdminStatus': '.1.3.6.1.2.1.2.2.1.7',
+    # AdminSpeed   .1.3.6.1.2.1.31.1.1.1.15   ifHighSpeed
+    'AdminSpeed': '.1.3.6.1.2.1.31.1.1.1.15',
+    # PortDescr   .1.3.6.1.2.1.31.1.1.1.18  ifAlias
+    'PortDescr': '.1.3.6.1.2.1.31.1.1.1.18',
+    # MediumType   .1.3.6.1.2.1.2.2.1.3 ifType
+    'MediumType': '.1.3.6.1.2.1.2.2.1.3',
+}
+
+walk_ifAlias = {
+    # PortDescr   .1.3.6.1.2.1.31.1.1.1.18  ifAlias
+    'PortDescr': '.1.3.6.1.2.1.31.1.1.1.18',
+}
+
+walk_ifName = {
+    # PortDescr   .1.3.6.1.2.1.31.1.1.1.1  ifName
+    'PortDescr': '.1.3.6.1.2.1.31.1.1.1.1',
+}
+
+get_SinglePort = {
+    # ActualStatus   .1.3.6.1.2.1.2.2.1.8  ifOperStatus
+    'ActualStatus.': '.1.3.6.1.2.1.2.2.1.8.%s',
+    # ActualSpeed   .1.3.6.1.2.1.2.2.1.5    ifSpeed
+    'ActualSpeed.': '.1.3.6.1.2.1.2.2.1.5.%s',
+    # AdminStatus   .1.3.6.1.2.1.2.2.1.7    ifAdminStatus
+    'AdminStatus.': '.1.3.6.1.2.1.2.2.1.7.%s',
+    # AdminSpeed   .1.3.6.1.2.1.31.1.1.1.15   ifHighSpeed
+    'AdminSpeed.': '.1.3.6.1.2.1.31.1.1.1.15.%s',
+    # PortDescr   .1.3.6.1.2.1.31.1.1.1.18  ifAlias
+    'PortDescr.': '.1.3.6.1.2.1.31.1.1.1.18.%s',
+    # MediumType   .1.3.6.1.2.1.2.2.1.3 ifType
+    'MediumType.': '.1.3.6.1.2.1.2.2.1.3.%s',
 }
 
 walk_BoardDescr = {
