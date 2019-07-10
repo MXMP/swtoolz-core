@@ -245,6 +245,21 @@ get_onu_eth_port_info = {
     'onu_eth_port_AdminStatus...': '.1.3.6.1.4.1.2011.6.128.1.1.2.62.1.5.{1}.{2}.{3}',
 }
 
+# Получение DDM с ONU.
+# На вход обязательно нужно передать: ifIndex GPON-порта и порядковый номер ONU.
+get_onu_ddm_info = {
+    # onu_ddm_temperature     .1.3.6.1.4.1.2011.6.128.1.1.2.51.1.1  hwGponOntOpticalDdmTemperature
+    'onu_ddm_temperature..': '.1.3.6.1.4.1.2011.6.128.1.1.2.51.1.1.{1}.{2}',
+    # onu_ddm_voltage     .1.3.6.1.4.1.2011.6.128.1.1.2.51.1.5 hwGponOntOpticalDdmVoltage
+    'onu_ddm_voltage..': '.1.3.6.1.4.1.2011.6.128.1.1.2.51.1.5.{1}.{2}',
+    # onu_ddm_bias     .1.3.6.1.4.1.2011.6.128.1.1.2.51.1.2    hwGponOntOpticalDdmBiasCurrent
+    'onu_ddm_bias..': '.1.3.6.1.4.1.2011.6.128.1.1.2.51.1.2.{1}.{2}',
+    # onu_ddm_tx_power     .1.3.6.1.4.1.2011.6.128.1.1.2.51.1.3   hwGponOntOpticalDdmTxPower
+    'onu_ddm_tx_power..': '.1.3.6.1.4.1.2011.6.128.1.1.2.51.1.3.{1}.{2}',
+    # onu_ddm_rx_power     .1.3.6.1.4.1.2011.6.128.1.1.2.51.1.4    hwGponOntOpticalDdmRxPower
+    'onu_ddm_rx_power..': '.1.3.6.1.4.1.2011.6.128.1.1.2.51.1.4.{1}.{2}',
+}
+
 walk_BoardDescr = {
     # BoardBescr   .1.3.6.1.4.1.2011.6.3.3.2.1.3    hwSlotDesc
     'BoardDescr': '.1.3.6.1.4.1.2011.6.3.3.2.1.3',
