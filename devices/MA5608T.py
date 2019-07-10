@@ -39,9 +39,12 @@ StackInfo = ({
 Commands = ([
                 'DeviceMap',
                 'AdminStatus',
+                'onu_eth_port_AdminStatus',
                 'ActualStatus',
+                'onu_eth_port_ActualStatus',
                 'ActualSpeed',
                 'AdminSpeed',
+                'onu_eth_port_ActualSpeed',
                 'walk_PortIndex',
                 'walk_AllPorts',
                 'walk_BoardDescr',
@@ -129,6 +132,13 @@ AdminStatus = ({
                    '3': 'testing',
                },)
 
+# hwGponDeviceOntEthernetOperateStatus  .1.3.6.1.4.1.2011.6.128.1.1.2.62.1.5
+onu_eth_port_AdminStatus = ({
+                       '1': 'on',
+                       '2': 'off',
+                       '-1': 'invalid',
+                   },)
+
 # ifOperStatus  .1.3.6.1.2.1.2.2.1.8
 ActualStatus = ({
                     '1': 'linkup',
@@ -140,12 +150,31 @@ ActualStatus = ({
                     '7': 'lowerLayerDown',
                 },)
 
+# hwGponDeviceOntEthernetOnlineState    .1.3.6.1.4.1.2011.6.128.1.1.2.62.1.22
+onu_eth_port_ActualStatus = ({
+                        '1': 'linkup',
+                        '2': 'linkdown',
+                        '-1': 'invalid',
+                    },)
+
 # ifSpeed   .1.3.6.1.2.1.2.2.1.5
 ActualSpeed = ({
                    '100000000': '100M',
                    '1000000000': '1G',
                    '2488320000': '2,5G',
                },)
+
+# hwGponDeviceOntEthernetSpeed  .1.3.6.1.4.1.2011.6.128.1.1.2.62.1.4
+onu_eth_port_ActualSpeed = ({
+                       '1': 'speed10M',
+                       '2': 'speed100M',
+                       '3': 'speed1000M',
+                       '4': 'autoneg',
+                       '5': 'autospeed10M',
+                       '6': 'autospeed100M',
+                       '7': 'autospeed1000M',
+                       '-1': 'invalid',
+                   },)
 
 # ifHighSpeed   .1.3.6.1.2.1.31.1.1.1.15
 AdminSpeed = ({
@@ -203,6 +232,17 @@ get_SinglePort = {
     'PortDescr.': '.1.3.6.1.2.1.31.1.1.1.18.%s',
     # MediumType   .1.3.6.1.2.1.2.2.1.3 ifType
     'MediumType.': '.1.3.6.1.2.1.2.2.1.3.%s',
+}
+
+# Получение информации о ethernet-порту ONU.
+# На вход обязательно нужно передать: ifIndex GPON-порта, порядковый номер ONU и номер порта на ONU.
+get_onu_eth_port_info = {
+    # onu_eth_port_ActualStatus      .1.3.6.1.4.1.2011.6.128.1.1.2.62.1.22    hwGponDeviceOntEthernetOnlineState
+    'onu_eth_port_ActualStatus...': '.1.3.6.1.4.1.2011.6.128.1.1.2.62.1.22.{1}.{2}.{3}',
+    # onu_eth_port_ActualSpeed      .1.3.6.1.4.1.2011.6.128.1.1.2.62.1.4   hwGponDeviceOntEthernetSpeed
+    'onu_eth_port_ActualSpeed...': '.1.3.6.1.4.1.2011.6.128.1.1.2.62.1.4.{1}.{2}.{3}',
+    # onu_eth_port_AdminStatus      .1.3.6.1.4.1.2011.6.128.1.1.2.62.1.5 hwGponDeviceOntEthernetOperateStatus
+    'onu_eth_port_AdminStatus...': '.1.3.6.1.4.1.2011.6.128.1.1.2.62.1.5.{1}.{2}.{3}',
 }
 
 walk_BoardDescr = {
