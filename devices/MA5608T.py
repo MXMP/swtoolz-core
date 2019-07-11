@@ -245,6 +245,126 @@ get_onu_eth_port_info = {
     'onu_eth_port_AdminStatus...': '.1.3.6.1.4.1.2011.6.128.1.1.2.62.1.5.{1}.{2}.{3}',
 }
 
+# Получение ошибок на ethernet-порту ONU.
+# На вход обязательно нужно передать: ifIndex GPON-порта, порядковый номер ONU и номер порта на ONU.
+get_onu_eth_port_errors = {
+    # This object indicates the received CRC error frames.
+    # recv_crc_align_errors      .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.7  hwGponOntEthernetStatisticRecvCRCAlignErrors
+    'recv_crc_align_errors...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.7.{1}.{2}.{3}',
+
+    # This object indicates the received undersize frames.
+    # recv_undersize_pkts      .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.8  hwGponOntEthernetStatisticRecvUndersizePkts
+    'recv_undersize_pkts...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.8.{1}.{2}.{3}',
+
+    # This object indicates the number of received fragments.
+    # recv_fragments      .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.10 hwGponOntEthernetStatisticRecvFragments
+    'recv_fragments...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.10.{1}.{2}.{3}',
+
+    # This object indicates the received Jabber error frames.
+    # recv_jabbers      .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.11  hwGponOntEthernetStatisticRecvJabbers
+    'recv_jabbers...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.11.{1}.{2}.{3}',
+
+    # This object indicates the count of collisions.
+    # collisions      .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.12 hwGponOntEthernetStatisticCollisions
+    'collisions...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.12.{1}.{2}.{3}',
+
+    # This object indicates the received FCS error frames.
+    # recv_fcs_errors      .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.19 hwGponOntEthernetStatisticRecvFCSErrors
+    'recv_fcs_errors...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.19.{1}.{2}.{3}',
+
+    # This object indicates the sent excessive collision frames.
+    # send_excessive_collision      .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.20
+    #                                                                   hwGponOntEthernetStatisticSendExcessiveCollision
+    'send_excessive_collision...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.20.{1}.{2}.{3}',
+
+    # This object indicates the sent late collision frames.
+    # send_late_collision      .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.21 hwGponOntEthernetStatisticSendLateCollision
+    'send_late_collision...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.21.{1}.{2}.{3}',
+
+    # This object indicates the received oversize frames.
+    # recv_frame_too_longs      .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.22 hwGponOntEthernetStatisticRecvFrameTooLongs
+    'recv_frame_too_longs...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.22.{1}.{2}.{3}',
+
+    # This object indicates the number of received buffer overflows.
+    # recv_buffer_overflowson      .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.23 hwGponOntEthernetStatisticRecvBufferOverflowson
+    'recv_buffer_overflowson...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.23.{1}.{2}.{3}',
+
+    # This object indicates the number of sent buffer overflows.
+    # send_buffer_overflowson      .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.24 hwGponOntEthernetStatisticSendBufferOverflowson
+    'send_buffer_overflowson...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.24.{1}.{2}.{3}',
+
+    # This object indicates the number of deferred sent frames due to single collision.
+    # send_single_collision_frame      .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.25
+    #                                                                 hwGponOntEthernetStatisticSendSingleCollisionFrame
+    'send_single_collision_frame...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.25.{1}.{2}.{3}',
+
+    # This object indicates the number of deferred sent frames due to multiple collisions.
+    # send_multiple_collisions_frame      .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.26
+    #                                                              hwGponOntEthernetStatisticSendMultipleCollisionsFrame
+    'send_multiple_collisions_frame...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.26.{1}.{2}.{3}',
+
+    # This object indicates the sent deferred frames.
+    # send_deferred_transmission      .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.28
+    #                                                                     hwGponOntEthernetStatisticDeferredTransmission
+    'send_deferred_transmission...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.28.{1}.{2}.{3}',
+
+    # This object indicates the number of SQE test error messages.
+    # send_sqe_test_error      .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.27 hwGponOntEthernetStatisticSendSQETestError
+    'send_sqe_test_error...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.27.{1}.{2}.{3}',
+
+    # This object indicates the sent error frames at the MAC sub-layer.
+    # send_internal_mac_transmit_error      .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.29
+    #                                                                 hwGponOntEthernetStatisticInternalmacTransmitError
+    'send_internal_mac_transmit_error...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.29.{1}.{2}.{3}',
+
+    # This object indicates the sent carrier sense errors.
+    # send_carrier_sense_error      .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.30
+    #                                                                    hwGponOntEthernetStatisticSendCarrierSenseError
+    'send_carrier_sense_error...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.30.{1}.{2}.{3}',
+
+    # This object indicates the received alignment error frames.
+    # recv_alignment_error      .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.31   hwGponOntEthernetStatisticRecvAlignmentError
+    'recv_alignment_error...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.31.{1}.{2}.{3}',
+
+    # This object indicates the received error frames at the MAC sub-layer.
+    # recv_internal_mac_receive_error      .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.32
+    #                                                                  hwGponOntEthernetStatisticInternalMACReceiveError
+    'recv_internal_mac_receive_error...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.32.{1}.{2}.{3}',
+
+    # This object indicates the discarded frames due to delay.
+    # delay_exceeded_discard      .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.35 hwGponOntEthernetStatisticDelayExceededDiscard
+    'delay_exceeded_discard...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.35.{1}.{2}.{3}',
+
+    # This object indicates the received right octets.
+    # recv_good_pkts_octets      .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.42 hwGponOntEthernetStatisticRecvGoodPktsOctets
+    'recv_good_pkts_octets...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.42.{1}.{2}.{3}',
+
+    # This object indicates the sent good frames octets.
+    # send_good_pkts_octets      .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.43 hwGponOntEthernetStatisticSendGoodPktsOctets
+    'send_good_pkts_octets...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.43.{1}.{2}.{3}',
+
+    # This object indicates the received error octets.
+    # recv_bad_pkts_octets      .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.44 hwGponOntEthernetStatisticRecvBadPktsOctets
+    'recv_bad_pkts_octets...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.44.{1}.{2}.{3}',
+
+    # This object indicates the sent error octets.
+    # send_bad_pkts_octets      .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.45 hwGponOntEthernetStatisticSendBadPktsOctets
+    'send_bad_pkts_octets...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.45.{1}.{2}.{3}',
+
+    # This object indicates the sent drop events.
+    # forward_drop_events      .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.47 hwGponOntEthernetStatisticForwardDropEvents
+    'forward_drop_events...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.47.{1}.{2}.{3}',
+
+    # This object indicates the sent oversize frames.
+    # send_pkts_oversize      .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.54 hwGponOntEthernetStatisticSendPktsOversize
+    'send_pkts_oversize...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.54.{1}.{2}.{3}',
+
+    # This object indicates the received 1519~oversize-octet frames.
+    # recv_pkts_1519_to_oversize_octets      .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.55
+    #                                                             hwGponOntEthernetStatisticRecvPkts1519toOversizeOctets
+    'recv_pkts_1519_to_oversize_octets...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.55.{1}.{2}.{3}',
+}
+
 # Получение DDM с ONU.
 # На вход обязательно нужно передать: ifIndex GPON-порта и порядковый номер ONU.
 get_onu_ddm_info = {
