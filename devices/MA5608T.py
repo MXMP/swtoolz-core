@@ -134,10 +134,10 @@ AdminStatus = ({
 
 # hwGponDeviceOntEthernetOperateStatus  .1.3.6.1.4.1.2011.6.128.1.1.2.62.1.5
 onu_eth_port_AdminStatus = ({
-                       '1': 'on',
-                       '2': 'off',
-                       '-1': 'invalid',
-                   },)
+                                '1': 'on',
+                                '2': 'off',
+                                '-1': 'invalid',
+                            },)
 
 # ifOperStatus  .1.3.6.1.2.1.2.2.1.8
 ActualStatus = ({
@@ -152,10 +152,10 @@ ActualStatus = ({
 
 # hwGponDeviceOntEthernetOnlineState    .1.3.6.1.4.1.2011.6.128.1.1.2.62.1.22
 onu_eth_port_ActualStatus = ({
-                        '1': 'linkup',
-                        '2': 'linkdown',
-                        '-1': 'invalid',
-                    },)
+                                 '1': 'linkup',
+                                 '2': 'linkdown',
+                                 '-1': 'invalid',
+                             },)
 
 # ifSpeed   .1.3.6.1.2.1.2.2.1.5
 ActualSpeed = ({
@@ -166,15 +166,15 @@ ActualSpeed = ({
 
 # hwGponDeviceOntEthernetSpeed  .1.3.6.1.4.1.2011.6.128.1.1.2.62.1.4
 onu_eth_port_ActualSpeed = ({
-                       '1': 'speed10M',
-                       '2': 'speed100M',
-                       '3': 'speed1000M',
-                       '4': 'autoneg',
-                       '5': 'autospeed10M',
-                       '6': 'autospeed100M',
-                       '7': 'autospeed1000M',
-                       '-1': 'invalid',
-                   },)
+                                '1': 'speed10M',
+                                '2': 'speed100M',
+                                '3': 'speed1000M',
+                                '4': 'autoneg',
+                                '5': 'autospeed10M',
+                                '6': 'autospeed100M',
+                                '7': 'autospeed1000M',
+                                '-1': 'invalid',
+                            },)
 
 # ifHighSpeed   .1.3.6.1.2.1.31.1.1.1.15
 AdminSpeed = ({
@@ -233,6 +233,13 @@ get_SinglePort = {
     # MediumType   .1.3.6.1.2.1.2.2.1.3 ifType
     'MediumType.': '.1.3.6.1.2.1.2.2.1.3.%s',
 }
+
+# Установка описания для порта.
+# На вход обязательно нужно передать: ifIndex GPON-порта и описание.
+set_port_descr = [
+    # .1.3.6.1.2.1.31.1.1.1.18  ifAlias
+    ['.1.3.6.1.2.1.31.1.1.1.18', '{1}', '{2}', 'OCTETSTR'],
+]
 
 # Получение информации о ethernet-порту ONU.
 # На вход обязательно нужно передать: ifIndex GPON-порта, порядковый номер ONU и номер порта на ONU.
@@ -422,7 +429,7 @@ create_vlan = [
 
 # Установить описание VLAN. Почему-то нельзя это указать при создании, пришлось выделить в отдельный метод.
 # На вход передаем: VLANID и текстовое описание.
-vlan_set_descr = [
+set_vlan_descr = [
     # .1.3.6.1.4.1.2011.5.6.1.1.1.2     hwVlanDescription
     ['.1.3.6.1.4.1.2011.5.6.1.1.1.2', '{1}', '{2}', 'OCTETSTR'],
 ]
