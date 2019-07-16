@@ -471,6 +471,38 @@ delete_vlan = [
     ['.1.3.6.1.4.1.2011.5.6.1.1.1.13', '{1}', '6', 'INTEGER'],
 ]
 
+create_lineprofile = [
+    # .1.3.6.1.4.1.2011.6.128.1.1.3.61.1.7  hwGponDeviceLineProfileRowStatus
+    ['.1.3.6.1.4.1.2011.6.128.1.1.3.61.1.7', '{1}', '4', 'INTEGER'],
+]
+
+delete_lineprofile = [
+    # .1.3.6.1.4.1.2011.6.128.1.1.3.61.1.7  hwGponDeviceLineProfileRowStatus
+    ['.1.3.6.1.4.1.2011.6.128.1.1.3.61.1.7', '{1}', '6', 'INTEGER'],
+]
+
+create_srvprofile = [
+    # .1.3.6.1.4.1.2011.6.128.1.1.3.65.1.4   hwGponDeviceSrvProfileRowStatus
+    ['.1.3.6.1.4.1.2011.6.128.1.1.3.65.1.4', '{1}', '4', 'INTEGER'],
+]
+
+delete_srvprofile = [
+    # .1.3.6.1.4.1.2011.6.128.1.1.3.65.1.4   hwGponDeviceSrvProfileRowStatus
+    ['.1.3.6.1.4.1.2011.6.128.1.1.3.65.1.4', '{1}', '6', 'INTEGER'],
+]
+
+config_srvprofile = [
+    # .1.3.6.1.4.1.2011.6.128.1.1.3.66.1.3 hwGponDeviceSrvProfileEthNum
+    ['.1.3.6.1.4.1.2011.6.128.1.1.3.66.1.3', '{1}', '254', 'INTEGER'],
+]
+
+# Включение автообнаружения на порту OLT.
+# На вход обязательно нужно передать: ifIndex GPON-порта
+enable_autofind = [
+    # .1.3.6.1.4.1.2011.6.128.1.1.2.21.1.4 hwGponDeviceOltControlAutofindOntEnable
+    ['.1.3.6.1.4.1.2011.6.128.1.1.2.21.1.4', '{1}', '1', 'INTEGER'],
+]
+
 # Получение информации о ONU.
 # На вход обязательно нужно передать: ifIndex GPON-порта и порядковый номер ONU
 get_onu_info = {
