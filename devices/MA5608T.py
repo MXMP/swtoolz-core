@@ -494,11 +494,24 @@ walk_dhcp_mac = {
     'mac': '.1.3.6.1.4.1.2011.5.18.1.31.1.6',
     # service_port_id   .1.3.6.1.4.1.2011.5.18.1.31.1.3 hwDhcpUserFlowID
     'service_port_id': '.1.3.6.1.4.1.2011.5.18.1.31.1.3',
+    # ip   .1.3.6.1.4.1.2011.5.18.1.31.1.5 hwDhcpUserIpAddress
+    'ip': '.1.3.6.1.4.1.2011.5.18.1.31.1.5',
 }
 
 create_lineprofile = [
     # .1.3.6.1.4.1.2011.6.128.1.1.3.61.1.7  hwGponDeviceLineProfileRowStatus
     ['.1.3.6.1.4.1.2011.6.128.1.1.3.61.1.7', '{1}', '4', 'INTEGER'],
+]
+
+# Привязка DBA-profile к t-cont в line-profile.
+# На вход обязательно передать: длина имени line-profile, имя line-profile (в бинарном виде), имя DBA-profile.
+set_tcont_dba_profile = [
+    # .1.3.6.1.4.1.2011.6.128.1.1.3.62.1.3  hwGponDeviceLineProfTcontCfgDbaProfileName
+    ['.1.3.6.1.4.1.2011.6.128.1.1.3.62.1.3', '{1}.{2}.4', '{3}', 'OCTETSTR'],
+    # .1.3.6.1.4.1.2011.6.128.1.1.3.62.1.4  hwGponDeviceLineProfTcontCfgRowStatus
+    ['.1.3.6.1.4.1.2011.6.128.1.1.3.62.1.4', '{1}.{2}.4', '4', 'INTEGER'],
+    # .1.3.6.1.4.1.2011.6.128.1.1.3.61.1.6  hwGponDeviceLineProfileCommit
+    ['.1.3.6.1.4.1.2011.6.128.1.1.3.61.1.6', '{2}', '1', 'INTEGER'],
 ]
 
 delete_lineprofile = [
