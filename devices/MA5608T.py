@@ -252,6 +252,13 @@ get_onu_eth_port_info = {
     'onu_eth_port_AdminStatus...': '.1.3.6.1.4.1.2011.6.128.1.1.2.62.1.5.{1}.{2}.{3}',
 }
 
+# Включение/выключение Ethernet порта на ONU.
+# На вход обязательно нужно передать: ifIndex GPON-порта, порядковый номер ONU, номер порта на ONU и нужный статус.
+set_onu_eth_port_admin_status = [
+    # .1.3.6.1.4.1.2011.6.128.1.1.2.62.1.5  hwGponDeviceOntEthernetOperateStatus
+    ['.1.3.6.1.4.1.2011.6.128.1.1.2.62.1.5', '{1}.{2}.{3}', '{4}', 'INTEGER'],
+]
+
 # Получение ошибок на ethernet-порту ONU.
 # На вход обязательно нужно передать: ifIndex GPON-порта, порядковый номер ONU и номер порта на ONU.
 get_onu_eth_port_errors = {
