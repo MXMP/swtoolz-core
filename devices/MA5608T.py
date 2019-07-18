@@ -527,6 +527,20 @@ set_gem_tcont = [
     ['.1.3.6.1.4.1.2011.6.128.1.1.3.61.1.6', '{2}', '1', 'INTEGER'],
 ]
 
+# Создание gem-mapping.
+# На вход обязательно передать: длина имени line-profile, имя line-profile (в бинарном виде), номер GEM,
+# mapping index, vlan.
+set_gem_mapping = [
+    # .1.3.6.1.4.1.2011.6.128.1.1.3.64.1.4 hwGponDeviceLineProfMappingCfgMappingMode
+    ['.1.3.6.1.4.1.2011.6.128.1.1.3.64.1.4', '{1}.{2}.{3}.{4}', '1', 'INTEGER'],
+    # .1.3.6.1.4.1.2011.6.128.1.1.3.64.1.8 hwGponDeviceLineProfMappingCfgVlanId
+    ['.1.3.6.1.4.1.2011.6.128.1.1.3.64.1.8', '{1}.{2}.{3}.{4}', '{5}', 'INTEGER'],
+    # .1.3.6.1.4.1.2011.6.128.1.1.3.64.1.10 hwGponDeviceLineProfMappingCfgRowStatus
+    ['.1.3.6.1.4.1.2011.6.128.1.1.3.64.1.10', '{1}.{2}.{3}.{4}', '4', 'INTEGER'],
+    # .1.3.6.1.4.1.2011.6.128.1.1.3.61.1.6  hwGponDeviceLineProfileCommit
+    ['.1.3.6.1.4.1.2011.6.128.1.1.3.61.1.6', '{2}', '1', 'INTEGER'],
+]
+
 delete_lineprofile = [
     # .1.3.6.1.4.1.2011.6.128.1.1.3.61.1.7  hwGponDeviceLineProfileRowStatus
     ['.1.3.6.1.4.1.2011.6.128.1.1.3.61.1.7', '{1}', '6', 'INTEGER'],
