@@ -514,6 +514,19 @@ set_tcont_dba_profile = [
     ['.1.3.6.1.4.1.2011.6.128.1.1.3.61.1.6', '{2}', '1', 'INTEGER'],
 ]
 
+# Привязка gem к t-cont в line-profile.
+# На вход обязательно передать: длина имени line-profile, имя line-profile (в бинарном виде), номер GEM, номер t-cont.
+set_gem_tcont = [
+    # .1.3.6.1.4.1.2011.6.128.1.1.3.63.1.4  hwGponDeviceLineProfGemCfgTcontIndex
+    ['.1.3.6.1.4.1.2011.6.128.1.1.3.63.1.4', '{1}.{2}.{3}', '{4}', 'INTEGER'],
+    # .1.3.6.1.4.1.2011.6.128.1.1.3.63.1.5  hwGponDeviceLineProfGemCfgServiceType
+    ['.1.3.6.1.4.1.2011.6.128.1.1.3.63.1.5', '{1}.{2}.{3}', '1', 'INTEGER'],
+    # .1.3.6.1.4.1.2011.6.128.1.1.3.63.1.9  hwGponDeviceLineProfGemCfgRowStatus
+    ['.1.3.6.1.4.1.2011.6.128.1.1.3.63.1.9', '{1}.{2}.{3}', '4', 'INTEGER'],
+    # .1.3.6.1.4.1.2011.6.128.1.1.3.61.1.6  hwGponDeviceLineProfileCommit
+    ['.1.3.6.1.4.1.2011.6.128.1.1.3.61.1.6', '{2}', '1', 'INTEGER'],
+]
+
 delete_lineprofile = [
     # .1.3.6.1.4.1.2011.6.128.1.1.3.61.1.7  hwGponDeviceLineProfileRowStatus
     ['.1.3.6.1.4.1.2011.6.128.1.1.3.61.1.7', '{1}', '6', 'INTEGER'],
