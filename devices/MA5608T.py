@@ -478,6 +478,24 @@ delete_vlan = [
     ['.1.3.6.1.4.1.2011.5.6.1.1.1.13', '{1}', '6', 'INTEGER'],
 ]
 
+walk_service_ports = {
+    # slot_id   .1.3.6.1.4.1.2011.5.14.5.2.1.3 hwExtSrvFlowPara2
+    'slot_id': '.1.3.6.1.4.1.2011.5.14.5.2.1.3',
+    # port_id   .1.3.6.1.4.1.2011.5.14.5.2.1.4 hwExtSrvFlowPara3
+    'port_id': '.1.3.6.1.4.1.2011.5.14.5.2.1.4',
+    # ont_id   .1.3.6.1.4.1.2011.5.14.5.2.1.5 hwExtSrvFlowPara4
+    'ont_id': '.1.3.6.1.4.1.2011.5.14.5.2.1.5',
+    # vlan_id .1.3.6.1.4.1.2011.5.14.5.2.1.8 hwExtSrvFlowVlanid
+    'vlan_id': '.1.3.6.1.4.1.2011.5.14.5.2.1.8',
+}
+
+walk_dhcp_mac = {
+    # mac   .1.3.6.1.4.1.2011.5.18.1.31.1.6 hwDhcpUserMACAddress
+    'mac': '.1.3.6.1.4.1.2011.5.18.1.31.1.6',
+    # service_port_id   .1.3.6.1.4.1.2011.5.18.1.31.1.3 hwDhcpUserFlowID
+    'service_port_id': '.1.3.6.1.4.1.2011.5.18.1.31.1.3',
+}
+
 create_lineprofile = [
     # .1.3.6.1.4.1.2011.6.128.1.1.3.61.1.7  hwGponDeviceLineProfileRowStatus
     ['.1.3.6.1.4.1.2011.6.128.1.1.3.61.1.7', '{1}', '4', 'INTEGER'],
