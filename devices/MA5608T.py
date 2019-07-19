@@ -166,13 +166,13 @@ ActualSpeed = ({
 
 # hwGponDeviceOntEthernetSpeed  .1.3.6.1.4.1.2011.6.128.1.1.2.62.1.4
 onu_eth_port_ActualSpeed = ({
-                                '1': 'speed10M',
-                                '2': 'speed100M',
-                                '3': 'speed1000M',
-                                '4': 'autoneg',
-                                '5': 'autospeed10M',
-                                '6': 'autospeed100M',
-                                '7': 'autospeed1000M',
+                                '1': '10M (manual)',
+                                '2': '100M (manual)',
+                                '3': '1000M (manual)',
+                                '4': 'linkdown (auto)',
+                                '5': '10M (auto)',
+                                '6': '100M (auto)',
+                                '7': '1G (auto)',
                                 '-1': 'invalid',
                             },)
 
