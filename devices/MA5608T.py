@@ -498,6 +498,8 @@ walk_dhcp_mac = {
     'ip': '.1.3.6.1.4.1.2011.5.18.1.31.1.5',
 }
 
+# Создание line-profile.
+# На вход обязательно передаем: имя профиля в виде индекса.
 create_lineprofile = [
     # .1.3.6.1.4.1.2011.6.128.1.1.3.61.1.7  hwGponDeviceLineProfileRowStatus
     ['.1.3.6.1.4.1.2011.6.128.1.1.3.61.1.7', '{1}', '4', 'INTEGER'],
@@ -546,19 +548,51 @@ delete_lineprofile = [
     ['.1.3.6.1.4.1.2011.6.128.1.1.3.61.1.7', '{1}', '6', 'INTEGER'],
 ]
 
+# Создание srv-profile.
+# На вход обязательно передаем: имя профиля в виде индекса.
 create_srvprofile = [
     # .1.3.6.1.4.1.2011.6.128.1.1.3.65.1.4   hwGponDeviceSrvProfileRowStatus
     ['.1.3.6.1.4.1.2011.6.128.1.1.3.65.1.4', '{1}', '4', 'INTEGER'],
 ]
 
-delete_srvprofile = [
-    # .1.3.6.1.4.1.2011.6.128.1.1.3.65.1.4   hwGponDeviceSrvProfileRowStatus
-    ['.1.3.6.1.4.1.2011.6.128.1.1.3.65.1.4', '{1}', '6', 'INTEGER'],
+# Создание vlan translation в srvprofile.
+# На вход обязательно передать: длина имени srv-profile, имя srv-profile (в бинарном виде), тип порта (для eth - 47),
+# номер порта, vlanid, priority.
+config_vlan_translation_srvprofile = [
+    # .1.3.6.1.4.1.2011.6.128.1.1.3.68.1.6  hwGponDeviceSrvProfPortVlanCfgPortVlanType
+    ['.1.3.6.1.4.1.2011.6.128.1.1.3.68.1.6', '{1}.{2}.{3}.{4}.{5}.-1.-1', '2', 'INTEGER'],
+    # # .1.3.6.1.4.1.2011.6.128.1.1.3.68.1.7  hwGponDeviceSrvProfPortVlanCfgPortVlanSPri
+    # ['.1.3.6.1.4.1.2011.6.128.1.1.3.68.1.7', '{1}.{2}.{3}.{4}.{5}.{6}.{6}', '{6}', 'INTEGER'],
+    # .1.3.6.1.4.1.2011.6.128.1.1.3.68.1.8  hwGponDeviceSrvProfPortVlanCfgPortSVlan
+    ['.1.3.6.1.4.1.2011.6.128.1.1.3.68.1.8', '{1}.{2}.{3}.{4}.{5}.-1.-1', '{5}', 'INTEGER'],
+    # # .1.3.6.1.4.1.2011.6.128.1.1.3.68.1.11 hwGponDeviceSrvProfPortVlanCfgPortVlanSPriPolicy
+    # ['.1.3.6.1.4.1.2011.6.128.1.1.3.68.1.11', '{1}.{2}.{3}.{4}.{5}.{6}.{6}', '{6}', 'INTEGER'],
+    # .1.3.6.1.4.1.2011.6.128.1.1.3.68.1.5  hwGponDeviceSrvProfPortVlanCfgRowStatus
+    ['.1.3.6.1.4.1.2011.6.128.1.1.3.68.1.5', '{1}.{2}.{3}.{4}.{5}.-1.-1', '4', 'INTEGER'],
+    # .1.3.6.1.4.1.2011.6.128.1.1.3.65.1.3  hwGponDeviceSrvProfileCommit
+    ['.1.3.6.1.4.1.2011.6.128.1.1.3.65.1.3', '{2}', '1', 'INTEGER'],
 ]
 
+# Задаем основные параметыр для srv-profile.
+# На вход обязательно передать: имя srv-profile (в бинарном виде).
 config_srvprofile = [
     # .1.3.6.1.4.1.2011.6.128.1.1.3.66.1.3 hwGponDeviceSrvProfileEthNum
     ['.1.3.6.1.4.1.2011.6.128.1.1.3.66.1.3', '{1}', '254', 'INTEGER'],
+    # .1.3.6.1.4.1.2011.6.128.1.1.3.66.1.11 hwGponDeviceSrvProfileMultiSrvTransmitMode
+    ['.1.3.6.1.4.1.2011.6.128.1.1.3.66.1.11', '{1}', '3', 'INTEGER'],
+    # .1.3.6.1.4.1.2011.6.128.1.1.3.66.1.13 hwGponDeviceSrvProfileMulticastMode
+    ['.1.3.6.1.4.1.2011.6.128.1.1.3.66.1.13', '{1}', '2', 'INTEGER'],
+    # .1.3.6.1.4.1.2011.6.128.1.1.3.66.1.14 hwGponDeviceSrvProfileUpIgmpTransmitMode
+    ['.1.3.6.1.4.1.2011.6.128.1.1.3.66.1.14', '{1}', '2', 'INTEGER'],
+    # .1.3.6.1.4.1.2011.6.128.1.1.3.66.1.15 hwGponDeviceSrvProfileUpIgmpMsgTranslationVlan
+    ['.1.3.6.1.4.1.2011.6.128.1.1.3.66.1.15', '{1}', '50', 'INTEGER'],
+    # .1.3.6.1.4.1.2011.6.128.1.1.3.65.1.3  hwGponDeviceSrvProfileCommit
+    ['.1.3.6.1.4.1.2011.6.128.1.1.3.65.1.3', '{1}', '1', 'INTEGER'],
+]
+
+delete_srvprofile = [
+    # .1.3.6.1.4.1.2011.6.128.1.1.3.65.1.4   hwGponDeviceSrvProfileRowStatus
+    ['.1.3.6.1.4.1.2011.6.128.1.1.3.65.1.4', '{1}', '6', 'INTEGER'],
 ]
 
 # Включение автообнаружения на порту OLT.
