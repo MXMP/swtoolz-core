@@ -498,6 +498,15 @@ walk_dhcp_mac = {
     'ip': '.1.3.6.1.4.1.2011.5.18.1.31.1.5',
 }
 
+# Получение незарегистрированных ONU за GPON-портом.
+# На вход обязательно нужно передать: ifIndex GPON-порта.
+walk_unregistered_onus_on_port = {
+    # sn  .1.3.6.1.4.1.2011.6.128.1.1.2.48.1.2 hwGponDeviceAutoFindOntInfoSn
+    'sn': '.1.3.6.1.4.1.2011.6.128.1.1.2.48.1.2.{1}',
+    # time .1.3.6.1.4.1.2011.6.128.1.1.2.48.1.8 hwGponDeviceAutoFindOntInfoOntAutoFindTime
+    'time': '.1.3.6.1.4.1.2011.6.128.1.1.2.48.1.8.{1}',
+}
+
 # Создание line-profile.
 # На вход обязательно передаем: имя профиля в виде индекса.
 create_lineprofile = [
