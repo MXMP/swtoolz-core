@@ -552,6 +552,13 @@ set_gem_mapping = [
     ['.1.3.6.1.4.1.2011.6.128.1.1.3.61.1.6', '{2}', '1', 'INTEGER'],
 ]
 
+# Назначение native-vlan для ethernet-порта onu.
+# На вход обязательно передать: ifIndex GPON-порта, ont_id, номер ethernet порта, vlanid.
+set_onu_eth_port_native_vlan = [
+    # .1.3.6.1.4.1.2011.6.145.1.1.1.26.1.1 hwGponOntPortNativeVlan
+    ['.1.3.6.1.4.1.2011.6.145.1.1.1.26.1.1', '{1}.{2}.47.{3}', '{4}', 'INTEGER'],
+]
+
 delete_lineprofile = [
     # .1.3.6.1.4.1.2011.6.128.1.1.3.61.1.7  hwGponDeviceLineProfileRowStatus
     ['.1.3.6.1.4.1.2011.6.128.1.1.3.61.1.7', '{1}', '6', 'INTEGER'],
