@@ -49,70 +49,21 @@ StackInfo = ({
                  'ShiftIndex': '0',
              },)
 
-PortName = {
-    '234930176': '0/6/0',
-    '234930240': '0/6/1',
-    '234930304': '0/6/2',
-    '234930368': '0/6/3',
-    '234938368': '0/7/0',
-    '234938432': '0/7/1',
-    '234938496': '0/7/2',
-    '234938560': '0/7/3',
-    '234946560': '0/8/0',
-    '234946624': '0/8/1',
-    '234954752': '0/9/0',
-    '234954816': '0/9/1',
-    '4194304000': 'GPON 0/0/0',
-    '4194304256': 'GPON 0/0/1',
-    '4194304512': 'GPON 0/0/2',
-    '4194304768': 'GPON 0/0/3',
-    '4194305024': 'GPON 0/0/4',
-    '4194305280': 'GPON 0/0/5',
-    '4194305536': 'GPON 0/0/6',
-    '4194305792': 'GPON 0/0/7',
-    '4194306048': 'GPON 0/0/8',
-    '4194306304': 'GPON 0/0/9',
-    '4194306560': 'GPON 0/0/10',
-    '4194306816': 'GPON 0/0/11',
-    '4194307072': 'GPON 0/0/12',
-    '4194307328': 'GPON 0/0/13',
-    '4194307584': 'GPON 0/0/14',
-    '4194307840': 'GPON 0/0/15',
-    '4194312192': 'GPON 0/1/0',
-    '4194312448': 'GPON 0/1/1',
-    '4194312704': 'GPON 0/1/2',
-    '4194312960': 'GPON 0/1/3',
-    '4194313216': 'GPON 0/1/4',
-    '4194313472': 'GPON 0/1/5',
-    '4194313728': 'GPON 0/1/6',
-    '4194313984': 'GPON 0/1/7',
-    '4194314240': 'GPON 0/1/8',
-    '4194314496': 'GPON 0/1/9',
-    '4194314752': 'GPON 0/1/10',
-    '4194315008': 'GPON 0/1/11',
-    '4194315264': 'GPON 0/1/12',
-    '4194315520': 'GPON 0/1/13',
-    '4194315776': 'GPON 0/1/14',
-    '4194316032': 'GPON 0/1/15',
-}
-
 # Список рекомендуемых команд
 Commands = ([
                 'StackInfo',
                 'DeviceMap',
-                'PortName',
                 'AdminStatus',
+                'MediumType',
                 'onu_eth_port_AdminStatus',
                 'ActualStatus',
                 'onu_eth_port_ActualStatus',
                 'ActualSpeed',
                 'AdminSpeed',
                 'onu_eth_port_ActualSpeed',
-                'walk_PortIndex',
                 'walk_AllPorts',
                 'walk_BoardDescr',
                 'walk_ifAlias',
-                'walk_ifName',
                 'primary_status',
                 'load_state',
                 'xml_load_state',
@@ -253,11 +204,15 @@ MediumType = ({
               },)
 
 walk_PortIndex = {
+    'helper': 'repair_big_indexes',
     # PortIndex   .1.3.6.1.2.1.2.2.1.1  ifIndex
     'PortIndex': '.1.3.6.1.2.1.2.2.1.1',
 }
 
 walk_AllPorts = {
+    'helper': 'repair_big_indexes',
+    # PortIndex   .1.3.6.1.2.1.2.2.1.1  ifIndex
+    'PortIndex': '.1.3.6.1.2.1.2.2.1.1',
     # ActualStatus   .1.3.6.1.2.1.2.2.1.8  ifOperStatus
     'ActualStatus': '.1.3.6.1.2.1.2.2.1.8',
     # ActualSpeed   .1.3.6.1.2.1.2.2.1.5    ifSpeed
@@ -270,6 +225,8 @@ walk_AllPorts = {
     'PortDescr': '.1.3.6.1.2.1.31.1.1.1.18',
     # MediumType   .1.3.6.1.2.1.2.2.1.3 ifType
     'MediumType': '.1.3.6.1.2.1.2.2.1.3',
+    # PortName   .1.3.6.1.2.1.31.1.1.1.1  ifName
+    'PortName': '.1.3.6.1.2.1.31.1.1.1.1',
 }
 
 walk_ifAlias = {

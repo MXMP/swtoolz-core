@@ -38,7 +38,8 @@ def snr_diag_parser(incoming_value, host):
         pair_match = pair_pattern.match(line)
         if pair_match:
             diag_line_index += 1
-            vct_result['cdPair{}Status'.format(diag_line_index)] = {str(port_index): statuses[pair_match.group('status')]}
+            vct_result['cdPair{}Status'.format(diag_line_index)] = {
+                str(port_index): statuses[pair_match.group('status')]}
             vct_result['cdPair{}Length'.format(diag_line_index)] = {str(port_index): pair_match.group('length')}
 
     return vct_result
@@ -111,3 +112,9 @@ def snr_clear_errors_on_port(incoming_value, host):
         return {'clear_errors': {str(port_index): 'Failed'}}
     else:
         return {'clear_errors': {str(port_index): 'Success'}}
+
+
+def repair_big_indexes(incoming_value, host):
+    new_port_indexes = {key_index: key_index for key_index, val_index in incoming_value['PortIndex'].iteritems()}
+    incoming_value['PortIndex'] = new_port_indexes
+    return incoming_value

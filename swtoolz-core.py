@@ -261,7 +261,7 @@ class ThrPoller(threading.Thread):
                                     helper_name = dataset.get('helper')
                                     del(dataset['helper'])
                                     helper = getattr(helpers, helper_name)
-                                    logging.debug("DEBUG: Fond {} helper function.".format(helper_name))
+                                    logging.debug("DEBUG: Found {} helper function.".format(helper_name))
                                 except KeyError:
                                     pass
                                 except AttributeError:
