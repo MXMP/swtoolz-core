@@ -61,9 +61,9 @@ Commands = ([
                 'ActualSpeed',
                 'AdminSpeed',
                 'onu_eth_port_ActualSpeed',
-                'walk_AllPorts',
                 'walk_BoardDescr',
-                'walk_ifAlias',
+                'walk_PortIndex',
+                'walk_ifName',
                 'primary_status',
                 'load_state',
                 'xml_load_state',
@@ -210,9 +210,6 @@ walk_PortIndex = {
 }
 
 walk_AllPorts = {
-    'helper': 'repair_big_indexes',
-    # PortIndex   .1.3.6.1.2.1.2.2.1.1  ifIndex
-    'PortIndex': '.1.3.6.1.2.1.2.2.1.1',
     # ActualStatus   .1.3.6.1.2.1.2.2.1.8  ifOperStatus
     'ActualStatus': '.1.3.6.1.2.1.2.2.1.8',
     # ActualSpeed   .1.3.6.1.2.1.2.2.1.5    ifSpeed
@@ -225,8 +222,6 @@ walk_AllPorts = {
     'PortDescr': '.1.3.6.1.2.1.31.1.1.1.18',
     # MediumType   .1.3.6.1.2.1.2.2.1.3 ifType
     'MediumType': '.1.3.6.1.2.1.2.2.1.3',
-    # PortName   .1.3.6.1.2.1.31.1.1.1.1  ifName
-    'PortName': '.1.3.6.1.2.1.31.1.1.1.1',
 }
 
 walk_ifAlias = {
@@ -235,8 +230,8 @@ walk_ifAlias = {
 }
 
 walk_ifName = {
-    # PortDescr   .1.3.6.1.2.1.31.1.1.1.1  ifName
-    'PortDescr': '.1.3.6.1.2.1.31.1.1.1.1',
+    # PortName   .1.3.6.1.2.1.31.1.1.1.1  ifName
+    'PortName': '.1.3.6.1.2.1.31.1.1.1.1',
 }
 
 get_SinglePort = {
