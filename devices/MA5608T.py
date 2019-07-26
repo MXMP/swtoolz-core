@@ -45,7 +45,7 @@ DeviceMap = ([
 # например, с 256.
 # MaxIndex - Максимальный индекс, который нужно обработать. Индексы с большими номерами игнорируются.
 StackInfo = ({
-                 'SlotSize': '0',
+                 'SlotSize': '8192',
                  'ShiftIndex': '0',
              },)
 
@@ -417,8 +417,8 @@ get_onu_ddm_info = {
 }
 
 walk_BoardDescr = {
-    # BoardBescr   .1.3.6.1.4.1.2011.6.3.3.2.1.3    hwSlotDesc
-    'BoardDescr': '.1.3.6.1.4.1.2011.6.3.3.2.1.3',
+    # BoardBescr   .1.3.6.1.4.1.2011.6.3.3.2.1.3.0    hwSlotDesc
+    'BoardDescr': '.1.3.6.1.4.1.2011.6.3.3.2.1.3.0',
 }
 
 walk_VlanMap = {
