@@ -210,6 +210,7 @@ walk_PortIndex = {
 }
 
 walk_AllPorts = {
+    'helper': 'remove_small_indexes',
     # ActualStatus   .1.3.6.1.2.1.2.2.1.8  ifOperStatus
     'ActualStatus': '.1.3.6.1.2.1.2.2.1.8',
     # ActualSpeed   .1.3.6.1.2.1.2.2.1.5    ifSpeed

@@ -115,6 +115,35 @@ def snr_clear_errors_on_port(incoming_value, host):
 
 
 def repair_big_indexes(incoming_value, host):
-    new_port_indexes = {key_index: key_index for key_index, val_index in incoming_value['PortIndex'].iteritems()}
+    """
+    Устройства Huawei серии MA5600 из-за особенностей формирования индекса по SNMP отдают некоторые индексы
+    отрицательными (не помещаются в Integer). Этот хелпер это исправляет. А так же отрезает данные с маленькими
+    индексами (vlanif и прочие ненужные интерфейсы).
+
+    :param dict incoming_value: словарь с входящими данными
+    :param str host: ip-адрес устройства для которого выполняется запрос
+    :rtype: dict
+    :return: словать с результатом выполнения сброса
+    """
+
+    new_port_indexes = {key_index: key_index for key_index, val_index in incoming_value['PortIndex'].iteritems() if
+                        int(key_index) > 234881024}
     incoming_value['PortIndex'] = new_port_indexes
+    return incoming_value
+
+
+def remove_small_indexes(incoming_value, host):
+    """
+    Этот хелпер отрезает данные с маленькими индексами (vlanif и прочие ненужные интерфейсы).
+
+    :param dict incoming_value: словарь с входящими данными
+    :param str host: ip-адрес устройства для которого выполняется запрос
+    :rtype: dict
+    :return: словать с результатом выполнения сброса
+    """
+
+    for dict_name, values_dict in incoming_value.iteritems():
+        new_values = {key_index: val_index for key_index, val_index in incoming_value[dict_name].iteritems() if
+                            int(key_index) > 234881024}
+        incoming_value[dict_name] = new_values
     return incoming_value
