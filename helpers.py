@@ -262,7 +262,7 @@ def fake_board_index(incoming_value, host):
         first_index = Port.get_index(boards_tech[board.group('model')], int(board.group('frameid')),
                                      int(board.group('slotid')), 0)
         print(first_index)
-        pv_slotid = int(math.ceil(first_index / 12032.0))
+        pv_slotid = int(math.floor(first_index / 8192.0)) + 1
         print(pv_slotid)
         new_data[str(pv_slotid)] = board.group('model')
 
