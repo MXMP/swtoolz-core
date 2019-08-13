@@ -250,8 +250,15 @@ def fake_board_index(incoming_value, host):
     """
 
     boards_tech = {
-        'H807GPBD': 'gpon',
+        'H801GPBC': 'gpon',
+        'H802GPBD': 'gpon',
+        'H805GPBD': 'gpon',
+        'H806GPBH': 'gpon',
+        'H807GPBH': 'gpon',
+        'H802GPFD': 'gpon',
         'H805GPFD': 'gpon',
+        'H801GPMD': 'gpon',
+        'H807GPBD': 'gpon',
         'H802SCUN': 'ethernet',
         'H801X2CS': 'ethernet',
     }
