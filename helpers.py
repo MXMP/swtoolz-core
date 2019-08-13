@@ -78,6 +78,9 @@ class Port:
 
     @classmethod
     def get_port_from_index(cls, index):
+        if index < 234881024:
+            raise ValueError("Wrong index")
+
         technology = 'ethernet' if index < 4194304000 else 'gpon'
 
         # Frameid always 0. I did not find the case when frameid is grater than 0.
@@ -276,3 +279,32 @@ def fake_board_index(incoming_value, host):
 
     incoming_value['BoardDescr'] = new_data
     return incoming_value
+
+
+def make_dynamic_map(incoming_value, host):
+    """
+    Этот формирует карту портов "DeviceMap" по индексам портов.
+
+    :param dict incoming_value: словарь с входящими данными
+    :param str host: ip-адрес устройства для которого выполняется запрос
+    :rtype: dict
+    :return: словать с результатом выполнения сброса
+    """
+
+    ports = {}
+    map = []
+
+    for index in sorted(incoming_value['PortName'], key=int):
+        try:
+            port = Port(index)
+        except ValueError:
+            continue
+        else:
+            if port.slot not in ports:
+                ports[port.slot] = []
+            ports[port.slot].append(str(port.index))
+
+    for slot in sorted(ports):
+        map.append([ports[slot]])
+
+    return {'DeviceMap': map}
