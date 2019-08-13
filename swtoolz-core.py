@@ -228,180 +228,183 @@ class ThrPoller(threading.Thread):
                 # ->кортеж со словарем внутри ({'2':'enable'},) из файла с таким же именем, как имя модели
                 # устройства (model)
                 for data_param in data_params:
-                    if '0' in data_param:
-                        # Пробуем извлечь параметр (метод) из файла модуля
-                        try:
-                            dataset = getattr(device, data_param['0'])
-                        except AttributeError:
-                            if data_param['0'] == 'list':
-                                # logging.info("INFO: Requested 'list' command from client %s:%s.",
-                                # self.client_ip, self.client_port)
-                                json_resp['data']['list'] = [str(d) for d in dir(device) if d[0] != '_']
-                            else:
-                                logging.error("WARNING: Can't find param '%s' from module '%s'!", data_param['0'],
-                                              model)
+                    try:
+                        method_name = data_param['0']
+                    except KeyError:
+                        continue
+
+                    # Пробуем извлечь параметр (метод) из файла модуля
+                    try:
+                        dataset = getattr(device, method_name)
+                    except AttributeError:
+                        if method_name == 'list':
+                            # logging.info("INFO: Requested 'list' command from client %s:%s.",
+                            # self.client_ip, self.client_port)
+                            json_resp['data']['list'] = [str(d) for d in dir(device) if d[0] != '_']
                         else:
-                            # Для режима отладки пишем в лог кто и что у нас запросил
-                            if debug_mode:
-                                logging.debug("DEBUG: Request from %s:%s. Dataset: '%s', URL Params: %s",
-                                              self.client_ip, self.client_port, str(dataset), str(data_param))
-                            current_snmp_retries = snmp_retries
-                            # Если параметр находится в списке 'no_retries', сбрасываем для него число дополнительных
-                            # попыток в 0
-                            if data_param['0'] in no_retries:
-                                current_snmp_retries = 0
+                            logging.error("WARNING: Can't find param '%s' from module '%s'!", method_name,
+                                          model)
+                    else:
+                        # Для режима отладки пишем в лог кто и что у нас запросил
+                        if debug_mode:
+                            logging.debug("DEBUG: Request from %s:%s. Dataset: '%s', URL Params: %s",
+                                          self.client_ip, self.client_port, str(dataset), str(data_param))
+                        current_snmp_retries = snmp_retries
+                        # Если параметр находится в списке 'no_retries', сбрасываем для него число дополнительных
+                        # попыток в 0
+                        if method_name in no_retries:
+                            current_snmp_retries = 0
 
-                            # dataset может быть как словарем (для get/walk) так и списком (для set) и
-                            # кортежем (для неизменяемых пользовательских данных). Обрабатываем эти случаи отдельно
-                            if isinstance(dataset, dict):
-                                # Получаем функцию-хелпер и удаляем этот элемент, чтобы не мешался
-                                helper = None
-                                data_for_helper = {}
-                                try:
-                                    helper_name = dataset.get('helper')
-                                    del(dataset['helper'])
-                                    helper = getattr(helpers, helper_name)
-                                    logging.debug("DEBUG: Found {} helper function.".format(helper_name))
-                                except KeyError:
+                        # dataset может быть как словарем (для get/walk) так и списком (для set) и
+                        # кортежем (для неизменяемых пользовательских данных). Обрабатываем эти случаи отдельно
+                        if isinstance(dataset, dict):
+                            # Получаем функцию-хелпер и удаляем этот элемент, чтобы не мешался
+                            helper = None
+                            data_for_helper = {}
+                            try:
+                                helper_name = dataset.get('helper')
+                                del (dataset['helper'])
+                                helper = getattr(helpers, helper_name)
+                                logging.debug("DEBUG: Found {} helper function.".format(helper_name))
+                            except KeyError:
+                                pass
+                            except AttributeError:
+                                logging.error("ERROR: Can't find {} helper function.".format(helper_name))
+
+                            get_notwalk = False
+                            for paramname in dataset.keys():
+                                if '.' in paramname:
+                                    get_notwalk = True
+
+                            big_bada_boom = False
+                            snmp_var = netsnmp.VarList(
+                                *[netsnmp.Varbind(prepare_oid(data_param.copy(), dataset[paramname])) for paramname
+                                  in dataset.keys()])
+                            # Формируем структуру varlist/varbind в зависимости о метода запроса (get или walk)
+                            if get_notwalk:
+                                snmp_query = netsnmp.snmpget(*snmp_var, Version=2, DestHost=target_ip,
+                                                             Community=snmp_comm, Timeout=current_snmp_timeout,
+                                                             Retries=current_snmp_retries, UseNumeric=1)
+                            else:
+                                snmp_query = netsnmp.snmpwalk(snmp_var, Version=2, DestHost=target_ip,
+                                                              Community=snmp_comm, Timeout=current_snmp_timeout,
+                                                              Retries=current_snmp_retries, UseNumeric=1)
+
+                            # ВНИМАНИЕ! Это обход бага. _Если в конфиге (модуле) задать OID задать без
+                            # точки в самом начале_, то при формировании varlist/varbind может возникнуть проблема
+                            # Заключается она в том, что нельзя перебрать snmp_var, хотя по формальным
+                            # признакам для этого нет препятствий
+                            # Плюс попутно возникают другие странности, например logging.info выбрасывает исключение
+                            # Отладка результатов не дала, похоже что это именно БАГ
+                            # Если задавать все OID, начинающиеся с точки, то все работает хорошо
+                            try:
+                                for var_ in snmp_var:
                                     pass
-                                except AttributeError:
-                                    logging.error("ERROR: Can't find {} helper function.".format(helper_name))
+                            except Exception as e:
+                                logging.exception(e)
+                                big_bada_boom = True
 
-                                get_notwalk = False
-                                for paramname in dataset.keys():
-                                    if '.' in paramname:
-                                        get_notwalk = True
+                            if not big_bada_boom:
+                                for var_ in snmp_var:
+                                    # Убеждаемся, что ответ распознан, т.е. не None
+                                    if (var_.tag is not None) & (var_.iid is not None):
+                                        # Получаем полный OID. В ответе он разбит на части, находящиеся
+                                        # в tag и iid, которые мы склеиваем вместе
+                                        full_oid = var_.tag + '.' + var_.iid
+                                        # Здесь k - имя параметра, по которому получим значение, а prep_k - имя ключа в
+                                        # 'data'. В случае walk-запроса значения k и prep_k равны, а в случае get имя
+                                        # prep_k обрезается до первой точки, не включая ее
+                                        for k in dataset:
+                                            # Если используем метод get, то получаем имя ключа из параметра
+                                            # k с начала до первой точки, не включая ее, и задаем трейлер
+                                            # Для метода опроса walk имя ключа будет равно параметру k, а
+                                            # трейлер должен быть пустым
+                                            if get_notwalk:
+                                                prep_k = k[0:k.find('.')]
+                                                trailer = '*'
+                                            else:
+                                                prep_k = k
+                                                trailer = '.'
+                                            # Значение trailer прибавляем для избежания ложного срабатывания
+                                            # при сравнении OID, например ...1.2.3.2 и ....1.2.3.20
+                                            # При Get-запросе full_oid всегда является "конечным",
+                                            # поскольку это "прицельный" запрос. Поэтому здесь используем
+                                            # "жесткий" трейлер = '*'
+                                            # Теперь будут сравниваться .1.2.3.2* и .1.2.3.20*.
+                                            # Первое значение уже не входит во второе, как было бы
+                                            # в предыдущем случае
+                                            # При Walk-запросе full_oid заранее неизвестен,
+                                            # поэтому используем "мягкий" трейлер = '.' (символ точки
+                                            # является частью OID)
+                                            # Также при Walk-запросе у нас есть отдельное требование - ветки должны
+                                            # быть одной длины
+                                            # Если оно выполнено, значит сравниваемые ветки разные и точку
+                                            # использовать допустимо. Ниже пример tmp_oid, которые "пересеклись"
+                                            # бы без трейлера
+                                            # full_oid: .1.3.6.1.2.1.31.1.1.1.18.1,
+                                            # tmp_oid: .1.3.6.1.2.1.31.1.1.1.18 (вместе с трейлером
+                                            # '.' входит в full_oid)
+                                            #
+                                            # full_oid: .1.3.6.1.2.1.31.1.1.1.1.1,
+                                            # tmp_oid: .1.3.6.1.2.1.31.1.1.1.1  (вместе с трейлером
+                                            # '.' входит в full_oid)
 
-                                big_bada_boom = False
-                                snmp_var = netsnmp.VarList(
-                                    *[netsnmp.Varbind(prepare_oid(data_param.copy(), dataset[paramname])) for paramname
-                                      in dataset.keys()])
-                                # Формируем структуру varlist/varbind в зависимости о метода запроса (get или walk)
-                                if get_notwalk:
-                                    snmp_query = netsnmp.snmpget(*snmp_var, Version=2, DestHost=target_ip,
-                                                                 Community=snmp_comm, Timeout=current_snmp_timeout,
-                                                                 Retries=current_snmp_retries, UseNumeric=1)
-                                else:
-                                    snmp_query = netsnmp.snmpwalk(snmp_var, Version=2, DestHost=target_ip,
-                                                                  Community=snmp_comm, Timeout=current_snmp_timeout,
-                                                                  Retries=current_snmp_retries, UseNumeric=1)
-
-                                # ВНИМАНИЕ! Это обход бага. _Если в конфиге (модуле) задать OID задать без
-                                # точки в самом начале_, то при формировании varlist/varbind может возникнуть проблема
-                                # Заключается она в том, что нельзя перебрать snmp_var, хотя по формальным
-                                # признакам для этого нет препятствий
-                                # Плюс попутно возникают другие странности, например logging.info выбрасывает исключение
-                                # Отладка результатов не дала, похоже что это именно БАГ
-                                # Если задавать все OID, начинающиеся с точки, то все работает хорошо
-                                try:
-                                    for var_ in snmp_var:
-                                        pass
-                                except Exception as e:
-                                    logging.exception(e)
-                                    big_bada_boom = True
-
-                                if not big_bada_boom:
-                                    for var_ in snmp_var:
-                                        # Убеждаемся, что ответ распознан, т.е. не None
-                                        if (var_.tag is not None) & (var_.iid is not None):
-                                            # Получаем полный OID. В ответе он разбит на части, находящиеся
-                                            # в tag и iid, которые мы склеиваем вместе
-                                            full_oid = var_.tag + '.' + var_.iid
-                                            # Здесь k - имя параметра, по которому получим значение,
-                                            # а prep_k - имя ключа в 'data'
-                                            # В случае walk-запроса значения k и prep_k равны, а в
-                                            # случае get имя prep_k обрезается до первой точки, не включая ее
-                                            for k in dataset:
-                                                # Если используем метод get, то получаем имя ключа из параметра
-                                                # k с начала до первой точки, не включая ее, и задаем трейлер
-                                                # Для метода опроса walk имя ключа будет равно параметру k, а
-                                                # трейлер должен быть пустым
+                                            # Временный OID, полученный из конфигурационного файла, и в
+                                            # который уже подставлены пользовательские параметры
+                                            tmp_oid = prepare_oid(data_param.copy(), dataset[k])
+                                            # Проверяем, есть ли значение временного OID в полном OID
+                                            if tmp_oid + trailer in full_oid + trailer:
+                                                # Получаем оставшуюся часть от OID
+                                                remainder = full_oid.replace(tmp_oid + '.', '')
+                                                # Если используем метод get, оставшаяся часть будет равна iid
                                                 if get_notwalk:
-                                                    prep_k = k[0:k.find('.')]
-                                                    trailer = '*'
+                                                    remainder = var_.iid
+                                                    # Альтернативный вариант для использования нескольких
+                                                    # последних чисел OID в имени подраздела, например '7.100'
+                                                    if k.count('.') > 1:
+                                                        remainder = ".".join(full_oid.split(".")[-k.count('.'):])
+                                                # Например в конфиге указан OID
+                                                # 1.2.3.2.1, tag будет 1.2.3.2.1.X, iid - Y (может быть пустым).
+                                                # Полный OID (full_oid) будет 1.2.3.2.1.X.Y
+                                                # Имя раздела (словаря) будет k, а подраздела
+                                                # (ключа метрики) - remainder
+                                                if helper and prep_k not in data_for_helper:
+                                                    data_for_helper[prep_k] = {}
+                                                elif prep_k not in json_resp['data']:
+                                                    json_resp['data'][prep_k] = {}
+
+                                                # Выполняем проверку на наличие непечатаемых символов. Если таких
+                                                # нет, возвращаем исходную строку, а иначе возвращаем hex-string
+                                                if var_.val == filter(lambda x: x in string.printable, var_.val):
+                                                    value = var_.val.replace('\"', '')
                                                 else:
-                                                    prep_k = k
-                                                    trailer = '.'
-                                                # Значение trailer прибавляем для избежания ложного срабатывания
-                                                # при сравнении OID, например ...1.2.3.2 и ....1.2.3.20
-                                                # При Get-запросе full_oid всегда является "конечным",
-                                                # поскольку это "прицельный" запрос. Поэтому здесь используем
-                                                # "жесткий" трейлер = '*'
-                                                # Теперь будут сравниваться .1.2.3.2* и .1.2.3.20*.
-                                                # Первое значение уже не входит во второе, как было бы
-                                                # в предыдущем случае
-                                                # При Walk-запросе full_oid заранее неизвестен,
-                                                # поэтому используем "мягкий" трейлер = '.' (символ точки
-                                                # является частью OID)
-                                                # Также при Walk-запросе у нас есть отдельное требование - ветки должны
-                                                # быть одной длины
-                                                # Если оно выполнено, значит сравниваемые ветки разные и точку
-                                                # использовать допустимо. Ниже пример tmp_oid, которые "пересеклись"
-                                                # бы без трейлера
-                                                # full_oid: .1.3.6.1.2.1.31.1.1.1.18.1,
-                                                # tmp_oid: .1.3.6.1.2.1.31.1.1.1.18 (вместе с трейлером
-                                                # '.' входит в full_oid)
-                                                #
-                                                # full_oid: .1.3.6.1.2.1.31.1.1.1.1.1,
-                                                # tmp_oid: .1.3.6.1.2.1.31.1.1.1.1  (вместе с трейлером
-                                                # '.' входит в full_oid)
+                                                    value = var_.val.encode("hex")
 
-                                                # Временный OID, полученный из конфигурационного файла, и в
-                                                # который уже подставлены пользовательские параметры
-                                                tmp_oid = prepare_oid(data_param.copy(), dataset[k])
-                                                # Проверяем, есть ли значение временного OID в полном OID
-                                                if tmp_oid + trailer in full_oid + trailer:
-                                                    # Получаем оставшуюся часть от OID
-                                                    remainder = full_oid.replace(tmp_oid + '.', '')
-                                                    # Если используем метод get, оставшаяся часть будет равна iid
-                                                    if get_notwalk:
-                                                        remainder = var_.iid
-                                                        # Альтернативный вариант для использования нескольких
-                                                        # последних чисел OID в имени подраздела, например '7.100'
-                                                        if k.count('.') > 1:
-                                                            remainder = ".".join(full_oid.split(".")[-k.count('.'):])
-                                                    # Например в конфиге указан OID
-                                                    # 1.2.3.2.1, tag будет 1.2.3.2.1.X, iid - Y (может быть пустым).
-                                                    # Полный OID (full_oid) будет 1.2.3.2.1.X.Y
-                                                    # Имя раздела (словаря) будет k, а подраздела
-                                                    # (ключа метрики) - remainder
-                                                    if helper and prep_k not in data_for_helper:
-                                                        data_for_helper[prep_k] = {}
-                                                    elif prep_k not in json_resp['data']:
-                                                        json_resp['data'][prep_k] = {}
+                                                if helper:
+                                                    data_for_helper[prep_k][remainder] = value
+                                                else:
+                                                    json_resp['data'][prep_k][remainder] = value
 
-                                                    # Выполняем проверку на наличие непечатаемых символов. Если таких
-                                                    # нет, возвращаем исходную строку, а иначе возвращаем hex-string
-                                                    if var_.val == filter(lambda x: x in string.printable, var_.val):
-                                                        value = var_.val.replace('\"', '')
-                                                    else:
-                                                        value = var_.val.encode("hex")
+                                # вызываем функцию хелпер, если она была указана
+                                if helper:
+                                    json_resp['data'].update(helper(data_for_helper, target_ip))
 
-                                                    if helper:
-                                                        data_for_helper[prep_k][remainder] = value
-                                                    else:
-                                                        json_resp['data'][prep_k][remainder] = value
+                        # Если dataset является списком, выполняем для него set-операции
+                        if isinstance(dataset, list):
+                            query = 'skipped'
+                            varlist = netsnmp.VarList(
+                                *[netsnmp.Varbind(*prepare_oid(data_param.copy(), VarBindItem[:])) for VarBindItem
+                                  in dataset])
+                            query = netsnmp.snmpset(*varlist, Version=2, DestHost=target_ip, Community=snmp_comm,
+                                                    Timeout=current_snmp_timeout, Retries=current_snmp_retries,
+                                                    UseNumeric=1)
+                            time.sleep(set_iter_delay)
+                            json_resp['data'][method_name] = query
 
-                                    # вызываем функцию хелпер, если она была указана
-                                    if helper:
-                                        json_resp['data'].update(helper(data_for_helper, target_ip))
-
-                            # Если dataset является списком, выполняем для него set-операции
-                            if isinstance(dataset, list):
-                                query = 'skipped'
-                                varlist = netsnmp.VarList(
-                                    *[netsnmp.Varbind(*prepare_oid(data_param.copy(), VarBindItem[:])) for VarBindItem
-                                      in dataset])
-                                query = netsnmp.snmpset(*varlist, Version=2, DestHost=target_ip, Community=snmp_comm,
-                                                        Timeout=current_snmp_timeout, Retries=current_snmp_retries,
-                                                        UseNumeric=1)
-                                time.sleep(set_iter_delay)
-                                json_resp['data'][data_param['0']] = query
-
-                            # Если dataset является кортежем, просто возвращаем его первый элемент. Это
-                            # нужно для хранения пользовательских словарей в конфиге swtoolz-core
-                            if isinstance(dataset, tuple):
-                                json_resp['data'][data_param['0']] = dataset[0]
+                        # Если dataset является кортежем, просто возвращаем его первый элемент. Это
+                        # нужно для хранения пользовательских словарей в конфиге swtoolz-core
+                        if isinstance(dataset, tuple):
+                            json_resp['data'][method_name] = dataset[0]
 
         # --- Если для данного IP уже был получен ответ, обновляем словарь, а если нет - создаем
         if self.client_ip in self.responses.keys():
