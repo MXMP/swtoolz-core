@@ -43,56 +43,86 @@ def is_valid_ipv4_address(address):
     return True
 
 
-# Функция для подстановки параметров пользователя в OID. Последовательно заменяет '%s' на параметры с ключами кроме
-# '0' (первый параметр)
-# Также функция заменяет все {№} на элемент № из словаря с данными
-# Вообще, это достаточно подозрительная функция и она уже сломала мне мозг, но этот вариант вроде приемлимый :)
-def prepare_oid(my_dict, my_data):
-    # Первым параметром передается словарь с данными из запроса. Пример: {"1": "24", "0": "set_AdminStatus", "2": "2"}
+def str_to_index(input_str, with_length=False):
+    """
+    Переводит строку в SNMP-индекс. Если `with_length` равен True, то перед индексом добавляется длина строки.
+
+    :param str input_str: строка для перевода
+    :param bool with_length: нужно ли добавлять длину строки перед индексом
+    :rtype: str
+    :return: строка в виде SNMP-индекса
+    """
+
+    chars = [str(ord(ch)) for ch in input_str]
+    index = '.'.join(chars)
+    if with_length:
+        return "{}.{}".format(len(input_str), index)
+    return index
+
+
+def prepare_oid(params, dataset):
+    """
+    Функция для подстановки параметров пользователя в OID. Последовательно заменяет '%s' на параметры с ключами кроме
+    '0' (первый параметр)
+    Также функция заменяет все {№} на элемент № из словаря с данными
+    Вообще, это достаточно подозрительная функция и она уже сломала мне мозг, но этот вариант вроде приемлимый :)
+
+    :param dict params: словарь с данными из запроса. Пример: {"1": "24", "0": "set_AdminStatus", "2": "2"}
+    :param dataset: данные метода куда будем подставлять параметры
+    :return:
+    """
+
     # Перебираем и раскодируем значения элементов словаря, заменяя последовательности '%xx' на их односимвольный
     # эквивалент
-    for key in my_dict.keys():
-        my_dict[key] = urllib.unquote(my_dict[key])
+    for key in params.keys():
+        params[key] = urllib.unquote(params[key])
 
     # При Walk/Get операциях вторым параметром передается строка, содержащая OID
-    if isinstance(my_data, str):
+    if isinstance(dataset, str):
         # Перебираем весь словарь с данными. Ключи при этом сортируем
-        for i, k in enumerate(sorted(my_dict.keys())[1:]):
+        for i, k in enumerate(sorted(params.keys())[1:]):
             # Заменяем одну следующую последовательность '%s' на соответствующий элемент словаря
-            my_data = my_data.replace('%s', my_dict[k], 1)
+            dataset = dataset.replace('%s', params[k], 1)
             # Заменяем все последовательности '{№}' на соответствующий элемент словаря.
             # Здесь № - номер элемента в сортированном списке ключей
             # Например, все последовательности '{2}' заменяются на второй элемент словаря.
             # Это используется когда нужно подставить одно значение несколько раз
-            my_data = my_data.replace('{%s}' % (i + 1), my_dict[k])
-        return my_data
+            dataset = dataset.replace('{%s}' % (i + 1), params[k])
+            # Подстановка со специальными конвертерами:
+            dataset = dataset.replace('{to_index:%s}' % (i + 1), str_to_index(params[k]))
+            dataset = dataset.replace('{to_index_with_length:%s}' % (i + 1), str_to_index(params[k], True))
+        return dataset
 
     # При Set операциях вторым параметром передается список, содержащий tag, iid, value, type.
     # Пример: ['.1.3.6.1.4.1.171.12.58.1.1.1.12', '1','1','INTEGER']
-    if isinstance(my_data, list):
-        # Указатель на элемент словаря из первого параметра. Используется, чтобы в каждом элементе my_data
+    if isinstance(dataset, list):
+        # Указатель на элемент словаря из первого параметра. Используется, чтобы в каждом элементе dataset
         # не начинать перебор элементов my_dict сначала
         shft = 1
         # Перебираем список, причем ориентируемся на индекс, который затем потребуется для замены
-        for indx, item in enumerate(my_data):
+        for indx, item in enumerate(dataset):
             # В каждом элементе списка делаем по одной замене столько раз, сколько встречается последовательность
             # '%s', при этом инкрементируем значение указателя
-            for i in range(my_data[indx].count('%s')):
+            for i in range(dataset[indx].count('%s')):
                 # Если указатель не достиг максимально возможного значения, значит замена еще возможна
-                if shft < len(my_dict):
+                if shft < len(params):
                     # Заменяем одну следующую последовательность '%s' на соответствующий элемент словаря.
                     # При замене ориентируемся на позицию shft
-                    my_data[indx] = my_data[indx].replace('%s', my_dict[sorted(my_dict.keys())[shft:][0]], 1)
+                    dataset[indx] = dataset[indx].replace('%s', params[sorted(params.keys())[shft:][0]],
+                                                          1)
                     shft += 1
             # Для каждого элемента, который является строкой, выполняем такую же процедуру,
-            # как если бы изначально получили строку в my_data
-            for i, k in enumerate(sorted(my_dict.keys())[1:]):
+            # как если бы изначально получили строку в dataset
+            for i, k in enumerate(sorted(params.keys())[1:]):
                 # Заменяем все последовательности '{№}' на соответствующий элемент словаря.
                 # Здесь № - номер элемента в сортированном списке ключей
                 # Например, все последовательности '{2}' заменяются на второй элемент словаря.
                 # Это используется когда нужно подставить одно значение несколько раз
-                my_data[indx] = my_data[indx].replace('{%s}' % (i + 1), my_dict[k])
-        return my_data
+                dataset[indx] = dataset[indx].replace('{%s}' % (i + 1), params[k])
+                # Подстановка со специальными конвертерами:
+                dataset[indx] = dataset[indx].replace('{to_index:%s}' % (i + 1), str_to_index(params[k]))
+                dataset[indx] = dataset[indx].replace('{to_index_with_length:%s}' % (i + 1), str_to_index(params[k], True))
+        return dataset
 
 
 def parse_request(request):
