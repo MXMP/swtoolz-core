@@ -12,6 +12,7 @@ import netsnmp
 import string
 import json
 import urllib
+from ipaddress import ip_address, AddressValueError
 from os import sep
 
 import helpers
@@ -24,23 +25,6 @@ logging.basicConfig(filename=logfile, level=logging.DEBUG, format='%(levelname)s
 
 # Добавляем директорию 'devices' в список path. Это нужно, чтобы демон мог находить модули в этой директории
 sys.path.append('%s%sdevices' % (sys.path[0], sep))
-
-
-# Хорошая функция проверки правильности IP-адреса, взятая с 'переполненного стека'
-
-def is_valid_ipv4_address(address):
-    try:
-        socket.inet_pton(socket.AF_INET, address)
-    except AttributeError:  # no inet_pton here, sorry
-        try:
-            socket.inet_aton(address)
-        except socket.error:
-            return False
-        return address.count('.') == 3
-    except socket.error:  # not a valid address
-        return False
-
-    return True
 
 
 def str_to_index(input_str, with_length=False):
@@ -174,9 +158,13 @@ def parse_request(request):
         # соответствующий код в список ошибок
         if json_req['comm_index'] not in users[json_req['user']].keys():
             json_req['errors'].append(3)
+
     # Если IP-адрес имеет неправильный формат, добавляем соответствующий код в список ошибок
-    if not is_valid_ipv4_address(json_req['target']):
+    try:
+        ip_address(json_req['target'])
+    except AddressValueError:
         json_req['errors'].append(4)
+
     # Если список ошибок пустой, добавляем в него код '0' - OK (нет ошибок)
     if len(json_req['errors']) == 0:
         json_req['errors'].append(0)
