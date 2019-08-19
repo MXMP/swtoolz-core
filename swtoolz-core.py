@@ -20,7 +20,7 @@ from swconfig import interface_ip, port, sleep_int, stats_int, set_iter_delay, s
 from swconfig import snmp_retries, no_retries, forced_mtd, logfile, users, default_info
 from swconfig import models_by_desc, http_header, debug_mode
 
-logging.basicConfig(filename=logfile, level=logging.DEBUG, format='%(asctime)s  %(message)s')
+logging.basicConfig(filename=logfile, level=logging.DEBUG, format='%(levelname)s %(asctime)s  %(message)s')
 
 # Добавляем директорию 'devices' в список path. Это нужно, чтобы демон мог находить модули в этой директории
 sys.path.append('%s%sdevices' % (sys.path[0], sep))
@@ -207,7 +207,7 @@ class ThrPoller(threading.Thread):
         target_ip = self.requests[self.client_ip][self.client_port]['target']
         json_resp['target'] = target_ip
         # Получаем список параметров (данные) для устройства
-        data_params = self.requests[self.client_ip][self.client_port]['data']
+        request_params = self.requests[self.client_ip][self.client_port]['data']
         # Получаем SNMP-Community для устройства
         snmp_comm = self.users[self.requests[self.client_ip][self.client_port]['user']][
             self.requests[self.client_ip][self.client_port]['comm_index']]
@@ -233,8 +233,8 @@ class ThrPoller(threading.Thread):
         # Если в списке команд (методов) есть зарезервированная команда (метод), то выполняем опрос
         # оборудования даже если оно недоступно
         forced = False
-        for data_param in data_params:
-            if len(set(data_param.values()) & set(forced_mtd)) > 0:
+        for request_param in request_params:
+            if len(set(request_param.values()) & set(forced_mtd)) > 0:
                 forced = True
 
         # Работаем, если устройство доступно (определили модель) или выставлен флаг 'forced'
@@ -244,22 +244,22 @@ class ThrPoller(threading.Thread):
                 device = __import__(model)
                 reload(device)
             except ImportError:
-                logging.error("WARNING: Can't import module '%s' for '%s'!", model, target_ip)
+                logging.error("Can't import module '%s' for '%s'!", model, target_ip)
             else:
                 # Пробуем получить из модуля множитель 'timeout_mf' и применить его. При неудаче
                 # будет использован таймаут из файла конфигурации сервиса
                 current_snmp_timeout = int(snmp_timeout * getattr(device, 'timeout_mf', 1))
 
-                # data_params - все, что содержится в ключе 'data' из запроса ('request'). Представлен в виде списка.
-                # data_param - конкретный элемент списка, содержащий параметры конкретного запроса. Представлен в
+                # request_params - все, что содержится в ключе 'data' из запроса ('request'). Представлен в виде списка.
+                # request_param - конкретный элемент списка, содержащий параметры конкретного запроса. Представлен в
                 # виде словаря. В debug-лог пишется как 'URL Params'.
                 # "data": [{"1": "2", "0": "swL2PortCtrlAdminState"}, {"0": ""}]
-                # dataset - словарь вида {'Metric':'OID'}, список списков вида [['tag', 'iid', 'value', 'type']] или->
-                # ->кортеж со словарем внутри ({'2':'enable'},) из файла с таким же именем, как имя модели
+                # dataset - словарь вида {'Metric':'OID'}, список списков вида [['tag', 'iid', 'value', 'type']] или
+                # кортеж со словарем внутри ({'2':'enable'},) из файла с таким же именем, как имя модели
                 # устройства (model)
-                for data_param in data_params:
+                for request_param in request_params:
                     try:
-                        method_name = data_param['0']
+                        method_name = request_param['0']
                     except KeyError:
                         continue
 
@@ -272,13 +272,12 @@ class ThrPoller(threading.Thread):
                             # self.client_ip, self.client_port)
                             json_resp['data']['list'] = [str(d) for d in dir(device) if d[0] != '_']
                         else:
-                            logging.error("WARNING: Can't find param '%s' from module '%s'!", method_name,
-                                          model)
+                            logging.error("Can't find param '%s' from module '%s'!", method_name, model)
                     else:
                         # Для режима отладки пишем в лог кто и что у нас запросил
                         if debug_mode:
-                            logging.debug("DEBUG: Request from %s:%s. Dataset: '%s', URL Params: %s",
-                                          self.client_ip, self.client_port, str(dataset), str(data_param))
+                            logging.debug("Request from %s:%s. Dataset: '%s', URL Params: %s",
+                                          self.client_ip, self.client_port, str(dataset), str(request_param))
                         current_snmp_retries = snmp_retries
                         # Если параметр находится в списке 'no_retries', сбрасываем для него число дополнительных
                         # попыток в 0
@@ -295,11 +294,11 @@ class ThrPoller(threading.Thread):
                                 helper_name = dataset.get('helper')
                                 del (dataset['helper'])
                                 helper = getattr(helpers, helper_name)
-                                logging.debug("DEBUG: Found {} helper function.".format(helper_name))
+                                logging.debug("Found {} helper function.".format(helper_name))
                             except KeyError:
                                 pass
                             except AttributeError:
-                                logging.error("ERROR: Can't find {} helper function.".format(helper_name))
+                                logging.error("Can't find {} helper function.".format(helper_name))
 
                             get_notwalk = False
                             for paramname in dataset.keys():
@@ -308,7 +307,7 @@ class ThrPoller(threading.Thread):
 
                             big_bada_boom = False
                             snmp_var = netsnmp.VarList(
-                                *[netsnmp.Varbind(prepare_oid(data_param.copy(), dataset[paramname])) for paramname
+                                *[netsnmp.Varbind(prepare_oid(request_param.copy(), dataset[paramname])) for paramname
                                   in dataset.keys()])
                             # Формируем структуру varlist/varbind в зависимости о метода запроса (get или walk)
                             if get_notwalk:
@@ -381,7 +380,7 @@ class ThrPoller(threading.Thread):
 
                                             # Временный OID, полученный из конфигурационного файла, и в
                                             # который уже подставлены пользовательские параметры
-                                            tmp_oid = prepare_oid(data_param.copy(), dataset[k])
+                                            tmp_oid = prepare_oid(request_param.copy(), dataset[k])
                                             # Проверяем, есть ли значение временного OID в полном OID
                                             if tmp_oid + trailer in full_oid + trailer:
                                                 # Получаем оставшуюся часть от OID
@@ -423,7 +422,7 @@ class ThrPoller(threading.Thread):
                         if isinstance(dataset, list):
                             query = 'skipped'
                             varlist = netsnmp.VarList(
-                                *[netsnmp.Varbind(*prepare_oid(data_param.copy(), VarBindItem[:])) for VarBindItem
+                                *[netsnmp.Varbind(*prepare_oid(request_param.copy(), VarBindItem[:])) for VarBindItem
                                   in dataset])
                             query = netsnmp.snmpset(*varlist, Version=2, DestHost=target_ip, Community=snmp_comm,
                                                     Timeout=current_snmp_timeout, Retries=current_snmp_retries,
@@ -505,7 +504,7 @@ def main():
         tcps.bind((interface_ip, port))
     # Обрабатываем возможную ошибку сокета (сокет уже занят), делаем запись в лог и завершаем работу:
     except socket.error as err:
-        logging.info("ERROR: Socket Error: {}. Exiting...".format(err.args[1]))
+        logging.info("Socket Error: {}. Exiting...".format(err.args[1]))
         tcps.close()
         sys.exit(2)
     else:
@@ -519,15 +518,15 @@ def main():
         # В конце каждого цикла (интервал определен пользователем) подводим итоги:
         if int(time.time()) - timer >= stats_int:
             timer = int(time.time())
-            logging.info("INFO: Requests processed for iteration - %s", res_cnt)
+            logging.info("Requests processed for iteration - %s", res_cnt)
             # Обнуляем счетчик ответов
             res_cnt = 0
             # В режиме отладки пишем в лог кол-во вопросов и ответов
             if debug_mode:
-                logging.debug("DEBUG: Requests queue - %s, Responses queue - %s", sum(map(len, requests)),
+                logging.debug("Requests queue - %s, Responses queue - %s", sum(map(len, requests)),
                               sum(map(len, responses)))
             if len(clients) > 0:
-                logging.info("WARNING: Currently %s active connections. Possible %s dead clients", len(clients),
+                logging.info("Currently %s active connections. Possible %s dead clients", len(clients),
                              len(dead_clients))
         # Пробуем принять подключение
         try:
@@ -563,7 +562,7 @@ def main():
                                 request = ""
                             # Для режима отладки пишем в лог исходный запрос 'как есть'
                             if debug_mode:
-                                logging.info("DEBUG: Request from %s:%s - %s", client_ip, client_port, request)
+                                logging.info("Request from %s:%s - %s", client_ip, client_port, request)
                             # Формируем словарь вида {IP:{Port:Request}}
                             # Если для данного IP уже был определен запрос, обновляем словарь, а если нет - создаем
                             if client_ip in requests.keys():
@@ -601,7 +600,7 @@ def main():
             except:
                 dead_clients.append(client_index)
                 if debug_mode:
-                    logging.info('DEBUG: Some client lost in network...')
+                    logging.info('Some client lost in network...')
 
             # Проверяем, есть ли IP-адрес данного клиента в словаре ответов
             if client_ip in responses:
@@ -646,7 +645,7 @@ def main():
                                                                                                str(len(http_data)))
                 if debug_mode:
                     # Отправляем ответ клиенту
-                    logging.info("DEBUG: Send a answer to %s:%s...", client_ip, client_port)
+                    logging.info("Send a answer to %s:%s...", client_ip, client_port)
                 client.send(new_header + http_data + "\n")
                 # Отключаем клиента. Принудительное отключение нужно потому, что на практике не удавалось
                 # добиться корректного отключения со стороны клиента.

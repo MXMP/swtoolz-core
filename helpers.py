@@ -308,3 +308,8 @@ def make_dynamic_map(incoming_value, host):
         map.append([ports[slot]])
 
     return {'DeviceMap': map}
+
+
+def huawei_fdb(incoming_value, host):
+    print(incoming_value)
+    print(host)
