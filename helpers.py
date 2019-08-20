@@ -311,5 +311,20 @@ def make_dynamic_map(incoming_value, host):
 
 
 def huawei_fdb(incoming_value, host):
-    print(incoming_value)
-    print(host)
+    macs = {}
+    _, all_macs = incoming_value['macs'].popitem()
+    for i in range(0, len(all_macs), 20):
+        item = all_macs[i:i + 20]
+        if item != '00000000000000000000':
+            mac = item[-12:]
+            port_id = int(item[2:4], 16)
+            vlanid = int(item[4:8], 16)
+            if port_id not in macs:
+                macs[port_id] = {vlanid: [mac]}
+            else:
+                if vlanid not in macs[port_id]:
+                    macs[port_id][vlanid] = [mac]
+                else:
+                    macs[port_id][vlanid].append(mac)
+    return {'macs': macs}
+
