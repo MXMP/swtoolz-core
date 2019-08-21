@@ -316,7 +316,7 @@ def huawei_fdb(incoming_value, host):
     for i in range(0, len(all_macs), 20):
         item = all_macs[i:i + 20]
         if item != '00000000000000000000':
-            mac = item[-12:]
+            mac = ':'.join(split_nth(item[-12:], 2))
             port_id = int(item[2:4], 16)
             vlanid = int(item[4:8], 16)
             if port_id not in macs:
@@ -328,3 +328,7 @@ def huawei_fdb(incoming_value, host):
                     macs[port_id][vlanid].append(mac)
     return {'macs': macs}
 
+
+def split_nth(string, n):
+    """ Просто разбивает строку на кусочки по `n` символов. """
+    return [string[i:i + n] for i in range(0, len(string), n)]
