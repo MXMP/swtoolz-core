@@ -24,7 +24,7 @@ load_rc_config $name
 
 : ${swtoolz_core_enable="NO"}
 
-command_interpreter="/usr/local/bin/python2"
+command_interpreter="/usr/local/bin/python3"
 command="/usr/local/etc/swtoolz-core/swtoolz-core.py"
 command_args="$1"
 start_precmd="swtoolz_core_prestart"
