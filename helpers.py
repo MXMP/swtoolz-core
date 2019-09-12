@@ -1,5 +1,3 @@
-#!/usr/local/bin/python2
-# coding=UTF8
 import math
 from telnetlib import Telnet
 import logging
@@ -219,7 +217,7 @@ def repair_big_indexes(incoming_value, host):
     :return: словать с результатом выполнения сброса
     """
 
-    new_port_indexes = {key_index: key_index for key_index, val_index in incoming_value['PortIndex'].iteritems() if
+    new_port_indexes = {key_index: key_index for key_index, val_index in incoming_value['PortIndex'].items() if
                         int(key_index) > 234881024}
     incoming_value['PortIndex'] = new_port_indexes
     return incoming_value
@@ -235,8 +233,8 @@ def remove_small_indexes(incoming_value, host):
     :return: словать с результатом выполнения сброса
     """
 
-    for dict_name, values_dict in incoming_value.iteritems():
-        new_values = {key_index: val_index for key_index, val_index in incoming_value[dict_name].iteritems() if
+    for dict_name, values_dict in incoming_value.items():
+        new_values = {key_index: val_index for key_index, val_index in incoming_value[dict_name].items() if
                       int(key_index) > 234881024}
         incoming_value[dict_name] = new_values
     return incoming_value
@@ -268,13 +266,11 @@ def fake_board_index(incoming_value, host):
 
     new_data = {}
 
-    for board_index, board_name in incoming_value['BoardDescr'].iteritems():
+    for board_index, board_name in incoming_value['BoardDescr'].items():
         board = re.match(r'(?P<model>\w*)_(?P<frameid>\d{1,2})_(?P<slotid>\d{1,2})', board_name)
         first_index = Port.get_index(boards_tech[board.group('model')], int(board.group('frameid')),
                                      int(board.group('slotid')), 0)
-        print(first_index)
         pv_slotid = int(math.floor(first_index / 8192.0)) + 1
-        print(pv_slotid)
         new_data[str(pv_slotid)] = board.group('model')
 
     incoming_value['BoardDescr'] = new_data
@@ -311,24 +307,69 @@ def make_dynamic_map(incoming_value, host):
 
 
 def huawei_fdb(incoming_value, host):
+    """
+    Преобразовывает огромную HEX-STRING от шасси и разбивает ее по определенным правилам На удобочитаемую структуру.
+    На выходе: ключи первого уровня - номера портов ONT, ключи второго уровря - номера виланов. Пример:
+        "1": {
+            "586": [
+                "F8:4D:FC:22:3C:67"
+                ]
+        }
+
+    :param str incoming_value: входящая HEX-STRING
+    :param str host: ip-адрес устройства для которого выполняется запрос
+    :return: структура с MAC-адресами
+    """
+
     macs = {}
     _, all_macs = incoming_value['macs'].popitem()
     for i in range(0, len(all_macs), 20):
         item = all_macs[i:i + 20]
         if item != '00000000000000000000':
-            mac = ':'.join(split_nth(item[-12:], 2))
+            mac_addr = ':'.join(split_nth(item[-12:], 2))
             port_id = int(item[2:4], 16)
             vlanid = int(item[4:8], 16)
             if port_id not in macs:
-                macs[port_id] = {vlanid: [mac]}
+                macs[port_id] = {vlanid: [mac_addr]}
             else:
                 if vlanid not in macs[port_id]:
-                    macs[port_id][vlanid] = [mac]
+                    macs[port_id][vlanid] = [mac_addr]
                 else:
-                    macs[port_id][vlanid].append(mac)
+                    macs[port_id][vlanid].append(mac_addr)
     return {'macs': macs}
 
 
-def split_nth(string, n):
-    """ Просто разбивает строку на кусочки по `n` символов. """
-    return [string[i:i + n] for i in range(0, len(string), n)]
+def split_nth(input_string, n):
+    """ Просто разбивает строку на кусочки по `n` символов.
+
+    :param str input_string: входная строка
+    :param int n: по сколько символов разбивать строку
+    :rtype: list
+    :return: список подстрок по `n` символов
+    """
+
+    return [input_string[i:i + n] for i in range(0, len(input_string), n)]
+
+
+def hex_string(input_string):
+    """
+    Возвращает HEX-STRING.
+
+    :param str input_string: строка для преобразования в HEX
+    :rtype: str
+    :return: HEX-STRING
+    """
+
+    return ''.join([f'{ord(c):02X}' for c in input_string])
+
+
+def mac(input_string):
+    """
+    Входную строку превращает в HEX-STRING и форматирует как MAC-адрес (через ':').
+
+    :param str input_string: входная строка
+    :rtype: str
+    :return: MAC-адрес
+    """
+
+    return ':'.join(split_nth(hex_string(input_string), 2))

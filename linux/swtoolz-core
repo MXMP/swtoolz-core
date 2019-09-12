@@ -12,7 +12,7 @@
 PATH="/sbin:/usr/sbin:/bin:/usr/bin"
 DESC="SWToolz-Core"
 NAME="swtoolz-core"
-DAEMON="/usr/bin/python2"
+DAEMON="/usr/bin/python3"
 DAEMON_ARGS="/usr/local/etc/swtoolz-core/swtoolz-core.py"
 PIDFILE="/var/run/swtoolz-core.pid"
 SCRIPTNAME="/etc/init.d/swtoolz-core"

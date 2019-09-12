@@ -4,13 +4,14 @@ services:
   worker:
     build: .
     image: mxmp/swtoolz-core
-    command: [python, swtoolz-core.py, nodaemon]
+    restart: always
+    command: [python3, swtoolz-core.py, nodaemon]
     ports:
       - "7377:7377"
     volumes:
       - ~/swconfig.py:/app/swconfig.py
       - ~/swtoolz-core.log:/var/log/swtoolz-core.log
-      - ./devices:/app/devices
+      - ./:/app
 
 networks:
   default:
