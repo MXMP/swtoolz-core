@@ -197,7 +197,7 @@ walk_VlanMap = {
 #    VlanName            .1.3.6.1.2.1.17.7.1.4.3.1.1			dot1qVlanStaticName
     'VlanName'        : '.1.3.6.1.2.1.17.7.1.4.3.1.1',
 #    EgressPorts         .1.3.6.1.2.1.17.7.1.4.3.1.2			dot1qVlanStaticEgressPorts
-    'EgressPorts'     : '.1.3.6.1.2.1.17.7.1.4.3.1.2',
+    'hex_string:EgressPorts'     : '.1.3.6.1.2.1.17.7.1.4.3.1.2',
     }
 
 walk_IPifMap = {
