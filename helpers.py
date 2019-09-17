@@ -363,6 +363,18 @@ def hex_string(input_string):
     return ''.join([f'{ord(c):02X}' for c in input_string])
 
 
+def ljust_string(input_string):
+    """
+    Добавляет нулей к входной строке до 16 символов. Используется в основоном для масок портов.
+
+    :param input_string: входная строка
+    :rtype: str
+    :return: строка дополненная нулями до 16 символов
+    """
+
+    return hex_string(input_string).ljust(16, '0')
+
+
 def mac(input_string):
     """
     Входную строку превращает в HEX-STRING и форматирует как MAC-адрес (через ':').
