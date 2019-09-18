@@ -5,6 +5,7 @@ import urllib.parse
 from ipaddress import ip_address
 
 import easysnmp
+from easysnmp.exceptions import EasySNMPTimeoutError
 from aiohttp import web
 
 import helpers
@@ -366,20 +367,20 @@ def process_device(device_module, request_params, json_resp, target_ip, snmp_com
 async def handle_get(request):
     answer = {
         'request': {
-            'user': '',
-            'target': '',
-            'comm_index': '',
+            'user': None,
+            'target': None,
+            'comm_index': None,
             'data': [],
             'errors': [],
         },
         'response': {
-            'target': '',
-            'sys_descr': '',
-            'sys_uptime': '',
-            'sys_name': '',
-            'sys_location': '',
-            'model': '',
-            'query_time': '',
+            'target': None,
+            'sys_descr': None,
+            'sys_uptime': None,
+            'sys_name': None,
+            'sys_location': None,
+            'model': None,
+            'query_time': None,
             'data': {},
         },
     }
@@ -396,20 +397,20 @@ async def handle_get(request):
 
     # Фиксируем текущее время
     start_time = time.time()
+    try:
+        # Выполняем опрос параметров из default_info
+        snmp_default_params = session.get(list(swconfig.default_info.values()))
+    except EasySNMPTimeoutError:
+        # Устройство недоступно, выставляем модель в 'None'
+        answer['response']['model'] = 'None'
+    else:
+        # Помещаем в словарь результаты опроса параметров из default_info
+        for def_param_index, def_param in enumerate(swconfig.default_info):
+            answer['response'][def_param] = snmp_default_params[def_param_index].value
 
-    # Выполняем опрос устройства параметров из default_info
-    snmp_default_params = session.get(list(swconfig.default_info.values()))
-
-    # Время, затраченное на опрос
-    answer['response']['query_time'] = str(int((time.time() - start_time) * 1000))
-
-    # Помещаем в словарь результаты опроса параметров из default_info
-    for def_param_index, def_param in enumerate(swconfig.default_info):
-        answer['response'][def_param] = snmp_default_params[def_param_index].value
-
-    # Получаем идентификатор модели
-    answer['response']['model'] = get_model(answer['response']['sys_name'], answer['response']['sys_descr'],
-                                            swconfig.models_by_desc)
+        # Получаем идентификатор модели
+        answer['response']['model'] = get_model(answer['response']['sys_name'], answer['response']['sys_descr'],
+                                                swconfig.models_by_desc)
 
     # Если в списке команд (методов) есть зарезервированная команда (метод), то выполняем опрос
     # оборудования даже если оно недоступно
@@ -431,5 +432,8 @@ async def handle_get(request):
                                               answer['request']['target'], snmp_comm, answer['response']['model'],
                                               request)
             answer['response']['data'] = data_from_device
+
+    # Время, затраченное на опрос
+    answer['response']['query_time'] = str(int((time.time() - start_time) * 1000))
 
     return web.json_response(answer)
