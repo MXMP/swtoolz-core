@@ -354,9 +354,9 @@ def process_device(device_module, request_params, json_resp, target_ip, snmp_com
                 try:
                     session.set_multiple(varlist)
                 except EasySNMPError:
-                    json_resp['data'][method_name] = 0
+                    json_resp['data'][method_name] = False
                 else:
-                    json_resp['data'][method_name] = 1
+                    json_resp['data'][method_name] = True
 
                 time.sleep(swconfig.set_iter_delay)
 
