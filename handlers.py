@@ -5,7 +5,7 @@ import urllib.parse
 from ipaddress import ip_address
 
 import easysnmp
-from easysnmp.exceptions import EasySNMPTimeoutError
+from easysnmp.exceptions import EasySNMPTimeoutError, EasySNMPError
 from aiohttp import web
 
 import helpers
@@ -351,10 +351,14 @@ def process_device(device_module, request_params, json_resp, target_ip, snmp_com
                     full_prepaired_oid = '.'.join(prepaired_oid[0:2])
                     varlist.append((full_prepaired_oid, prepaired_oid[2], prepaired_oid[3],))
 
-                query = session.set_multiple(varlist)
+                try:
+                    session.set_multiple(varlist)
+                except EasySNMPError:
+                    json_resp['data'][method_name] = 0
+                else:
+                    json_resp['data'][method_name] = 1
 
                 time.sleep(swconfig.set_iter_delay)
-                json_resp['data'][method_name] = query
 
             # Если dataset является кортежем, просто возвращаем его первый элемент. Это нужно для хранения
             # пользовательских словарей в конфиге swtoolz-core
