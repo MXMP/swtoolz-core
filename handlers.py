@@ -214,6 +214,7 @@ def process_device(device_module, request_params, json_resp, target_ip, snmp_com
                 json_resp['data']['list'] = [str(d) for d in dir(device_module) if d[0] != '_']
             else:
                 logging.error(f"Can't find param '{method_name}' from module '{model}'!")
+                json_resp['data'][method_name] = False
         else:
             # Для режима отладки пишем в лог кто и что у нас запросил
             if swconfig.debug_mode:
@@ -353,7 +354,7 @@ def process_device(device_module, request_params, json_resp, target_ip, snmp_com
 
                 try:
                     session.set_multiple(varlist)
-                except EasySNMPError:
+                except (SystemError, EasySNMPError):
                     json_resp['data'][method_name] = False
                 else:
                     json_resp['data'][method_name] = True
