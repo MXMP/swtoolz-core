@@ -442,3 +442,16 @@ def huawei_get_inactive_onts(input_value, host=None):
             inactive_onts[ont_id] = ont_info['sn']
 
     return {'sn': inactive_onts}
+
+
+def huawei_get_service_ports(input_value, host=None):
+    """
+    Превращает несвязанные данные о сервисных портах в словарь с информацией о сервисных портах.
+
+    :param dict input_value: входные данные
+    :param str host: ip-адрес устройства для которого выполняется запрос
+    :rtype: dict
+    :return: словарь с сервисными портами
+    """
+
+    return {'service_ports': make_items(input_value)}

@@ -402,7 +402,9 @@ delete_vlan = [
     ['.1.3.6.1.4.1.2011.5.6.1.1.1.13', '{1}', '6', 'INTEGER'],
 ]
 
+# Выдает информацию о всех сервисных портах на OLT.
 walk_service_ports = {
+    'helper': 'huawei_get_service_ports',
     # slot_id   .1.3.6.1.4.1.2011.5.14.5.2.1.3      hwExtSrvFlowPara2
     'slot_id': '.1.3.6.1.4.1.2011.5.14.5.2.1.3',
     # port_id   .1.3.6.1.4.1.2011.5.14.5.2.1.4      hwExtSrvFlowPara3
