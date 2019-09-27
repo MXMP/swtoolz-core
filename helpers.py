@@ -435,10 +435,10 @@ def huawei_get_inactive_onts(input_value, host=None):
     :return: словарь с серийниками "незарегистрированных" ONT
     """
 
-    inactive_onts = []
+    inactive_onts = {}
     onts = make_items(input_value)
-    for ont in onts.values():
-        if ont['line-profile-name'] == 'activate' and ont['srv-profile-name'] == 'activate':
-            inactive_onts.append(ont['sn'])
+    for ont_id, ont_info in onts.items():
+        if ont_info['line-profile-name'] == 'activate' and ont_info['srv-profile-name'] == 'activate':
+            inactive_onts[ont_id] = ont_info['sn']
 
-    return {'sn': dict(enumerate(inactive_onts))}
+    return {'sn': inactive_onts}
