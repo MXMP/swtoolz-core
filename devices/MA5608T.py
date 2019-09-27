@@ -557,6 +557,13 @@ create_service_port = [
     ['.1.3.6.1.4.1.2011.5.14.5.2.1.18', '{1}', '2', 'INTEGER'],
 ]
 
+# Удаление service-port.
+# На вход обязательно передать: service-port index
+delete_service_port = [
+    # .1.3.6.1.4.1.2011.5.14.5.2.1.15 hwExtSrvFlowRowStatus
+    ['.1.3.6.1.4.1.2011.5.14.5.2.1.15', '{1}', '6', 'INTEGER'],
+]
+
 # Создание service-port для ТВ.
 # На вход обязательно передать: service-port index, номер слота, номер порта, ont_id, gem.
 create_multicast_service_port = [
