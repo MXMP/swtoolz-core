@@ -385,3 +385,60 @@ def mac(input_string):
     """
 
     return ':'.join(split_nth(hex_string(input_string), 2))
+
+
+def make_items(input_dict):
+    """
+    Преобразует входной словарь с метриками в словарь с сущностями :)
+
+    Пример:
+    на входе
+    {
+        'sn': {'0': '485754432D9B039B', '1': '44443132B35CF35D'},
+        'line-profile-name': {'0': 'activate', '1': 'line-P000-VLAN2200'},
+        'srv-profile-name': {'0': 'activate', '1': 'srv-P000-VLAN2200'}
+    }
+    на выходе
+    {
+        '0': {
+            'sn': '485754432D9B039B', 'line-profile-name': 'activate', 'srv-profile-name': 'activate'
+        },
+        '1': {
+            'sn': '44443132B35CF35D', 'line-profile-name': 'line-P000-VLAN2200', 'srv-profile-name': 'srv-P000-VLAN2200'
+        },
+    }
+
+    :param dict input_dict: входной словарь
+    :rtype: dict
+    :return: выходной словарь
+    """
+
+    items = {}
+
+    for property_name, values_dict in input_dict.items():
+        for ont_number, value in values_dict.items():
+            if ont_number not in items:
+                items[ont_number] = {}
+
+            items[ont_number][property_name] = value
+
+    return items
+
+
+def huawei_get_inactive_onts(input_value, host=None):
+    """
+    Выбирает серийные номера ONT к которым привязаны line-profile и srv-profile с имененм "activate".
+
+    :param dict input_value: входные данные
+    :param str host: ip-адрес устройства для которого выполняется запрос
+    :rtype: dict
+    :return: словарь с серийниками "незарегистрированных" ONT
+    """
+
+    inactive_onts = []
+    onts = make_items(input_value)
+    for ont in onts.values():
+        if ont['line-profile-name'] == 'activate' and ont['srv-profile-name'] == 'activate':
+            inactive_onts.append(ont['sn'])
+
+    return {'sn': dict(enumerate(inactive_onts))}

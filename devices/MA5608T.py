@@ -430,13 +430,19 @@ walk_fdb = {
     'hex_string:macs........': '.1.3.6.1.4.1.2011.6.128.1.1.2.130.1.8.{1}.1.0.3.{2}.47.0.0',
 }
 
-# Получение незарегистрированных ONU за GPON-портом.
+# Получение незарегистрированных ONU за GPON-портом. Незарегистрированными считаются ONT, к которым привязаны
+# line-profile и srv-profile с именем "activate". Это сделано специально, мы приняли решение вешать дефолтный профиль
+# на "незарегистрированные" ONT, что бы у них был доступ к локальным ресурсам.
+#
 # На вход обязательно нужно передать: ifIndex GPON-порта.
 walk_unregistered_onus_on_port = {
-    # sn              .1.3.6.1.4.1.2011.6.128.1.1.2.48.1.2  hwGponDeviceAutoFindOntInfoSn
-    'hex_string:sn': '.1.3.6.1.4.1.2011.6.128.1.1.2.48.1.2.{1}',
-    # time            .1.3.6.1.4.1.2011.6.128.1.1.2.48.1.8  hwGponDeviceAutoFindOntInfoOntAutoFindTime
-    'time':          '.1.3.6.1.4.1.2011.6.128.1.1.2.48.1.8.{1}',
+    'helper': 'huawei_get_inactive_onts',
+    # sn                  .1.3.6.1.4.1.2011.6.128.1.1.2.43.1.3  hwGponDeviceOntSn
+    'hex_string:sn':     '.1.3.6.1.4.1.2011.6.128.1.1.2.43.1.3.{1}',
+    # line-profile-name   .1.3.6.1.4.1.2011.6.128.1.1.2.43.1.7  hwGponDeviceOntLineProfName
+    'line-profile-name': '.1.3.6.1.4.1.2011.6.128.1.1.2.43.1.7.{1}',
+    # srv-profile-name    .1.3.6.1.4.1.2011.6.128.1.1.2.43.1.8  hwGponDeviceOntServiceProfName
+    'srv-profile-name':  '.1.3.6.1.4.1.2011.6.128.1.1.2.43.1.8.{1}',
 }
 
 # Создание line-profile.
@@ -655,8 +661,10 @@ clear_onu_eth_stats = [
 ]
 
 # Зарегистрировать ONU.
-# На вход обязательно передаем: ifIndex GPON-порта, ont_id, серийный номер (разделить каждые 2 символа с помощью %),
-# line-profile-name, srv-profile-name, описание.
+# На вход обязательно передаем: ifIndex GPON-порта, ont_id, серийный номер, line-profile-name, srv-profile-name,
+# описание.
+
+# Тут нужно будет подменять профиль и еще что-то
 register_onu = [
     # .1.3.6.1.4.1.2011.6.128.1.1.2.43.1.2 hwGponDeviceOntAuthMethod
     ['.1.3.6.1.4.1.2011.6.128.1.1.2.43.1.2', '{1}.{2}', '1', 'INTEGER'],
