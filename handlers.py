@@ -111,14 +111,22 @@ def str_to_index(input_str, with_length=False):
 
 def quote_hex(input_str):
     """
-    Добавляет к каждой паре символов '%' что бы показать что это HEX. Например для серийного номера.
+    Берет входящую HEX-строку, делает из нее байты и декодирует в 'latin1'. Только в таком варианте
+    Easysnmp правильно передает HEX-строки на железо.
 
     :param str input_str: строка для экранирования
     :rtype: str
     :return: экранированная строка
     """
 
-    return '%'.join(helpers.split_nth(input_str, 2))
+    try:
+        quoted_value = bytes.fromhex(input_str).decode('latin1')
+    except ValueError as e:
+        # Попалось значение другого типа, возвращаем строку без изменений
+        logging.debug(f'Converting to HEX failed: {e}')
+        return input_str
+
+    return quoted_value
 
 
 def prepare_oid(params, dataset):
@@ -179,6 +187,7 @@ def prepare_oid(params, dataset):
                 # Здесь № - номер элемента в сортированном списке ключей
                 # Например, все последовательности '{2}' заменяются на второй элемент словаря.
                 # Это используется когда нужно подставить одно значение несколько раз
+                # TODO: Этот блок заставляет конвертации выполняться несколько раз (даже когда не надо)
                 dataset[indx] = dataset[indx].replace('{%s}' % (i + 1), params[k])
                 # Подстановка со специальными конвертерами:
                 dataset[indx] = dataset[indx].replace('{to_index:%s}' % (i + 1), str_to_index(params[k]))
