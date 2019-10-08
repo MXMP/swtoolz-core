@@ -680,3 +680,17 @@ register_onu = [
     # .1.3.6.1.4.1.2011.6.128.1.1.2.43.1.9 hwGponDeviceOntDespt
     ['.1.3.6.1.4.1.2011.6.128.1.1.2.43.1.9', '{1}.{2}', '{5}', 'OCTETSTR'],
 ]
+
+# Возвращает DslamInterfaceIfIndex для vlanif
+# На вход обязательно передать: VLANID.
+get_dslam_ifindex = {
+    # dslam_ifindex    .1.3.6.1.4.1.2011.6.161.1.1.1.3  hwIpDslamInterfaceIfIndex
+    'dslam_ifindex.': '.1.3.6.1.4.1.2011.6.161.1.1.1.3.4.{1}',
+}
+
+# Вешает ACL на интерфейс.
+# На вход передать: DslamInterfaceIfIndex, направление (1-inbound, 2-outbound), номер профиля ACL.
+set_acl_on_interface = [
+    # .1.3.6.1.4.1.2011.6.47.48.1.5 hwFirewallPacketFilterRowStatus
+    ['.1.3.6.1.4.1.2011.6.47.48.1.5.{1}.{2}', '{3}', '4', 'INTEGER'],
+]
