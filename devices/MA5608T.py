@@ -512,8 +512,10 @@ create_srvprofile = [
 
 # Список всех btv пользователей.
 walk_igmp_users = {
-    # index   .1.3.6.1.4.1.2011.6.28.16.1.24 hwDslamNtvUserIndex
-    'index': '.1.3.6.1.4.1.2011.6.28.16.1.24',
+    # index          .1.3.6.1.4.1.2011.6.28.16.1.24 hwDslamNtvUserIndex
+    'index':        '.1.3.6.1.4.1.2011.6.28.16.1.24',
+    # service-port   .1.3.6.1.4.1.2011.6.28.16.1.38 hwDslamNtvUserFlowID
+    'service-port': '.1.3.6.1.4.1.2011.6.28.16.1.38',
 }
 
 # Создание btv пользователя.
