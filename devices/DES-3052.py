@@ -100,7 +100,7 @@ PortType = ({
 
 # UnitModuleName (placeholder)
 BoardDescr = ({
-                  '1': 'DES-3028',
+                  '1': 'DES-3052',
               },)
 
 # get_HardwareRev (placeholder for Slava's Hardcode. not working but necessary)
