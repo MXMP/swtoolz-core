@@ -20,7 +20,6 @@ DeviceMap = ([
 StackInfo = ({
                  'SlotSize': '64',
                  'ShiftIndex': '0',
-                 #    'MaxIndex'        : '64',
                  'ComboDefMedType': 'copper',
              },)
 
@@ -40,8 +39,6 @@ Commands = ([
                 'cdPairStatus',
                 'get_PortIndex',
                 'get_HardwareRev',
-                #    'get_ifName',
-                #    'walk_ifAlias',
             ],)
 
 # swL2PortInfoMediumType
@@ -106,7 +103,7 @@ PortType = ({
 
 # UnitModuleName (placeholder)
 BoardDescr = ({
-                  '1': 'DGS-3000-24TC',
+                  '1': 'DGS-3200-10',
               },)
 
 # swEtherCableDiagLinkStatus
@@ -135,24 +132,24 @@ get_HardwareRev = {
 }
 
 walk_PortIndex = {
-    # PortIndex   .1.3.6.1.4.1.171.11.133.1.1.2.3.1.1.1		swL2PortInfoPortIndex
-    'PortIndex': '.1.3.6.1.4.1.171.11.133.1.1.2.3.1.1.1',
+    # PortIndex   .1.3.6.1.4.1.171.11.101.1.2.3.1.1.1		swL2PortInfoPortIndex
+    'PortIndex': '.1.3.6.1.4.1.171.11.101.1.2.3.1.1.1',
 }
 
 get_PortIndex = {
-    # PortIndex        .1.3.6.1.4.1.171.11.133.1.1.2.3.1.1.1		swL2PortInfoPortIndex
-    'PortIndex..1':   '.1.3.6.1.4.1.171.11.133.1.1.2.3.1.1.1.1.1',
-    'PortIndex..2':   '.1.3.6.1.4.1.171.11.133.1.1.2.3.1.1.1.2.1',
-    'PortIndex..3':   '.1.3.6.1.4.1.171.11.133.1.1.2.3.1.1.1.3.1',
-    'PortIndex..4':   '.1.3.6.1.4.1.171.11.133.1.1.2.3.1.1.1.4.1',
-    'PortIndex..5':   '.1.3.6.1.4.1.171.11.133.1.1.2.3.1.1.1.5.1',
-    'PortIndex..6':   '.1.3.6.1.4.1.171.11.133.1.1.2.3.1.1.1.6.1',
-    'PortIndex..7':   '.1.3.6.1.4.1.171.11.133.1.1.2.3.1.1.1.7.1',
-    'PortIndex..8':   '.1.3.6.1.4.1.171.11.133.1.1.2.3.1.1.1.8.1',
-    'PortIndex..9c':  '.1.3.6.1.4.1.171.11.133.1.1.2.3.1.1.1.9.1',
-    'PortIndex..9f':  '.1.3.6.1.4.1.171.11.133.1.1.2.3.1.1.1.9.2',
-    'PortIndex..10c': '.1.3.6.1.4.1.171.11.133.1.1.2.3.1.1.1.10.1',
-    'PortIndex..10f': '.1.3.6.1.4.1.171.11.133.1.1.2.3.1.1.1.10.2',
+    # PortIndex        .1.3.6.1.4.1.171.11.101.1.2.3.1.1.1		swL2PortInfoPortIndex
+    'PortIndex..1':   '.1.3.6.1.4.1.171.11.101.1.2.3.1.1.1.1.1',
+    'PortIndex..2':   '.1.3.6.1.4.1.171.11.101.1.2.3.1.1.1.2.1',
+    'PortIndex..3':   '.1.3.6.1.4.1.171.11.101.1.2.3.1.1.1.3.1',
+    'PortIndex..4':   '.1.3.6.1.4.1.171.11.101.1.2.3.1.1.1.4.1',
+    'PortIndex..5':   '.1.3.6.1.4.1.171.11.101.1.2.3.1.1.1.5.1',
+    'PortIndex..6':   '.1.3.6.1.4.1.171.11.101.1.2.3.1.1.1.6.1',
+    'PortIndex..7':   '.1.3.6.1.4.1.171.11.101.1.2.3.1.1.1.7.1',
+    'PortIndex..8':   '.1.3.6.1.4.1.171.11.101.1.2.3.1.1.1.8.1',
+    'PortIndex..9c':  '.1.3.6.1.4.1.171.11.101.1.2.3.1.1.1.9.1',
+    'PortIndex..9f':  '.1.3.6.1.4.1.171.11.101.1.2.3.1.1.1.9.2',
+    'PortIndex..10c': '.1.3.6.1.4.1.171.11.101.1.2.3.1.1.1.10.1',
+    'PortIndex..10f': '.1.3.6.1.4.1.171.11.101.1.2.3.1.1.1.10.2',
 }
 
 get_ifName = {
@@ -170,24 +167,24 @@ get_ifName = {
 }
 
 get_SinglePort = {
-    # MediumType        .1.3.6.1.4.1.171.11.133.1.1.2.3.1.1.2		swL2PortInfoMediumType
-    'MediumType..c':   '.1.3.6.1.4.1.171.11.133.1.1.2.3.1.1.2.%s.1',
-    'MediumType..f':   '.1.3.6.1.4.1.171.11.133.1.1.2.3.1.1.2.%s.2',
-    # ActualStatus      .1.3.6.1.4.1.171.11.133.1.1.2.3.1.1.5		swL2PortInfoLinkStatus
-    'ActualStatus..c': '.1.3.6.1.4.1.171.11.133.1.1.2.3.1.1.5.%s.1',
-    'ActualStatus..f': '.1.3.6.1.4.1.171.11.133.1.1.2.3.1.1.5.%s.2',
-    # ActualSpeed       .1.3.6.1.4.1.171.11.133.1.1.2.3.1.1.6		swL2PortInfoNwayStatus
-    'ActualSpeed..c':  '.1.3.6.1.4.1.171.11.133.1.1.2.3.1.1.6.%s.1',
-    'ActualSpeed..f':  '.1.3.6.1.4.1.171.11.133.1.1.2.3.1.1.6.%s.2',
-    # AdminStatus       .1.3.6.1.4.1.171.11.133.1.1.2.3.2.1.4		swL2PortCtrlAdminState
-    'AdminStatus..c':  '.1.3.6.1.4.1.171.11.133.1.1.2.3.2.1.4.%s.1',
-    'AdminStatus..f':  '.1.3.6.1.4.1.171.11.133.1.1.2.3.2.1.4.%s.2',
-    # AdminSpeed        .1.3.6.1.4.1.171.11.133.1.1.2.3.2.1.5		swL2PortCtrlNwayState
-    'AdminSpeed..c':   '.1.3.6.1.4.1.171.11.133.1.1.2.3.2.1.5.%s.1',
-    'AdminSpeed..f':   '.1.3.6.1.4.1.171.11.133.1.1.2.3.2.1.5.%s.2',
-    # AdminFlow         .1.3.6.1.4.1.171.11.133.1.1.2.3.2.1.6		swL2PortCtrlFlowCtrlState
-    'AdminFlow..c':    '.1.3.6.1.4.1.171.11.133.1.1.2.3.2.1.6.%s.1',
-    'AdminFlow..f':    '.1.3.6.1.4.1.171.11.133.1.1.2.3.2.1.6.%s.2',
+    # MediumType        .1.3.6.1.4.1.171.11.101.1.2.3.1.1.2		swL2PortInfoMediumType
+    'MediumType..c':   '.1.3.6.1.4.1.171.11.101.1.2.3.1.1.2.%s.1',
+    'MediumType..f':   '.1.3.6.1.4.1.171.11.101.1.2.3.1.1.2.%s.2',
+    # ActualStatus      .1.3.6.1.4.1.171.11.101.1.2.3.1.1.5		swL2PortInfoLinkStatus
+    'ActualStatus..c': '.1.3.6.1.4.1.171.11.101.1.2.3.1.1.5.%s.1',
+    'ActualStatus..f': '.1.3.6.1.4.1.171.11.101.1.2.3.1.1.5.%s.2',
+    # ActualSpeed       .1.3.6.1.4.1.171.11.101.1.2.3.1.1.6		swL2PortInfoNwayStatus
+    'ActualSpeed..c':  '.1.3.6.1.4.1.171.11.101.1.2.3.1.1.6.%s.1',
+    'ActualSpeed..f':  '.1.3.6.1.4.1.171.11.101.1.2.3.1.1.6.%s.2',
+    # AdminStatus       .1.3.6.1.4.1.171.11.101.1.2.3.2.1.4		swL2PortCtrlAdminState
+    'AdminStatus..c':  '.1.3.6.1.4.1.171.11.101.1.2.3.2.1.4.%s.1',
+    'AdminStatus..f':  '.1.3.6.1.4.1.171.11.101.1.2.3.2.1.4.%s.2',
+    # AdminSpeed        .1.3.6.1.4.1.171.11.101.1.2.3.2.1.5		swL2PortCtrlNwayState
+    'AdminSpeed..c':   '.1.3.6.1.4.1.171.11.101.1.2.3.2.1.5.%s.1',
+    'AdminSpeed..f':   '.1.3.6.1.4.1.171.11.101.1.2.3.2.1.5.%s.2',
+    # AdminFlow         .1.3.6.1.4.1.171.11.101.1.2.3.2.1.6		swL2PortCtrlFlowCtrlState
+    'AdminFlow..c':    '.1.3.6.1.4.1.171.11.101.1.2.3.2.1.6.%s.1',
+    'AdminFlow..f':    '.1.3.6.1.4.1.171.11.101.1.2.3.2.1.6.%s.2',
     # PortType          .1.3.6.1.2.1.2.2.1.3				ifType
     'PortType.':       '.1.3.6.1.2.1.2.2.1.3.%s',
     # PortName          .1.3.6.1.2.1.31.1.1.1.1			ifName
@@ -197,18 +194,18 @@ get_SinglePort = {
 }
 
 walk_AllPorts = {
-    # MediumType     .1.3.6.1.4.1.171.11.133.1.1.2.3.1.1.2		swL2PortInfoMediumType
-    'MediumType':   '.1.3.6.1.4.1.171.11.133.1.1.2.3.1.1.2',
-    # ActualStatus   .1.3.6.1.4.1.171.11.133.1.1.2.3.1.1.5		swL2PortInfoLinkStatus
-    'ActualStatus': '.1.3.6.1.4.1.171.11.133.1.1.2.3.1.1.5',
-    # ActualSpeed    .1.3.6.1.4.1.171.11.133.1.1.2.3.1.1.6		swL2PortInfoNwayStatus
-    'ActualSpeed':  '.1.3.6.1.4.1.171.11.133.1.1.2.3.1.1.6',
-    # AdminStatus    .1.3.6.1.4.1.171.11.133.1.1.2.3.2.1.4		swL2PortCtrlAdminState
-    'AdminStatus':  '.1.3.6.1.4.1.171.11.133.1.1.2.3.2.1.4',
-    # AdminSpeed     .1.3.6.1.4.1.171.11.133.1.1.2.3.2.1.5		swL2PortCtrlNwayState
-    'AdminSpeed':   '.1.3.6.1.4.1.171.11.133.1.1.2.3.2.1.5',
-    # AdminFlow      .1.3.6.1.4.1.171.11.133.1.1.2.3.2.1.6		swL2PortCtrlFlowCtrlState
-    'AdminFlow':    '.1.3.6.1.4.1.171.11.133.1.1.2.3.2.1.6',
+    # MediumType     .1.3.6.1.4.1.171.11.101.1.2.3.1.1.2		swL2PortInfoMediumType
+    'MediumType':   '.1.3.6.1.4.1.171.11.101.1.2.3.1.1.2',
+    # ActualStatus   .1.3.6.1.4.1.171.11.101.1.2.3.1.1.5		swL2PortInfoLinkStatus
+    'ActualStatus': '.1.3.6.1.4.1.171.11.101.1.2.3.1.1.5',
+    # ActualSpeed    .1.3.6.1.4.1.171.11.101.1.2.3.1.1.6		swL2PortInfoNwayStatus
+    'ActualSpeed':  '.1.3.6.1.4.1.171.11.101.1.2.3.1.1.6',
+    # AdminStatus    .1.3.6.1.4.1.171.11.101.1.2.3.2.1.4		swL2PortCtrlAdminState
+    'AdminStatus':  '.1.3.6.1.4.1.171.11.101.1.2.3.2.1.4',
+    # AdminSpeed     .1.3.6.1.4.1.171.11.101.1.2.3.2.1.5		swL2PortCtrlNwayState
+    'AdminSpeed':   '.1.3.6.1.4.1.171.11.101.1.2.3.2.1.5',
+    # AdminFlow      .1.3.6.1.4.1.171.11.101.1.2.3.2.1.6		swL2PortCtrlFlowCtrlState
+    'AdminFlow':    '.1.3.6.1.4.1.171.11.101.1.2.3.2.1.6',
 }
 
 walk_ifAlias = {
@@ -297,13 +294,13 @@ clear_errors = {
 }
 
 set_AdminStatus = [
-    # .1.3.6.1.4.1.171.11.133.1.1.2.3.2.1.4				swL2PortCtrlAdminState
-    ['.1.3.6.1.4.1.171.11.133.1.1.2.3.2.1.4.%s', '1', '%s', 'INTEGER'],
+    # .1.3.6.1.4.1.171.11.101.1.2.3.2.1.4				swL2PortCtrlAdminState
+    ['.1.3.6.1.4.1.171.11.101.1.2.3.2.1.4.%s', '1', '%s', 'INTEGER'],
 ]
 
 set_AdminSpeed = [
-    # .1.3.6.1.4.1.171.11.133.1.1.2.3.2.1.5				swL2PortCtrlNwayState
-    ['.1.3.6.1.4.1.171.11.133.1.1.2.3.2.1.5.%s', '1', '%s', 'INTEGER'],
+    # .1.3.6.1.4.1.171.11.101.1.2.3.2.1.5				swL2PortCtrlNwayState
+    ['.1.3.6.1.4.1.171.11.101.1.2.3.2.1.5.%s', '1', '%s', 'INTEGER'],
 ]
 
 set_CableDiagInit = [
@@ -332,8 +329,8 @@ set_IpifCfg = [
     ['.1.3.6.1.2.1.16.19.11.1.2', '5121', '{2}', 'IPADDR'],
     # .1.3.6.1.2.1.16.19.12						netDefaultGateway
     ['.1.3.6.1.2.1.16.19.12', '0', '{3}', 'IPADDR'],
-    # .1.3.6.1.4.1.171.11.133.1.1.2.1.2.16				swL2DevCtrlManagementVlanId
-    ['.1.3.6.1.4.1.171.11.133.1.1.2.1.2.16', '0', '{4}', 'INTEGER'],
+    # .1.3.6.1.4.1.171.11.101.1.2.1.2.16				swL2DevCtrlManagementVlanId
+    ['.1.3.6.1.4.1.171.11.101.1.2.1.2.16', '0', '{4}', 'INTEGER'],
 ]
 
 set_DHCP_RemoteID = [
