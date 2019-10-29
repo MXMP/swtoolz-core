@@ -106,7 +106,7 @@ PortType = ({
 
 # UnitModuleName (placeholder)
 BoardDescr = ({
-                  '1': 'DGS-3000-24TC',
+                  '1': 'DGS-3000-10TC',
               },)
 
 # swEtherCableDiagLinkStatus
