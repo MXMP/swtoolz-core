@@ -318,24 +318,25 @@ get_ifName = {
 }
 
 get_SinglePort = {
-    # MediumType        .1.3.6.1.4.1.171.11.105.3.2.3.1.1.2    swL2PortInfoMediumType
-    'MediumType..c':   '.1.3.6.1.4.1.171.11.105.3.2.3.1.1.2.%s.100',
-    'MediumType..f':   '.1.3.6.1.4.1.171.11.105.3.2.3.1.1.2.%s.101',
-    # ActualStatus      .1.3.6.1.4.1.171.11.105.3.2.3.1.1.4  swL2PortInfoLinkStatus
-    'ActualStatus..c': '.1.3.6.1.4.1.171.11.105.3.2.3.1.1.4.%s.100',
-    'ActualStatus..f': '.1.3.6.1.4.1.171.11.105.3.2.3.1.1.4.%s.101',
-    # ActualSpeed       .1.3.6.1.4.1.171.11.105.3.2.3.1.1.5   swL2PortInfoNwayStatus
-    'ActualSpeed..c':  '.1.3.6.1.4.1.171.11.105.3.2.3.1.1.5.%s.100',
-    'ActualSpeed..f':  '.1.3.6.1.4.1.171.11.105.3.2.3.1.1.5.%s.101',
-    # AdminStatus       .1.3.6.1.4.1.171.11.105.3.2.3.2.1.3   swL2PortCtrlAdminState
-    'AdminStatus..c':  '.1.3.6.1.4.1.171.11.105.3.2.3.2.1.3.%s.100',
-    'AdminStatus..f':  '.1.3.6.1.4.1.171.11.105.3.2.3.2.1.3.%s.101',
-    # AdminSpeed        .1.3.6.1.4.1.171.11.105.3.2.3.2.1.4    swL2PortCtrlNwayState
-    'AdminSpeed..c':   '.1.3.6.1.4.1.171.11.105.3.2.3.2.1.4.%s.100',
-    'AdminSpeed..f':   '.1.3.6.1.4.1.171.11.105.3.2.3.2.1.4.%s.101',
-    # AdminFlow         .1.3.6.1.4.1.171.11.105.3.2.3.2.1.5 swL2PortCtrlFlowCtrlState
-    'AdminFlow..c':    '.1.3.6.1.4.1.171.11.105.3.2.3.2.1.5.%s.100',
-    'AdminFlow..f':    '.1.3.6.1.4.1.171.11.105.3.2.3.2.1.5.%s.101',
+    # MediumType        .1.3.6.1.4.1.171.11.105.3.2.3.1.1.2   swL2PortInfoMediumType
+    'MediumType..c':   '.1.3.6.1.4.1.171.11.105.3.2.3.1.1.2.%s.1',
+    'MediumType..f':   '.1.3.6.1.4.1.171.11.105.3.2.3.1.1.2.%s.2',
+    # ActualStatus      .1.3.6.1.4.1.171.11.105.3.2.3.1.1.5   swL2PortInfoLinkStatus
+    'ActualStatus..c': '.1.3.6.1.4.1.171.11.105.3.2.3.1.1.5.%s.1',
+    'ActualStatus..f': '.1.3.6.1.4.1.171.11.105.3.2.3.1.1.5.%s.2',
+    # ActualSpeed       .1.3.6.1.4.1.171.11.105.3.2.3.1.1.6   swL2PortInfoNwayStatus
+    'ActualSpeed..c':  '.1.3.6.1.4.1.171.11.105.3.2.3.1.1.6.%s.1',
+    'ActualSpeed..f':  '.1.3.6.1.4.1.171.11.105.3.2.3.1.1.6.%s.2',
+    # AdminStatus       .1.3.6.1.4.1.171.11.105.3.2.3.2.1.4   swL2PortCtrlAdminState
+    'AdminStatus..c':  '.1.3.6.1.4.1.171.11.105.3.2.3.2.1.4.%s.1',
+    'AdminStatus..f':  '.1.3.6.1.4.1.171.11.105.3.2.3.2.1.4.%s.2',
+    # AdminSpeed        .1.3.6.1.4.1.171.11.105.3.2.3.2.1.5   swL2PortCtrlNwayState
+    'AdminSpeed..c':   '.1.3.6.1.4.1.171.11.105.3.2.3.2.1.5.%s.1',
+    'AdminSpeed..f':   '.1.3.6.1.4.1.171.11.105.3.2.3.2.1.5.%s.2',
+    # AdminFlow         .1.3.6.1.4.1.171.11.105.3.2.3.2.1.6   swL2PortCtrlFlowCtrlState
+    'AdminFlow..c':    '.1.3.6.1.4.1.171.11.105.3.2.3.2.1.6.%s.1',
+    'AdminFlow..f':    '.1.3.6.1.4.1.171.11.105.3.2.3.2.1.6.%s.2',
+    # PortType':        .1.3.6.1.2.1.2.2.1.3
     'PortType.':       '.1.3.6.1.2.1.2.2.1.3.%s',
     # PortName          .1.3.6.1.2.1.31.1.1.1.1   ifName
     'PortName.':       '.1.3.6.1.2.1.31.1.1.1.1.%s',
@@ -344,16 +345,16 @@ get_SinglePort = {
 walk_AllPorts = {
     # MediumType     .1.3.6.1.4.1.171.11.105.3.2.3.1.1.2 swL2PortInfoMediumType
     'MediumType':   '.1.3.6.1.4.1.171.11.105.3.2.3.1.1.2',
-    # ActualStatus   .1.3.6.1.4.1.171.11.105.3.2.3.1.1.4 swL2PortInfoLinkStatus
-    'ActualStatus': '.1.3.6.1.4.1.171.11.105.3.2.3.1.1.4',
-    # ActualSpeed    .1.3.6.1.4.1.171.11.105.3.2.3.1.1.5 swL2PortInfoNwayStatus
-    'ActualSpeed':  '.1.3.6.1.4.1.171.11.105.3.2.3.1.1.5',
-    # AdminStatus    .1.3.6.1.4.1.171.11.105.3.2.3.2.1.3 swL2PortCtrlAdminState
-    'AdminStatus':  '.1.3.6.1.4.1.171.11.105.3.2.3.2.1.3',
-    # AdminSpeed     .1.3.6.1.4.1.171.11.105.3.2.3.2.1.4 swL2PortCtrlNwayState
-    'AdminSpeed':   '.1.3.6.1.4.1.171.11.105.3.2.3.2.1.4',
-    # AdminFlow      .1.3.6.1.4.1.171.11.105.3.2.3.2.1.5 swL2PortCtrlFlowCtrlState
-    'AdminFlow':    '.1.3.6.1.4.1.171.11.105.3.2.3.2.1.5',
+    # ActualStatus   .1.3.6.1.4.1.171.11.105.3.2.3.1.1.5 swL2PortInfoLinkStatus
+    'ActualStatus': '.1.3.6.1.4.1.171.11.105.3.2.3.1.1.5',
+    # ActualSpeed    .1.3.6.1.4.1.171.11.105.3.2.3.1.1.6 swL2PortInfoNwayStatus
+    'ActualSpeed':  '.1.3.6.1.4.1.171.11.105.3.2.3.1.1.6',
+    # AdminStatus    .1.3.6.1.4.1.171.11.105.3.2.3.2.1.4 swL2PortCtrlAdminState
+    'AdminStatus':  '.1.3.6.1.4.1.171.11.105.3.2.3.2.1.4',
+    # AdminSpeed     .1.3.6.1.4.1.171.11.105.3.2.3.2.1.5 swL2PortCtrlNwayState
+    'AdminSpeed':   '.1.3.6.1.4.1.171.11.105.3.2.3.2.1.5',
+    # AdminFlow      .1.3.6.1.4.1.171.11.105.3.2.3.2.1.6 swL2PortCtrlFlowCtrlState
+    'AdminFlow':    '.1.3.6.1.4.1.171.11.105.3.2.3.2.1.6',
 }
 
 walk_FDB_VLAN = {
