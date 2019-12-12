@@ -62,19 +62,14 @@ ActualStatus = ({
 
 # swL2PortInfoNwayStatus
 ActualSpeed = ({
-                   '1': 'linkdown',
-                   '2': '10M-Full-8023x',
-                   '3': '10M-Full',
-                   '4': '10M-Half-backp',
-                   '5': '10M-Half',
-                   '6': '100M-Full-8023x',
-                   '7': '100M-Full',
-                   '8': '100M-Half-backp',
-                   '9': '100M-Half',
-                   '10': '1G-Full-8023x',
-                   '11': '1G-Full',
-                   '12': '1G-Half-backp',
-                   '13': '1G-Half',
+                   '1': 'other',
+                   '2': 'auto',
+                   '3': '10M-Half',
+                   '4': '10M-Full',
+                   '5': '100M-Half',
+                   '6': '100M-Full',
+                   '7': '1G-Half',
+                   '8': '1G-Full',
                },)
 
 # swL2PortCtrlAdminState
@@ -85,12 +80,13 @@ AdminStatus = ({
 
 # swL2PortCtrlNwayState
 AdminSpeed = ({
-                  '1': 'auto',
-                  '2': '10M-Half',
-                  '3': '10M-Full',
-                  '4': '100M-Half',
-                  '5': '100M-Full',
-                  '7': '1G-Full',
+                  '2': 'auto',
+                  '3': '10M-Half',
+                  '4': '10M-Full',
+                  '5': '100M-Half',
+                  '6': '100M-Full',
+                  '7': '1G-Half',
+                  '8': '1G-Full',
               },)
 
 # swL2PortCtrlFlowCtrlState
