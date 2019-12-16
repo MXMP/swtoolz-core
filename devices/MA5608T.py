@@ -1,4 +1,4 @@
-timeout_mf = 2.0
+timeout_mf = 5.0
 
 DeviceMap = {
     'helper': 'make_dynamic_map',
