@@ -8,10 +8,13 @@ from aiohttp import web
 
 from daemon import Daemon
 from handlers import handle_get
-from swconfig import logfile
-from swconfig import port
+from swconfig import logfile, port, debug_mode
 
-logging.basicConfig(filename=logfile, level=logging.DEBUG, format='%(levelname)s %(asctime)s  %(message)s')
+if debug_mode:
+    logging_level = logging.DEBUG
+else:
+    logging_level = logging.INFO
+logging.basicConfig(filename=logfile, level=logging_level, format='%(levelname)s %(asctime)s  %(message)s')
 
 # Добавляем директорию 'devices' в список path. Это нужно, чтобы демон мог находить модули в этой директории
 sys.path.append('%s%sdevices' % (sys.path[0], sep))
