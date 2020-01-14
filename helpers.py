@@ -455,3 +455,28 @@ def huawei_get_service_ports(input_value, host=None):
     """
 
     return {'service_ports': make_items(input_value)}
+
+
+def str_from_index(input_string):
+    """
+    Возвращает человекопонятную строку из SNMP-индекса.
+
+    Например, на входе - '108.105.110.101.45.80.48.48.48.45.86.76.65.78.50.48.48.48', на выходе - 'line-P000-VLAN2000'
+
+    :param input_string:
+    :return:
+    """
+    return ''.join([chr(int(p)) for p in input_string.split('.')])
+
+
+def huawei_walk_profiles(input_value, host=None):
+    """
+    Ключами выходного словаря запроса профилей являются SNMP-индексы, мы их преобразовываем в строку и возвращаем в
+    виде списка.
+
+    :param input_value:
+    :param host:
+    :return:
+    """
+    for command_name, profiles_dict in input_value.items():
+        return {command_name: [str_from_index(profile_index) for profile_index, _ in profiles_dict.items()]}

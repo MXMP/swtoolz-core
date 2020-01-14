@@ -340,6 +340,13 @@ walk_onus = {
     'description':   '.1.3.6.1.4.1.2011.6.128.1.1.2.43.1.9',
 }
 
+# Получение списка имен всех lineprofile
+walk_lineprofiles = {
+    'helper': 'huawei_walk_profiles',
+    # walk_lineprofiles   .1.3.6.1.4.1.2011.6.128.1.1.3.61.1.7  hwGponDeviceLineProfileRowStatus
+    'walk_lineprofiles': '.1.3.6.1.4.1.2011.6.128.1.1.3.61.1.7',
+}
+
 # Получение информации о всех vlanif.
 walk_vlanif = {
     # vlanid   .1.3.6.1.4.1.2011.5.6.1.2.1.2    hwVlanID
@@ -413,6 +420,13 @@ walk_service_ports = {
     'ont_id':  '.1.3.6.1.4.1.2011.5.14.5.2.1.5',
     # vlan_id   .1.3.6.1.4.1.2011.5.14.5.2.1.8      hwExtSrvFlowVlanid
     'vlan_id': '.1.3.6.1.4.1.2011.5.14.5.2.1.8',
+}
+
+# Получение списка имен всех srvprofile
+walk_srvprofiles = {
+    'helper': 'huawei_walk_profiles',
+    # walk_srvprofiles   .1.3.6.1.4.1.2011.6.128.1.1.3.65.1.4   hwGponDeviceSrvProfileRowStatus
+    'walk_srvprofiles': '.1.3.6.1.4.1.2011.6.128.1.1.3.65.1.4',
 }
 
 walk_dhcp_mac = {
