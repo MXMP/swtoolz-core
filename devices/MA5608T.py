@@ -192,6 +192,12 @@ walk_AllPorts = {
     'MediumType':   '.1.3.6.1.2.1.2.2.1.3',
 }
 
+# Возвращает состояние автообнаружения ONT на портах OLT (см. AutofindStatus)
+walk_autofind = {
+    # walk_autofind   .1.3.6.1.4.1.2011.6.128.1.1.2.21.1.4  hwGponDeviceOltControlAutofindOntEnable
+    'walk_autofind': '.1.3.6.1.4.1.2011.6.128.1.1.2.21.1.4',
+}
+
 walk_ifAlias = {
     # PortDescr   .1.3.6.1.2.1.31.1.1.1.18  ifAlias
     'PortDescr': '.1.3.6.1.2.1.31.1.1.1.18',
@@ -306,6 +312,13 @@ get_onu_eth_port_errors = {
 set_AdminStatus = [
     # .1.3.6.1.2.1.2.2.1.7 ifAdminStatus
     ['.1.3.6.1.2.1.2.2.1.7', '{1}', '{2}', 'INTEGER'],
+]
+
+# Включение/выключения автообнаружения ONT на порту OLT.
+# На вход обязательно нужно передать: ifIndex GPON-порта, требуемый статус (см. AutofindStatus)
+set_autofind = [
+    # .1.3.6.1.4.1.2011.6.128.1.1.2.21.1.4 hwGponDeviceOltControlAutofindOntEnable
+    ['.1.3.6.1.4.1.2011.6.128.1.1.2.21.1.4', '{1}', '{2}', 'INTEGER'],
 ]
 
 # Получение DDM с ONU.
@@ -682,13 +695,6 @@ config_srvprofile = [
 delete_srvprofile = [
     # .1.3.6.1.4.1.2011.6.128.1.1.3.65.1.4   hwGponDeviceSrvProfileRowStatus
     ['.1.3.6.1.4.1.2011.6.128.1.1.3.65.1.4', '{to_index:1}', '6', 'INTEGER'],
-]
-
-# Включение/выключения автообнаружения ONT на порту OLT.
-# На вход обязательно нужно передать: ifIndex GPON-порта, требуемый статус (см. AutofindStatus)
-set_autofind = [
-    # .1.3.6.1.4.1.2011.6.128.1.1.2.21.1.4 hwGponDeviceOltControlAutofindOntEnable
-    ['.1.3.6.1.4.1.2011.6.128.1.1.2.21.1.4', '{1}', '{2}', 'INTEGER'],
 ]
 
 # Включение auto-service-port на порту OLT.
