@@ -107,6 +107,12 @@ AdminStatus = ({
                    '3': 'testing',
                },)
 
+# hwGponDeviceOltControlAutofindOntEnable .1.3.6.1.4.1.2011.6.128.1.1.2.21.1.4
+AutofindStatus = ({
+                      '1': 'enabled',
+                      '2': 'disabled',
+                  },)
+
 # hwGponDeviceOntEthernetOperateStatus  .1.3.6.1.4.1.2011.6.128.1.1.2.62.1.5
 onu_eth_port_AdminStatus = ({
                                 '1': 'on',
@@ -678,11 +684,11 @@ delete_srvprofile = [
     ['.1.3.6.1.4.1.2011.6.128.1.1.3.65.1.4', '{to_index:1}', '6', 'INTEGER'],
 ]
 
-# Включение автообнаружения на порту OLT.
-# На вход обязательно нужно передать: ifIndex GPON-порта
-enable_autofind = [
+# Включение/выключения автообнаружения ONT на порту OLT.
+# На вход обязательно нужно передать: ifIndex GPON-порта, требуемый статус (см. AutofindStatus)
+set_autofind = [
     # .1.3.6.1.4.1.2011.6.128.1.1.2.21.1.4 hwGponDeviceOltControlAutofindOntEnable
-    ['.1.3.6.1.4.1.2011.6.128.1.1.2.21.1.4', '{1}', '1', 'INTEGER'],
+    ['.1.3.6.1.4.1.2011.6.128.1.1.2.21.1.4', '{1}', '{2}', 'INTEGER'],
 ]
 
 # Включение auto-service-port на порту OLT.
