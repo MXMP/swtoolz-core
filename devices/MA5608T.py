@@ -377,6 +377,27 @@ delete_vlanif = [
     ['.1.3.6.1.4.1.2011.5.6.1.2.1.7', '{1}', '6', 'INTEGER'],
 ]
 
+# Выключение auto-service-port на порту OLT.
+# На вход передать: ifIndex GPON-порта, VLANID, onu-vlan-num, имя inbound-traffic-table, имя outbound-traffic-table.
+# Аналог команды:
+#  interface gpon 0/0
+#    undo auto-service-port port 0 vlan 420 single-vlan onu-vlan-num 1 inbound traffic-table name activate
+#      outbound traffic-table name activate
+disable_auto_service_port = [
+    # .1.3.6.1.4.1.2011.5.14.35.1.1 hwPortAutoServiceParaRowStatus
+    ['.1.3.6.1.4.1.2011.5.14.35.1.1', '{1}', '6', 'INTEGER'],
+    # .1.3.6.1.4.1.2011.5.14.35.1.2 hwPortAutoServiceParaType
+    ['.1.3.6.1.4.1.2011.5.14.35.1.2', '{1}', '1', 'INTEGER'],
+    # .1.3.6.1.4.1.2011.5.14.35.1.3 hwPortAutoServiceParaServiceVlan
+    ['.1.3.6.1.4.1.2011.5.14.35.1.3', '{1}', '{2}', 'INTEGER'],
+    # .1.3.6.1.4.1.2011.5.14.35.1.5 hwPortAutoServiceParaOnuVlanNumber
+    ['.1.3.6.1.4.1.2011.5.14.35.1.5', '{1}', '{3}', 'INTEGER'],
+    # .1.3.6.1.4.1.2011.5.14.35.1.8 hwPortAutoServiceParaInboundTrafficTableName
+    ['.1.3.6.1.4.1.2011.5.14.35.1.8', '{1}', '{4}', 'OCTETSTR'],
+    # .1.3.6.1.4.1.2011.5.14.35.1.9 hwPortAutoServiceParaOutboundTrafficTableName
+    ['.1.3.6.1.4.1.2011.5.14.35.1.9', '{1}', '{5}', 'OCTETSTR'],
+]
+
 # Получение краткой информации (серийный номер и описание) о всех ONU за портом.
 # На вход обязательно нужно передать: ifIndex GPON-порта
 walk_onus_by_port = {
