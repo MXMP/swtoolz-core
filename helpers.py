@@ -480,3 +480,26 @@ def huawei_walk_profiles(input_value, host=None):
     """
     for command_name, profiles_dict in input_value.items():
         return {command_name: [str_from_index(profile_index) for profile_index, _ in profiles_dict.items()]}
+
+def eltex_walk_user_helper(input_val, host=None):
+    if input_val.get('tableOfGroupUsers') is None:
+        return {'tableOfGroupUsers': {}}
+    keys = {
+        '3' : "UserID",
+        '4' : "RegState",
+        '5' : "NumPlan",
+        '6' : "Number",
+        '7' : "IP",
+        '8' : "Port",
+        '9' : "SIP-Domain",
+        '10' : "MaxActiveLines",
+        '11' : "ActiveCallCount",
+        '12' : "RegExpires",
+    }
+    result = {}
+    for key, val in input_val['tableOfGroupUsers'].items():
+        index = key.split('.')[0]
+        if keys.get(index) is None:
+            continue
+        result[keys[index]] = val
+    return {'tableOfGroupUsers': result}
