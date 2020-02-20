@@ -338,13 +338,13 @@ get_InOutOctets = {
 }
 
 set_AdminStatus = [
-    # .1.3.6.1.4.1.171.11.63.3.2.2.2.1.2				swL2PortCtrlAdminState
-    ['.1.3.6.1.4.1.171.11.63.3.2.2.2.1.2.%s', '', '%s', 'INTEGER'],
+    # .1.3.6.1.4.1.171.11.64.1.2.4.2.1.3    swL2PortCtrlAdminState
+    ['.1.3.6.1.4.1.171.11.64.1.2.4.2.1.3.%s', '', '%s', 'INTEGER'],
 ]
 
 set_AdminSpeed = [
-    # .1.3.6.1.4.1.171.11.63.3.2.2.2.1.3				swL2PortCtrlNwayState
-    ['.1.3.6.1.4.1.171.11.63.3.2.2.2.1.3.%s', '', '%s', 'INTEGER'],
+    # .1.3.6.1.4.1.171.11.64.1.2.4.2.1.4				swL2PortCtrlNwayState
+    ['.1.3.6.1.4.1.171.11.64.1.2.4.2.1.4.%s', '', '%s', 'INTEGER'],
 ]
 
 set_CableDiagInit = [
