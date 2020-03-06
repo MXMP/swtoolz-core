@@ -355,6 +355,8 @@ walk_VlanMap = {
 walk_onus = {
     # sn              .1.3.6.1.4.1.2011.6.128.1.1.2.43.1.3  hwGponDeviceOntSn
     'hex_string:sn': '.1.3.6.1.4.1.2011.6.128.1.1.2.43.1.3',
+    # description     .1.3.6.1.4.1.2011.6.128.1.1.2.43.1.9  hwGponDeviceOntDespt
+    'description':   '.1.3.6.1.4.1.2011.6.128.1.1.2.43.1.9',
 }
 
 # Получение списка имен всех lineprofile
@@ -420,6 +422,8 @@ disable_auto_service_port = [
 walk_onus_by_port = {
     # sn              .1.3.6.1.4.1.2011.6.128.1.1.2.43.1.3      hwGponDeviceOntSn
     'hex_string:sn': '.1.3.6.1.4.1.2011.6.128.1.1.2.43.1.3.{1}',
+    # description     .1.3.6.1.4.1.2011.6.128.1.1.2.43.1.9      hwGponDeviceOntDespt
+    'description':   '.1.3.6.1.4.1.2011.6.128.1.1.2.43.1.9',
 }
 
 # Создание VLAN.
@@ -726,8 +730,6 @@ get_onu_info = {
     'cpu..':            '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.3.{1}.{2}',
     # primary_status     .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.6        hwXponDeviceOntControlPrimaryStatus
     'primary_status..': '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.6.{1}.{2}',
-    # description        .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.8        hwXponDeviceOntControlPrimaryStatus
-    'description..':    '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.8.{1}.{2}',
     # load_state         .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.9        hwXponOntInfoAppLoadState
     'load_state..':     '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.9.{1}.{2}',
     # distance           .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.12       hwXponOntLastDistance
