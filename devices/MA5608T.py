@@ -716,8 +716,8 @@ enable_auto_service_port = [
 # Получение информации о ONU.
 # На вход обязательно нужно передать: ifIndex GPON-порта и порядковый номер ONU
 get_onu_info = {
-    # description        .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.5        hwXponOntInfoProductDescription
-    'description..':    '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.5.{1}.{2}',
+    # model              .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.5        hwXponOntInfoProductDescription
+    'model..':          '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.5.{1}.{2}',
     # online             .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.1        hwXponOntInfoOnlineDuration
     'online..':         '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.1.{1}.{2}',
     # memory             .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.2        hwXponOntInfoMemoryOccupation
@@ -726,6 +726,8 @@ get_onu_info = {
     'cpu..':            '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.3.{1}.{2}',
     # primary_status     .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.6        hwXponDeviceOntControlPrimaryStatus
     'primary_status..': '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.6.{1}.{2}',
+    # description        .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.8        hwXponDeviceOntControlPrimaryStatus
+    'description..':    '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.8.{1}.{2}',
     # load_state         .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.9        hwXponOntInfoAppLoadState
     'load_state..':     '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.9.{1}.{2}',
     # distance           .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.12       hwXponOntLastDistance
