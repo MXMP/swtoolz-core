@@ -331,7 +331,7 @@ def make_dynamic_map_for_6509(incoming_value, host):
                 ports[slot].append(str(index))
 
     for slot in sorted(ports):
-        map.append([ports[slot]])
+        map.append([ports[slot][i:i+12] for i in range(0, len(ports[slot]), 12)])
 
     return {'DeviceMap': map}
 
