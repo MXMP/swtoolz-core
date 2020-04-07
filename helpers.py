@@ -284,7 +284,7 @@ def make_dynamic_map(incoming_value, host):
     :param dict incoming_value: словарь с входящими данными
     :param str host: ip-адрес устройства для которого выполняется запрос
     :rtype: dict
-    :return: словать с результатом выполнения сброса
+    :return: словать с картой портов
     """
 
     ports = {}
@@ -299,6 +299,36 @@ def make_dynamic_map(incoming_value, host):
             if port.slot not in ports:
                 ports[port.slot] = []
             ports[port.slot].append(str(port.index))
+
+    for slot in sorted(ports):
+        map.append([ports[slot]])
+
+    return {'DeviceMap': map}
+
+
+def make_dynamic_map_for_6509(incoming_value, host):
+    """
+    Этот формирует карту портов "DeviceMap" по индексам портов для Cisco WS-C6509-E
+
+    :param dict incoming_value: словарь с входящими данными
+    :param str host: ip-адрес устройства для которого выполняется запрос
+    :rtype: dict
+    :return: словать с картой портов
+    """
+
+    ports = {}
+    map = []
+
+    for index, port_name in incoming_value['PortName'].items():
+        if port_name.startswith('Gi') or port_name.startswith('Te'):
+            try:
+                slot, port_number = [int(n) for n in port_name[2:].split('/')]
+            except ValueError:
+                continue
+            else:
+                if slot not in ports:
+                    ports[slot] = []
+                ports[slot].append(str(index))
 
     for slot in sorted(ports):
         map.append([ports[slot]])
