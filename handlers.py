@@ -129,7 +129,7 @@ def quote_hex(input_str):
     return quoted_value
 
 
-def prepare_oid(params, dataset):
+def prepare_oid(params, dataset, model):
     """
     Функция для подстановки параметров пользователя в OID. Последовательно заменяет '%s' на параметры с ключами кроме
     '0' (первый параметр)
@@ -151,6 +151,8 @@ def prepare_oid(params, dataset):
         # Перебираем весь словарь с данными. Ключи при этом сортируем
         for i, k in enumerate(sorted(params.keys())[1:]):
             # Заменяем одну следующую последовательность '%s' на соответствующий элемент словаря
+            if params[0]== "get_SinglePort" and model == "N3K-C3064PQ-10GX":
+                params[k]=str((int(params[k])-1)*4096+436207616)
             dataset = dataset.replace('%s', params[k], 1)
             # Заменяем все последовательности '{№}' на соответствующий элемент словаря.
             # Здесь № - номер элемента в сортированном списке ключей
@@ -262,7 +264,7 @@ def process_device(device_module, request_params, json_resp, target_ip, snmp_com
                         get_notwalk = True
                         break
 
-                snmp_oids_list = [prepare_oid(request_param.copy(), dataset[paramname]) for paramname in dataset]
+                snmp_oids_list = [prepare_oid(request_param.copy(), dataset[paramname], model) for paramname in dataset]
 
                 # выполняем SNMP-опрос
                 snmp_method = session.get if get_notwalk else session.walk
@@ -305,7 +307,7 @@ def process_device(device_module, request_params, json_resp, target_ip, snmp_com
 
                             # Временный OID, полученный из конфигурационного файла, и в который уже подставлены
                             # пользовательские параметры
-                            tmp_oid = prepare_oid(request_param.copy(), dataset[k])
+                            tmp_oid = prepare_oid(request_param.copy(), dataset[k], model)
                             # Проверяем, есть ли значение временного OID в полном OID
                             if tmp_oid + trailer in full_oid + trailer:
                                 # Получаем оставшуюся часть от OID
@@ -357,7 +359,7 @@ def process_device(device_module, request_params, json_resp, target_ip, snmp_com
             if isinstance(dataset, list):
                 varlist = []
                 for VarBindItem in dataset:
-                    prepaired_oid = prepare_oid(request_param.copy(), VarBindItem[:])
+                    prepaired_oid = prepare_oid(request_param.copy(), VarBindItem[:], model)
                     full_prepaired_oid = '.'.join(prepaired_oid[0:2])
                     varlist.append((full_prepaired_oid, prepaired_oid[2], prepaired_oid[3],))
 

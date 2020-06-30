@@ -3,14 +3,15 @@ version: '3.7'
 services:
   worker:
     build: .
-    image: mxmp/swtoolz-core
+    image: mxmp/swtoolz-core:3.6.6
     restart: always
     ports:
-      - "7377:7377"
+      - "7577:7577"
     volumes:
       - ~/swconfig.py:/app/swconfig.py
       - ~/swtoolz-core.log:/var/log/swtoolz-core.log
       - ./:/app
+    network_mode: host
 
 networks:
   default:

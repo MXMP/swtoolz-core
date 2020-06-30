@@ -335,6 +335,41 @@ def make_dynamic_map_for_6509(incoming_value, host):
 
     return {'DeviceMap': map}
 
+def make_ports_for_nexus(incoming_value, host):
+    map = {}
+    for name in incoming_value:
+        ports = {}
+        for index, port_name in sorted(incoming_value[name].items()):
+            if int(index)>=436207616:
+                port_name = port_name.replace('Ethernet','Eth')
+                port_idx = int((int(index) - 436207616)/4096) + 1
+                if name == 'PortIndex':
+                    ports[port_idx]=port_idx
+                else:
+                    ports[port_idx]=port_name
+                map[name] = ports
+    return map
+
+
+def make_ports_for_qfx5120(incoming_value, host):
+    qfx5120ports={-3:0,516:1,-3:2,674:3,538:4,650:5,540:6,612:7,542:8,603:9,544:10,657:11,663:12,606:13,-3:14,-3:15,523:16,528:17,-3:18,-3:19,691:20,687:21,616:22,-3:23,681:24,-3:25,576:26,593:27,-3:28,-3:29,622:30,654:31,-3:32,-3:33,-3:34,-3:35,-3:36,-3:37,-3:38,-3:39,678:40,640:41,644:42,625:43,661:44,581:45,519:46,-3:47}
+    map = {}
+    for name in incoming_value:
+        ports = {}
+        for index, port_name in sorted(incoming_value[name].items()):
+            try:
+                journalkey = qfx5120ports.get(int(index))
+                if journalkey is not None:
+                    port_name = port_name.replace('Ethernet','Eth')
+                    port_idx = journalkey
+                    if name == 'PortIndex':
+                        ports[port_idx]=port_idx
+                    else:
+                        ports[port_idx]=port_name
+                    map[name] = ports
+            except KeyError:
+                logger.error("Can't find index {index}.")
+    return map
 
 def huawei_fdb(incoming_value, host):
     """
