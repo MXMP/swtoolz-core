@@ -210,7 +210,6 @@ def process_device(device_module, request_params, json_resp, target_ip, snmp_com
     # "data": [{"1": "2", "0": "swL2PortCtrlAdminState"}, {"0": ""}]
     # dataset - словарь вида {'Metric':'OID'}, список списков вида [['tag', 'iid', 'value', 'type']] или
     # кортеж со словарем внутри ({'2':'enable'},) из файла с таким же именем, как имя модели устройства (model)
-    logging.debug(request_params)
     for request_param in request_params:
         try:
             method_name = request_param[0]

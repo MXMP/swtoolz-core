@@ -2,8 +2,14 @@ import math
 from telnetlib import Telnet
 import logging
 import re
+import time
+import easysnmp
+from easysnmp.exceptions import EasySNMPTimeoutError, EasySNMPError
 
-from swconfig import telnet_user, telnet_password
+
+from swconfig import telnet_user, telnet_password, users, snmp_retries, snmp_timeout, dyn_port_idx_update_interval
+
+gFynamicSNMPIndex = {}
 
 
 class Port:
@@ -351,14 +357,41 @@ def make_ports_for_nexus(incoming_value, host):
     return map
 
 
+def update_dynamic_snmp_ports_qfx(host):
+    ticks = time.time()
+    if host not in gFynamicSNMPIndex or ticks-gFynamicSNMPIndex[host]['ticks']>dyn_port_idx_update_interval:
+        ports={}
+        session = easysnmp.Session(hostname=host, community=users['journal']['1'], version=2,
+                               retries=snmp_retries, use_numeric=True, timeout=snmp_timeout)
+        try:
+        # Выполняем опрос параметров из default_info
+            snmp_response = session.walk('.1.3.6.1.2.1.31.1.1.1.1')
+        except EasySNMPTimeoutError as err:
+            logging.exception(err)
+            pass
+        else:
+            for x in snmp_response:
+                match=re.search('[gx]e\-0\/0\/([0-9]+)$', x.value)
+                if match:
+                    ports[x.oid_index]=match.group(1)
+
+        gFynamicSNMPIndex[host]={'ticks':ticks,'ports':ports}
+        logging.debug(gFynamicSNMPIndex)
+    else:
+        logging.debug('cached')
+    return
+
+
+
 def make_ports_for_qfx5120(incoming_value, host):
-    qfx5120ports={-3:0,516:1,-3:2,674:3,538:4,650:5,540:6,612:7,542:8,603:9,544:10,657:11,663:12,606:13,-3:14,-3:15,523:16,528:17,-3:18,-3:19,691:20,687:21,616:22,-3:23,681:24,-3:25,576:26,593:27,-3:28,-3:29,622:30,654:31,-3:32,-3:33,-3:34,-3:35,-3:36,-3:37,-3:38,-3:39,678:40,640:41,644:42,625:43,661:44,581:45,519:46,-3:47}
+    update_dynamic_snmp_ports_qfx(host)
+    qfx5120ports=gFynamicSNMPIndex[host]['ports']
     map = {}
     for name in incoming_value:
         ports = {}
         for index, port_name in sorted(incoming_value[name].items()):
             try:
-                journalkey = qfx5120ports.get(int(index))
+                journalkey = qfx5120ports.get(index)
                 if journalkey is not None:
                     port_name = port_name.replace('Ethernet','Eth')
                     port_idx = journalkey
