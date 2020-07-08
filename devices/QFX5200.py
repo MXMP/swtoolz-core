@@ -94,10 +94,15 @@ AdminStatus = ({
 
 # ifType (placeholder)
 AdminSpeed = ({
-    '1' : 'other',
-    '6' : 'other',
+    '1' : '1other',
+    '2' : '2other',
+    '3' : '3other',
+    '4' : '4other',
+    '5' : '5other',
+    '6' : '6other',
     '24': 'other',
     '53': 'other',
+    '10000': '10G',
     },)
 
 # ifType (placeholder)

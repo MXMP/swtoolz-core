@@ -9,7 +9,7 @@ from easysnmp.exceptions import EasySNMPTimeoutError, EasySNMPError
 
 from swconfig import telnet_user, telnet_password, users, snmp_retries, snmp_timeout, dyn_port_idx_update_interval
 
-gFynamicSNMPIndex = {}
+gDynamicSNMPIndex = {}
 
 
 class Port:
@@ -356,10 +356,16 @@ def make_ports_for_nexus(incoming_value, host):
                 map[name] = ports
     return map
 
+def make_redback_ports(incoming_value, host):
+#заполняем словарь типа порта одним и тем же значением (fiber)
+    incoming_value['MediumType']=dict.fromkeys(range(1,25), 6)
+    incoming_value['AdminSpeed']=incoming_value['ActualSpeed']
+    incoming_value['AdminFlow']=dict.fromkeys(range(1,25), 1)
+    return incoming_value
 
 def update_dynamic_snmp_ports_qfx(host):
     ticks = time.time()
-    if host not in gFynamicSNMPIndex or ticks-gFynamicSNMPIndex[host]['ticks']>dyn_port_idx_update_interval:
+    if host not in gDynamicSNMPIndex or ticks-gDynamicSNMPIndex[host]['ticks']>dyn_port_idx_update_interval:
         ports={}
         session = easysnmp.Session(hostname=host, community=users['journal']['1'], version=2,
                                retries=snmp_retries, use_numeric=True, timeout=snmp_timeout)
@@ -375,8 +381,8 @@ def update_dynamic_snmp_ports_qfx(host):
                 if match:
                     ports[x.oid_index]=match.group(1)
 
-        gFynamicSNMPIndex[host]={'ticks':ticks,'ports':ports}
-        logging.debug(gFynamicSNMPIndex)
+        gDynamicSNMPIndex[host]={'ticks':ticks,'ports':ports}
+        logging.debug(gDynamicSNMPIndex)
     else:
         logging.debug('cached')
     return
@@ -385,7 +391,7 @@ def update_dynamic_snmp_ports_qfx(host):
 
 def make_ports_for_qfx5120(incoming_value, host):
     update_dynamic_snmp_ports_qfx(host)
-    qfx5120ports=gFynamicSNMPIndex[host]['ports']
+    qfx5120ports=gDynamicSNMPIndex[host]['ports']
     map = {}
     for name in incoming_value:
         ports = {}
