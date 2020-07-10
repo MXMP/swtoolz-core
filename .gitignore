@@ -2,5 +2,4 @@ venv/
 .idea/
 tests/
 *.pyc
-swconfig.py
 swtoolz-core.log
