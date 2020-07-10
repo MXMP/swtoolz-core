@@ -1,7 +1,7 @@
 # coding=UTF8
 # IP-адрес интерфейса и порт
 interface_ip = ""
-port = 7377
+port = 7577
 
 # Пауза при опросе сокета в секундах
 sleep_int = 0.01
@@ -13,11 +13,11 @@ stats_int = 300
 set_iter_delay = 0
 
 # Таймаут ожидания ответа для SNMP-запроса (в секундах)
-snmp_timeout = 1
+snmp_timeout = 3
 
 # Количество дополнительных попыток для SNMP-запроса
 # Значение '1' означает, что всего будет предпринято 2 попытки
-snmp_retries = 1
+snmp_retries = 0
 
 # Список методов, для которых значение snmp_retries будет всегда считаться равным нулю
 no_retries = ['set_SaveConfig']
@@ -26,12 +26,12 @@ no_retries = ['set_SaveConfig']
 forced_mtd = ['Commands', 'OfflineDeviceMaps', 'set_CreateVlan', 'set_IpifCfg']
 
 # Файл журнала
-logfile = "/var/log/swtoolz-core.log"
+logfile = '/var/log/swtoolz-core.log'
 
 # Пользователи и их наборы snmp-community
 users = {
-    'default': {'1': 'public', '2': 'private'},
-}
+    'default': {'1' : 'public', '2' : 'private'},
+    }
 
 # Имена и OID'ы параметров, запрашиваемых у устройства в обязательном порядке
 # По умолчанию спрашиваем sysDescr, sysUpTime, sysName, sysLocation
@@ -42,67 +42,6 @@ default_info = {
     'sys_name': '.1.3.6.1.2.1.1.5.0',
     'sys_location': '.1.3.6.1.2.1.1.6.0',
 }
-
-# Соответствие описаний моделей их названиям. Список проверяется до первого соответствия
-# Ключ - подстрока, входящая в строки в sysDescr или sysName
-# Значение - локально значимое имя модели и соответствующего ей файла в ./devices
-models_by_desc = [
-    {'DES-3200-28/C1': 'DES-3200-28_C1'},
-    {'DES-3200-28': 'DES-3200-28'},
-    {'DES-3200-18/C1': 'DES-3200-18_C1'},
-    {'DES-3200-18': 'DES-3200-18'},
-    {'DES-3200-10': 'DES-3200-10'},
-    {'DES-3028G': 'DES-3028G'},
-    {'DES-3028': 'DES-3028'},
-    {'DES-3026': 'DES-3026'},
-    {'DES-3526': 'DES-3526'},
-    {'DGS-3100-24TG': 'DGS-3100-24TG'},
-    {'DGS-3120-24SC/B': 'DGS-3120-24SC_B'},
-    {'DGS-3120-24SC': 'DGS-3120-24SC'},
-    {'DGS-3000-28SC': 'DGS-3000-28SC'},
-    {'DGS-3000-24TC': 'DGS-3000-24TC'},
-    {'DGS-1510-28L/ME': 'DGS-1510-28LME'},
-    {'DGS-3000-28L': 'DGS-3000-28L'},
-    {'DGS-3000-26TC': 'DGS-3000-26TC'},
-    {'DGS-3612G': 'DGS-3612G'},
-    {'DGS-3627G': 'DGS-3627G'},
-    {'DGS-3620-28SC': 'DGS-3620-28SC'},
-    {'BigIron RX': 'BigIron-RX'},
-    {'BigIron 8000': 'Foundry'},
-    {'BigIron 4000': 'Foundry'},
-    {'FastIron 800': 'Foundry'},
-    {'FastIron 400': 'Foundry'},
-    {'FastIron SX 800': 'SX-800'},
-    {'NetIron 800': 'Foundry'},
-    {'IronWare': 'Foundry'},
-    {'TurboIron-X24': 'Foundry'},
-    {'c2950-MGMT': 'WS-C2950G-48-EI'},
-    {'C3550 Software': 'WS-C3550-12G'},
-    {'cat3550-12G': 'WS-C3550-12G'},
-    {'Cat3550-12G': 'WS-C3550-12G'},
-    {'Core7k-17': 'WS-C3550-12G'},
-    {'Kalach_cat3550': 'WS-C3550-12G'},
-    {'Bereslavka-Cat': 'WS-C3550-12G'},
-    {'CiscoWisi': 'WS-C3560X-24'},
-    {'AdmRack-c3750': 'WS-C3750-24PS-S'},
-    {'Cat3750-48_TV': 'WS-C3750-48TS-S'},
-    {'ATS10-5A.2_RoS': 'WS-C3750G-16TD'},
-    {'SCE8000': 'SCE8000'},
-    {'Redback': 'Redback'},
-    {'MES2124': 'MES-2124'},
-    {'MES2324FB': 'MES-2324FB'},
-    {'MES3124F': 'MES-3124F'},
-    {'MES3324F': 'MES3324F'},
-    {'MES5324': 'MES-5324'},
-    {'APC Web/SNMP': 'APC-Smart-UPS'},
-    {'QSW-8370': 'QSW-8370'},
-    {'SNR-S300G-24FX': 'S300G-24FX'},
-    {'SNR-S4550-24XQ-AC': 'S4550-24XQ'},
-    {'SNR-S2985G-24T': 'S2985G-24T'},
-    {'ES-2108-G': 'ES-2108-G'},
-    {'DES-1228/ME': 'DES-1228ME'},
-    {'SMG-1016': 'SMG-1016M'},
-]
 
 # Шаблон HTTP-заголовка для ответа клиенту
 http_header = """HTTP/1.1 200 OK
@@ -117,5 +56,8 @@ Content-Length: {$datalen}
 # Режим отладки
 debug_mode = False
 
-telnet_user = 'user'
-telnet_password = 'pass'
+telnet_user = 'script'
+telnet_password = 'ljcnegcrhbgnf'
+
+#время кеширования индексов SNMP
+dyn_port_idx_update_interval=30

@@ -10,7 +10,7 @@ from aiohttp import web
 
 import helpers
 import swconfig
-
+import models
 
 def get_model(sys_name, sys_descr, models_list):
     """
@@ -433,7 +433,7 @@ async def handle_get(request):
 
         # Получаем идентификатор модели
         answer['response']['model'] = get_model(answer['response']['sys_name'], answer['response']['sys_descr'],
-                                                swconfig.models_by_desc)
+                                                models.models_by_desc)
 
     # Если в списке команд (методов) есть зарезервированная команда (метод), то выполняем опрос
     # оборудования даже если оно недоступно
