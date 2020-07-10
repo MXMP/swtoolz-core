@@ -8,8 +8,8 @@ services:
     ports:
       - "7577:7577"
     volumes:
-      - ~/swconfig.py:/app/swconfig.py
-      - ~/swtoolz-core.log:/var/log/swtoolz-core.log
+      - ./swconfig.py:/app/swconfig.py
+      - ./swtoolz-core.log:/var/log/swtoolz-core.log
       - ./:/app
     network_mode: host
 
