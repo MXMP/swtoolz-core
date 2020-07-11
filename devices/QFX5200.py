@@ -35,7 +35,7 @@ DeviceMap = ([
 # ShiftIndex - смещение, которое нужно прибавить к индексу. У некоторых устройств первый индекс может начинаться, например, с 256.
 # MaxIndex - Максимальный индекс, который нужно обработать. Индексы с большими номерами игнорируются.
 StackInfo = ({
-    'SlotSize'   : '47',
+    'SlotSize'   : '48',
 #    'ShiftIndex' : '436207615',
     'ShiftIndex' : '0',
     'MaxIndex'   : '1014444403',
@@ -99,7 +99,7 @@ AdminSpeed = ({
     '3' : '3other',
     '4' : '4other',
     '5' : '5other',
-    '6' : '6other',
+    '6' : 'auto',
     '24': 'other',
     '53': 'other',
     '10000': '10G',
@@ -115,7 +115,9 @@ AdminFlow = ({
 
 # UnitModuleName (placeholder)
 BoardDescr = ({
-    '1' : 'Juniper QFX5120',
+    '1' : 'Juniper QFX5120 48x25G',
+    '2' : 'Juniper QFX5120 8x100G',
+
     },)
 
 # walk_VlanEgressPorts (placeholder for Slava's Hardcode. not working but necessary)
@@ -163,9 +165,9 @@ walk_AllPorts = {
 #    AdminStatus         .1.3.6.1.2.1.2.2.1.7				ifAdminStatus
     'AdminStatus'     : '.1.3.6.1.2.1.2.2.1.7',
 #    AdminSpeed          .1.3.6.1.2.1.2.2.1.3				ifType (placeholder)
-#    'AdminSpeed'      : '.1.3.6.1.2.1.2.2.1.3',
+    'AdminSpeed'      : '.1.3.6.1.2.1.2.2.1.3',
 #    AdminFlow           .1.3.6.1.2.1.2.2.1.3				ifType (placeholder)
-#    'AdminFlow'       : '.1.3.6.1.2.1.2.2.1.3',
+    'AdminFlow'       : '.1.3.6.1.2.1.2.2.1.3',
     }
 
 walk_ifName = {

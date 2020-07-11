@@ -93,7 +93,7 @@ AdminStatus = ({
 # ifType (placeholder)
 AdminSpeed = ({
     '1' : 'other',
-    '6' : 'other',
+    '6' : 'auto',
     '24': 'other',
     '53': 'other',
     },)
@@ -108,7 +108,8 @@ AdminFlow = ({
 
 # UnitModuleName (placeholder)
 BoardDescr = ({
-    '1' : 'N3K-C3064PQ-10GX',
+    '1' : 'N3K-C3064PQ-10GX 56x10G',
+    '2' : 'N3K-C3064PQ-10GX 2x40G',
     },)
 
 # walk_VlanEgressPorts (placeholder for Slava's Hardcode. not working but necessary)
@@ -138,9 +139,9 @@ get_SinglePort = {
 #    AdminStatus         .1.3.6.1.2.1.2.2.1.7				ifAdminStatus
     'AdminStatus.'    : '.1.3.6.1.2.1.2.2.1.7.%s',
 #    AdminSpeed          .1.3.6.1.2.1.2.2.1.3				ifType (placeholder)
-#    'AdminSpeed.'     : '.1.3.6.1.2.1.2.2.1.3.%s',
+    'AdminSpeed.'     : '.1.3.6.1.2.1.2.2.1.3.%s',
 #    AdminFlow           .1.3.6.1.2.1.2.2.1.3				ifType (placeholder)
-#    'AdminFlow.'      : '.1.3.6.1.2.1.2.2.1.3.%s',
+    'AdminFlow.'      : '.1.3.6.1.2.1.2.2.1.3.%s',
 #    PortDescr           .1.3.6.1.2.1.31.1.1.1.18			ifAlias
     'PortDescr.'      : '.1.3.6.1.2.1.31.1.1.1.18.%s',
     }
@@ -156,9 +157,9 @@ walk_AllPorts = {
 #    AdminStatus         .1.3.6.1.2.1.2.2.1.7				ifAdminStatus
     'AdminStatus'     : '.1.3.6.1.2.1.2.2.1.7',
 #    AdminSpeed          .1.3.6.1.2.1.2.2.1.3				ifType (placeholder)
-#    'AdminSpeed'      : '.1.3.6.1.2.1.2.2.1.3',
+    'AdminSpeed'      : '.1.3.6.1.2.1.2.2.1.3',
 #    AdminFlow           .1.3.6.1.2.1.2.2.1.3				ifType (placeholder)
-#    'AdminFlow'       : '.1.3.6.1.2.1.2.2.1.3',
+    'AdminFlow'       : '.1.3.6.1.2.1.2.2.1.3',
     }
 
 walk_ifName = {
