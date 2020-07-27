@@ -377,9 +377,9 @@ def update_dynamic_snmp_ports_qfx(host):
             pass
         else:
             for x in snmp_response:
-                match=re.search('[gx]e\-0\/0\/([0-9]+)$', x.value)
+                match=re.search('(([gx]e)|(et))\-0\/0\/([0-9]+)$', x.value)
                 if match:
-                    ports[x.oid_index]=match.group(1)
+                    ports[x.oid_index]=match.group(4)
 
         gDynamicSNMPIndex[host]={'ticks':ticks,'ports':ports}
         logging.debug(gDynamicSNMPIndex)
