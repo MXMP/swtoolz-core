@@ -1,2 +1,3 @@
 aiohttp==3.5.4
 easysnmp==0.2.5
+gunicorn==20.0.4
