@@ -181,15 +181,15 @@ walk_AllPorts = {
     # ActualStatus   .1.3.6.1.2.1.2.2.1.8       ifOperStatus
     'ActualStatus': '.1.3.6.1.2.1.2.2.1.8',
     # ActualSpeed    .1.3.6.1.2.1.2.2.1.5       ifSpeed
-    'ActualSpeed':  '.1.3.6.1.2.1.2.2.1.5',
+    'ActualSpeed': '.1.3.6.1.2.1.2.2.1.5',
     # AdminStatus    .1.3.6.1.2.1.2.2.1.7       ifAdminStatus
-    'AdminStatus':  '.1.3.6.1.2.1.2.2.1.7',
+    'AdminStatus': '.1.3.6.1.2.1.2.2.1.7',
     # AdminSpeed     .1.3.6.1.2.1.31.1.1.1.15   ifHighSpeed
-    'AdminSpeed':   '.1.3.6.1.2.1.31.1.1.1.15',
+    'AdminSpeed': '.1.3.6.1.2.1.31.1.1.1.15',
     # PortDescr      .1.3.6.1.2.1.31.1.1.1.18   ifAlias
-    'PortDescr':    '.1.3.6.1.2.1.31.1.1.1.18',
+    'PortDescr': '.1.3.6.1.2.1.31.1.1.1.18',
     # MediumType     .1.3.6.1.2.1.2.2.1.3       ifType
-    'MediumType':   '.1.3.6.1.2.1.2.2.1.3',
+    'MediumType': '.1.3.6.1.2.1.2.2.1.3',
 }
 
 # Возвращает состояние автообнаружения ONT на портах OLT (см. AutofindStatus)
@@ -212,15 +212,15 @@ get_SinglePort = {
     # ActualStatus    .1.3.6.1.2.1.2.2.1.8          ifOperStatus
     'ActualStatus.': '.1.3.6.1.2.1.2.2.1.8.%s',
     # ActualSpeed     .1.3.6.1.2.1.2.2.1.5          ifSpeed
-    'ActualSpeed.':  '.1.3.6.1.2.1.2.2.1.5.%s',
+    'ActualSpeed.': '.1.3.6.1.2.1.2.2.1.5.%s',
     # AdminStatus     .1.3.6.1.2.1.2.2.1.7          ifAdminStatus
-    'AdminStatus.':  '.1.3.6.1.2.1.2.2.1.7.%s',
+    'AdminStatus.': '.1.3.6.1.2.1.2.2.1.7.%s',
     # AdminSpeed      .1.3.6.1.2.1.31.1.1.1.15      ifHighSpeed
-    'AdminSpeed.':   '.1.3.6.1.2.1.31.1.1.1.15.%s',
+    'AdminSpeed.': '.1.3.6.1.2.1.31.1.1.1.15.%s',
     # PortDescr       .1.3.6.1.2.1.31.1.1.1.18      ifAlias
-    'PortDescr.':    '.1.3.6.1.2.1.31.1.1.1.18.%s',
+    'PortDescr.': '.1.3.6.1.2.1.31.1.1.1.18.%s',
     # MediumType      .1.3.6.1.2.1.2.2.1.3          ifType
-    'MediumType.':   '.1.3.6.1.2.1.2.2.1.3.%s',
+    'MediumType.': '.1.3.6.1.2.1.2.2.1.3.%s',
 }
 
 # Установка описания для порта.
@@ -236,9 +236,9 @@ get_onu_eth_port_info = {
     # onu_eth_port_ActualStatus      .1.3.6.1.4.1.2011.6.128.1.1.2.62.1.22      hwGponDeviceOntEthernetOnlineState
     'onu_eth_port_ActualStatus...': '.1.3.6.1.4.1.2011.6.128.1.1.2.62.1.22.{1}.{2}.{3}',
     # onu_eth_port_ActualSpeed       .1.3.6.1.4.1.2011.6.128.1.1.2.62.1.4       hwGponDeviceOntEthernetSpeed
-    'onu_eth_port_ActualSpeed...':  '.1.3.6.1.4.1.2011.6.128.1.1.2.62.1.4.{1}.{2}.{3}',
+    'onu_eth_port_ActualSpeed...': '.1.3.6.1.4.1.2011.6.128.1.1.2.62.1.4.{1}.{2}.{3}',
     # onu_eth_port_AdminStatus       .1.3.6.1.4.1.2011.6.128.1.1.2.62.1.5       hwGponDeviceOntEthernetOperateStatus
-    'onu_eth_port_AdminStatus...':  '.1.3.6.1.4.1.2011.6.128.1.1.2.62.1.5.{1}.{2}.{3}',
+    'onu_eth_port_AdminStatus...': '.1.3.6.1.4.1.2011.6.128.1.1.2.62.1.5.{1}.{2}.{3}',
 }
 
 # Включение/выключение Ethernet порта на ONU.
@@ -252,57 +252,57 @@ set_onu_eth_port_admin_status = [
 # На вход обязательно нужно передать: ifIndex GPON-порта, порядковый номер ONU и номер порта на ONU.
 get_onu_eth_port_errors = {
     # recv_crc_align_errors                  .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.7                   hwGponOntEthernetStatisticRecvCRCAlignErrors
-    'recv_crc_align_errors...':             '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.7.{1}.{2}.{3}',
+    'recv_crc_align_errors...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.7.{1}.{2}.{3}',
     # recv_undersize_pkts                    .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.8                   hwGponOntEthernetStatisticRecvUndersizePkts
-    'recv_undersize_pkts...':               '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.8.{1}.{2}.{3}',
+    'recv_undersize_pkts...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.8.{1}.{2}.{3}',
     # recv_fragments                         .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.10                  hwGponOntEthernetStatisticRecvFragments
-    'recv_fragments...':                    '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.10.{1}.{2}.{3}',
+    'recv_fragments...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.10.{1}.{2}.{3}',
     # recv_jabbers                           .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.11                  hwGponOntEthernetStatisticRecvJabbers
-    'recv_jabbers...':                      '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.11.{1}.{2}.{3}',
+    'recv_jabbers...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.11.{1}.{2}.{3}',
     # collisions                             .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.12                  hwGponOntEthernetStatisticCollisions
-    'collisions...':                        '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.12.{1}.{2}.{3}',
+    'collisions...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.12.{1}.{2}.{3}',
     # recv_fcs_errors                        .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.19                  hwGponOntEthernetStatisticRecvFCSErrors
-    'recv_fcs_errors...':                   '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.19.{1}.{2}.{3}',
+    'recv_fcs_errors...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.19.{1}.{2}.{3}',
     # send_excessive_collision               .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.20                  hwGponOntEthernetStatisticSendExcessiveCollision
-    'send_excessive_collision...':          '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.20.{1}.{2}.{3}',
+    'send_excessive_collision...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.20.{1}.{2}.{3}',
     # send_late_collision                    .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.21                  hwGponOntEthernetStatisticSendLateCollision
-    'send_late_collision...':               '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.21.{1}.{2}.{3}',
+    'send_late_collision...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.21.{1}.{2}.{3}',
     # recv_frame_too_longs                   .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.22                  hwGponOntEthernetStatisticRecvFrameTooLongs
-    'recv_frame_too_longs...':              '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.22.{1}.{2}.{3}',
+    'recv_frame_too_longs...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.22.{1}.{2}.{3}',
     # recv_buffer_overflowson                .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.23                  hwGponOntEthernetStatisticRecvBufferOverflowson
-    'recv_buffer_overflowson...':           '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.23.{1}.{2}.{3}',
+    'recv_buffer_overflowson...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.23.{1}.{2}.{3}',
     # send_buffer_overflowson                .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.24                  hwGponOntEthernetStatisticSendBufferOverflowson
-    'send_buffer_overflowson...':           '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.24.{1}.{2}.{3}',
+    'send_buffer_overflowson...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.24.{1}.{2}.{3}',
     # send_single_collision_frame            .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.25                  hwGponOntEthernetStatisticSendSingleCollisionFrame
-    'send_single_collision_frame...':       '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.25.{1}.{2}.{3}',
+    'send_single_collision_frame...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.25.{1}.{2}.{3}',
     # send_multiple_collisions_frame         .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.26                  hwGponOntEthernetStatisticSendMultipleCollisionsFrame
-    'send_multiple_collisions_frame...':    '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.26.{1}.{2}.{3}',
+    'send_multiple_collisions_frame...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.26.{1}.{2}.{3}',
     # send_deferred_transmission             .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.28                  hwGponOntEthernetStatisticDeferredTransmission
-    'send_deferred_transmission...':        '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.28.{1}.{2}.{3}',
+    'send_deferred_transmission...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.28.{1}.{2}.{3}',
     # send_sqe_test_error                    .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.27                  hwGponOntEthernetStatisticSendSQETestError
-    'send_sqe_test_error...':               '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.27.{1}.{2}.{3}',
+    'send_sqe_test_error...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.27.{1}.{2}.{3}',
     # send_internal_mac_transmit_error       .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.29                  hwGponOntEthernetStatisticInternalmacTransmitError
-    'send_internal_mac_transmit_error...':  '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.29.{1}.{2}.{3}',
+    'send_internal_mac_transmit_error...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.29.{1}.{2}.{3}',
     # send_carrier_sense_error               .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.30                  hwGponOntEthernetStatisticSendCarrierSenseError
-    'send_carrier_sense_error...':          '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.30.{1}.{2}.{3}',
+    'send_carrier_sense_error...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.30.{1}.{2}.{3}',
     # recv_alignment_error                   .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.31                  hwGponOntEthernetStatisticRecvAlignmentError
-    'recv_alignment_error...':              '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.31.{1}.{2}.{3}',
+    'recv_alignment_error...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.31.{1}.{2}.{3}',
     # recv_internal_mac_receive_error        .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.32                  hwGponOntEthernetStatisticInternalMACReceiveError
-    'recv_internal_mac_receive_error...':   '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.32.{1}.{2}.{3}',
+    'recv_internal_mac_receive_error...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.32.{1}.{2}.{3}',
     # delay_exceeded_discard                 .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.35                  hwGponOntEthernetStatisticDelayExceededDiscard
-    'delay_exceeded_discard...':            '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.35.{1}.{2}.{3}',
+    'delay_exceeded_discard...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.35.{1}.{2}.{3}',
     # recv_good_pkts_octets                  .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.42                  hwGponOntEthernetStatisticRecvGoodPktsOctets
-    'recv_good_pkts_octets...':             '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.42.{1}.{2}.{3}',
+    'recv_good_pkts_octets...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.42.{1}.{2}.{3}',
     # send_good_pkts_octets                  .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.43                  hwGponOntEthernetStatisticSendGoodPktsOctets
-    'send_good_pkts_octets...':             '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.43.{1}.{2}.{3}',
+    'send_good_pkts_octets...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.43.{1}.{2}.{3}',
     # recv_bad_pkts_octets                   .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.44                  hwGponOntEthernetStatisticRecvBadPktsOctets
-    'recv_bad_pkts_octets...':              '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.44.{1}.{2}.{3}',
+    'recv_bad_pkts_octets...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.44.{1}.{2}.{3}',
     # send_bad_pkts_octets                   .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.45                  hwGponOntEthernetStatisticSendBadPktsOctets
-    'send_bad_pkts_octets...':              '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.45.{1}.{2}.{3}',
+    'send_bad_pkts_octets...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.45.{1}.{2}.{3}',
     # forward_drop_events                    .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.47                  hwGponOntEthernetStatisticForwardDropEvents
-    'forward_drop_events...':               '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.47.{1}.{2}.{3}',
+    'forward_drop_events...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.47.{1}.{2}.{3}',
     # send_pkts_oversize                     .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.54                  hwGponOntEthernetStatisticSendPktsOversize
-    'send_pkts_oversize...':                '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.54.{1}.{2}.{3}',
+    'send_pkts_oversize...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.54.{1}.{2}.{3}',
     # recv_pkts_1519_to_oversize_octets      .1.3.6.1.4.1.2011.6.128.1.1.4.25.1.55                  hwGponOntEthernetStatisticRecvPkts1519toOversizeOctets
     'recv_pkts_1519_to_oversize_octets...': '.1.3.6.1.4.1.2011.6.128.1.1.4.25.1.55.{1}.{2}.{3}',
 }
@@ -327,13 +327,13 @@ get_onu_ddm_info = {
     # onu_ddm_temperature     .1.3.6.1.4.1.2011.6.128.1.1.2.51.1.1      hwGponOntOpticalDdmTemperature
     'onu_ddm_temperature..': '.1.3.6.1.4.1.2011.6.128.1.1.2.51.1.1.{1}.{2}',
     # onu_ddm_voltage         .1.3.6.1.4.1.2011.6.128.1.1.2.51.1.5      hwGponOntOpticalDdmVoltage
-    'onu_ddm_voltage..':     '.1.3.6.1.4.1.2011.6.128.1.1.2.51.1.5.{1}.{2}',
+    'onu_ddm_voltage..': '.1.3.6.1.4.1.2011.6.128.1.1.2.51.1.5.{1}.{2}',
     # onu_ddm_bias            .1.3.6.1.4.1.2011.6.128.1.1.2.51.1.2      hwGponOntOpticalDdmBiasCurrent
-    'onu_ddm_bias..':        '.1.3.6.1.4.1.2011.6.128.1.1.2.51.1.2.{1}.{2}',
+    'onu_ddm_bias..': '.1.3.6.1.4.1.2011.6.128.1.1.2.51.1.2.{1}.{2}',
     # onu_ddm_tx_power        .1.3.6.1.4.1.2011.6.128.1.1.2.51.1.3      hwGponOntOpticalDdmTxPower
-    'onu_ddm_tx_power..':    '.1.3.6.1.4.1.2011.6.128.1.1.2.51.1.3.{1}.{2}',
+    'onu_ddm_tx_power..': '.1.3.6.1.4.1.2011.6.128.1.1.2.51.1.3.{1}.{2}',
     # onu_ddm_rx_power        .1.3.6.1.4.1.2011.6.128.1.1.2.51.1.4      hwGponOntOpticalDdmRxPower
-    'onu_ddm_rx_power..':    '.1.3.6.1.4.1.2011.6.128.1.1.2.51.1.4.{1}.{2}',
+    'onu_ddm_rx_power..': '.1.3.6.1.4.1.2011.6.128.1.1.2.51.1.4.{1}.{2}',
 }
 
 walk_BoardDescr = {
@@ -344,9 +344,9 @@ walk_BoardDescr = {
 
 walk_VlanMap = {
     # VLanId      .1.3.6.1.4.1.2011.5.6.1.1.1.1     hwVlanIndex
-    'VLanId':    '.1.3.6.1.4.1.2011.5.6.1.1.1.1',
+    'VLanId': '.1.3.6.1.4.1.2011.5.6.1.1.1.1',
     # VLanName    .1.3.6.1.4.1.2011.5.6.1.1.1.2     hwVlanDescription
-    'VLanName':  '.1.3.6.1.4.1.2011.5.6.1.1.1.2',
+    'VLanName': '.1.3.6.1.4.1.2011.5.6.1.1.1.2',
     # VlanPorts   .1.3.6.1.4.1.2011.5.6.1.1.1.3     hwVlanPorts
     'VlanPorts': '.1.3.6.1.4.1.2011.5.6.1.1.1.3',
 }
@@ -375,9 +375,9 @@ walk_vlanif = {
     # vlanid   .1.3.6.1.4.1.2011.5.6.1.2.1.2    hwVlanID
     'vlanid': '.1.3.6.1.4.1.2011.5.6.1.2.1.2',
     # ip       .1.3.6.1.4.1.2011.5.6.1.2.1.3    hwVlanIpAddress
-    'ip':     '.1.3.6.1.4.1.2011.5.6.1.2.1.3',
+    'ip': '.1.3.6.1.4.1.2011.5.6.1.2.1.3',
     # mask     .1.3.6.1.4.1.2011.5.6.1.2.1.4    hwVlanIpAddressMask
-    'mask':   '.1.3.6.1.4.1.2011.5.6.1.2.1.4',
+    'mask': '.1.3.6.1.4.1.2011.5.6.1.2.1.4',
 }
 
 # Создание vlanif.
@@ -467,9 +467,16 @@ walk_service_ports = {
     # port_id   .1.3.6.1.4.1.2011.5.14.5.2.1.4      hwExtSrvFlowPara3
     'port_id': '.1.3.6.1.4.1.2011.5.14.5.2.1.4',
     # ont_id    .1.3.6.1.4.1.2011.5.14.5.2.1.5      hwExtSrvFlowPara4
-    'ont_id':  '.1.3.6.1.4.1.2011.5.14.5.2.1.5',
+    'ont_id': '.1.3.6.1.4.1.2011.5.14.5.2.1.5',
     # vlan_id   .1.3.6.1.4.1.2011.5.14.5.2.1.8      hwExtSrvFlowVlanid
     'vlan_id': '.1.3.6.1.4.1.2011.5.14.5.2.1.8',
+}
+
+# Выдает список номеров всех сервисных портов на OLT.
+walk_service_ports_numbers = {
+    'helper': 'huawei_get_service_ports_numbers',
+    # slot_id   .1.3.6.1.4.1.2011.5.14.5.2.1.3      hwExtSrvFlowPara2
+    'slot_id': '.1.3.6.1.4.1.2011.5.14.5.2.1.3',
 }
 
 # Получение списка имен всех srvprofile
@@ -481,11 +488,11 @@ walk_srvprofiles = {
 
 walk_dhcp_mac = {
     # mac               .1.3.6.1.4.1.2011.5.18.1.31.1.6     hwDhcpUserMACAddress
-    'mac:mac':         '.1.3.6.1.4.1.2011.5.18.1.31.1.6',
+    'mac:mac': '.1.3.6.1.4.1.2011.5.18.1.31.1.6',
     # service_port_id   .1.3.6.1.4.1.2011.5.18.1.31.1.3     hwDhcpUserFlowID
     'service_port_id': '.1.3.6.1.4.1.2011.5.18.1.31.1.3',
     # ip                .1.3.6.1.4.1.2011.5.18.1.31.1.5     hwDhcpUserIpAddress
-    'ip':              '.1.3.6.1.4.1.2011.5.18.1.31.1.5',
+    'ip': '.1.3.6.1.4.1.2011.5.18.1.31.1.5',
 }
 
 # Получение MAC-адресов за ONT.
@@ -504,11 +511,11 @@ walk_fdb = {
 walk_unregistered_onus_on_port = {
     'helper': 'huawei_get_inactive_onts',
     # sn                  .1.3.6.1.4.1.2011.6.128.1.1.2.43.1.3  hwGponDeviceOntSn
-    'hex_string:sn':     '.1.3.6.1.4.1.2011.6.128.1.1.2.43.1.3.{1}',
+    'hex_string:sn': '.1.3.6.1.4.1.2011.6.128.1.1.2.43.1.3.{1}',
     # line-profile-name   .1.3.6.1.4.1.2011.6.128.1.1.2.43.1.7  hwGponDeviceOntLineProfName
     'line-profile-name': '.1.3.6.1.4.1.2011.6.128.1.1.2.43.1.7.{1}',
     # srv-profile-name    .1.3.6.1.4.1.2011.6.128.1.1.2.43.1.8  hwGponDeviceOntServiceProfName
-    'srv-profile-name':  '.1.3.6.1.4.1.2011.6.128.1.1.2.43.1.8.{1}',
+    'srv-profile-name': '.1.3.6.1.4.1.2011.6.128.1.1.2.43.1.8.{1}',
 }
 
 # Создание line-profile.
@@ -577,7 +584,7 @@ create_srvprofile = [
 # Список всех btv пользователей.
 walk_igmp_users = {
     # index          .1.3.6.1.4.1.2011.6.28.16.1.24 hwDslamNtvUserIndex
-    'index':        '.1.3.6.1.4.1.2011.6.28.16.1.24',
+    'index': '.1.3.6.1.4.1.2011.6.28.16.1.24',
     # service-port   .1.3.6.1.4.1.2011.6.28.16.1.38 hwDslamNtvUserFlowID
     'service-port': '.1.3.6.1.4.1.2011.6.28.16.1.38',
 }
@@ -731,19 +738,19 @@ enable_auto_service_port = [
 # На вход обязательно нужно передать: ifIndex GPON-порта и порядковый номер ONU
 get_onu_info = {
     # model              .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.5        hwXponOntInfoProductDescription
-    'model..':          '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.5.{1}.{2}',
+    'model..': '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.5.{1}.{2}',
     # online             .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.1        hwXponOntInfoOnlineDuration
-    'online..':         '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.1.{1}.{2}',
+    'online..': '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.1.{1}.{2}',
     # memory             .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.2        hwXponOntInfoMemoryOccupation
-    'memory..':         '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.2.{1}.{2}',
+    'memory..': '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.2.{1}.{2}',
     # cpu                .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.3        hwXponOntInfoCpuOccupation
-    'cpu..':            '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.3.{1}.{2}',
+    'cpu..': '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.3.{1}.{2}',
     # primary_status     .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.6        hwXponDeviceOntControlPrimaryStatus
     'primary_status..': '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.6.{1}.{2}',
     # load_state         .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.9        hwXponOntInfoAppLoadState
-    'load_state..':     '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.9.{1}.{2}',
+    'load_state..': '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.9.{1}.{2}',
     # distance           .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.12       hwXponOntLastDistance
-    'distance..':       '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.12.{1}.{2}',
+    'distance..': '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.12.{1}.{2}',
     # xml_load_state     .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.10       hwXponOntInfoXmlLoadState
     'xml_load_state..': '.1.3.6.1.4.1.2011.6.145.1.1.1.4.1.10.{1}.{2}',
     # xml_load_error     .1.3.6.1.4.1.2011.6.145.1.1.1.4.1.14       hwXponOntInfoXmlLoadErrorInfo
@@ -789,3 +796,14 @@ set_acl_on_interface = [
     # .1.3.6.1.4.1.2011.6.47.48.1.5 hwFirewallPacketFilterRowStatus
     ['.1.3.6.1.4.1.2011.6.47.48.1.5.{1}.{2}', '{3}', '4', 'INTEGER'],
 ]
+
+# Получение индекса сервисного порта.
+# На вход обязательно передать:
+#  - ifIndex
+#  - ONT_ID
+#  - номер GEM-порта
+#  - VLANID
+get_service_port = {
+    # service_port    .1.3.6.1.4.1.2011.5.14.5.5.1.7 hwFlowIndex
+    'service_port.': '.1.3.6.1.4.1.2011.5.14.5.5.1.7.{1}.4.{2}.{3}.0.1.{4}',
+}

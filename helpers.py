@@ -6,7 +6,6 @@ import time
 import easysnmp
 from easysnmp.exceptions import EasySNMPTimeoutError, EasySNMPError
 
-
 from swconfig import telnet_user, telnet_password, users, snmp_retries, snmp_timeout, dyn_port_idx_update_interval
 
 gDynamicSNMPIndex = {}
@@ -337,61 +336,63 @@ def make_dynamic_map_for_6509(incoming_value, host):
                 ports[slot].append(str(index))
 
     for slot in sorted(ports):
-        map.append([ports[slot][i:i+12] for i in range(0, len(ports[slot]), 12)])
+        map.append([ports[slot][i:i + 12] for i in range(0, len(ports[slot]), 12)])
 
     return {'DeviceMap': map}
+
 
 def make_ports_for_nexus(incoming_value, host):
     map = {}
     for name in incoming_value:
         ports = {}
         for index, port_name in sorted(incoming_value[name].items()):
-            if int(index)>=436207616:
-                port_name = port_name.replace('Ethernet','Eth')
-                port_idx = int((int(index) - 436207616)/4096) + 1
+            if int(index) >= 436207616:
+                port_name = port_name.replace('Ethernet', 'Eth')
+                port_idx = int((int(index) - 436207616) / 4096) + 1
                 if name == 'PortIndex':
-                    ports[port_idx]=port_idx
+                    ports[port_idx] = port_idx
                 else:
-                    ports[port_idx]=port_name
+                    ports[port_idx] = port_name
                 map[name] = ports
     return map
 
+
 def make_redback_ports(incoming_value, host):
-#заполняем словарь типа порта одним и тем же значением (fiber)
-    incoming_value['MediumType']=dict.fromkeys(range(1,25), 6)
-    incoming_value['AdminSpeed']=incoming_value['ActualSpeed']
-    incoming_value['AdminFlow']=dict.fromkeys(range(1,25), 1)
+    # заполняем словарь типа порта одним и тем же значением (fiber)
+    incoming_value['MediumType'] = dict.fromkeys(range(1, 25), 6)
+    incoming_value['AdminSpeed'] = incoming_value['ActualSpeed']
+    incoming_value['AdminFlow'] = dict.fromkeys(range(1, 25), 1)
     return incoming_value
+
 
 def update_dynamic_snmp_ports_qfx(host):
     ticks = time.time()
-    if host not in gDynamicSNMPIndex or ticks-gDynamicSNMPIndex[host]['ticks']>dyn_port_idx_update_interval:
-        ports={}
+    if host not in gDynamicSNMPIndex or ticks - gDynamicSNMPIndex[host]['ticks'] > dyn_port_idx_update_interval:
+        ports = {}
         session = easysnmp.Session(hostname=host, community=users['journal']['1'], version=2,
-                               retries=snmp_retries, use_numeric=True, timeout=snmp_timeout)
+                                   retries=snmp_retries, use_numeric=True, timeout=snmp_timeout)
         try:
-        # Выполняем опрос параметров из default_info
+            # Выполняем опрос параметров из default_info
             snmp_response = session.walk('.1.3.6.1.2.1.31.1.1.1.1')
         except EasySNMPTimeoutError as err:
             logging.exception(err)
             pass
         else:
             for x in snmp_response:
-                match=re.search('(([gx]e)|(et))\-0\/0\/([0-9]+)$', x.value)
+                match = re.search('(([gx]e)|(et))\-0\/0\/([0-9]+)$', x.value)
                 if match:
-                    ports[x.oid_index]=match.group(4)
+                    ports[x.oid_index] = match.group(4)
 
-        gDynamicSNMPIndex[host]={'ticks':ticks,'ports':ports}
+        gDynamicSNMPIndex[host] = {'ticks': ticks, 'ports': ports}
         logging.debug(gDynamicSNMPIndex)
     else:
         logging.debug('cached')
     return
 
 
-
 def make_ports_for_qfx5120(incoming_value, host):
     update_dynamic_snmp_ports_qfx(host)
-    qfx5120ports=gDynamicSNMPIndex[host]['ports']
+    qfx5120ports = gDynamicSNMPIndex[host]['ports']
     map = {}
     for name in incoming_value:
         ports = {}
@@ -399,16 +400,17 @@ def make_ports_for_qfx5120(incoming_value, host):
             try:
                 journalkey = qfx5120ports.get(index)
                 if journalkey is not None:
-                    port_name = port_name.replace('Ethernet','Eth')
+                    port_name = port_name.replace('Ethernet', 'Eth')
                     port_idx = journalkey
                     if name == 'PortIndex':
-                        ports[port_idx]=port_idx
+                        ports[port_idx] = port_idx
                     else:
-                        ports[port_idx]=port_name
+                        ports[port_idx] = port_name
                     map[name] = ports
             except KeyError:
                 logger.error("Can't find index {index}.")
     return map
+
 
 def huawei_fdb(incoming_value, host):
     """
@@ -561,6 +563,21 @@ def huawei_get_service_ports(input_value, host=None):
     return {'service_ports': make_items(input_value)}
 
 
+def huawei_get_service_ports_numbers(input_value, host=None):
+    """
+    Превращает несвязанные данные о сервисных портах в словарь со списком
+    номеров сервисных портов.
+
+    :param dict input_value: входные данные
+    :param str host: ip-адрес устройства для которого выполняется запрос
+    :rtype: dict
+    :return: словарь с сервисными портами
+    """
+
+    items = make_items(input_value)
+    return {'service_ports': [int(i) for i in items.keys()]}
+
+
 def str_from_index(input_string):
     """
     Возвращает человекопонятную строку из SNMP-индекса.
@@ -585,20 +602,21 @@ def huawei_walk_profiles(input_value, host=None):
     for command_name, profiles_dict in input_value.items():
         return {command_name: [str_from_index(profile_index) for profile_index, _ in profiles_dict.items()]}
 
+
 def eltex_walk_user_helper(input_val, host=None):
     if input_val.get('tableOfGroupUsers') is None:
         return {'tableOfGroupUsers': {}}
     keys = {
-        '3' : "UserID",
-        '4' : "RegState",
-        '5' : "NumPlan",
-        '6' : "Number",
-        '7' : "IP",
-        '8' : "Port",
-        '9' : "SIP-Domain",
-        '10' : "MaxActiveLines",
-        '11' : "ActiveCallCount",
-        '12' : "RegExpires",
+        '3': "UserID",
+        '4': "RegState",
+        '5': "NumPlan",
+        '6': "Number",
+        '7': "IP",
+        '8': "Port",
+        '9': "SIP-Domain",
+        '10': "MaxActiveLines",
+        '11': "ActiveCallCount",
+        '12': "RegExpires",
     }
     result = {}
     for key, val in input_val['tableOfGroupUsers'].items():
