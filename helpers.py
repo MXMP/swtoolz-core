@@ -357,6 +357,29 @@ def make_ports_for_nexus(incoming_value, host):
     return map
 
 
+def make_ports_for_nexus32(incoming_value, host):
+    #очень строгая привязка к нашей конфигурации
+    #а именно: первые 24 порта 40G переключены в 96 портов 10G и 8 портов 40G
+    map = {}
+    for name in incoming_value:
+        ports = {}
+        for index, port_name in sorted(incoming_value[name].items()):
+            if int(index) >= 436207616:
+                port_idx = int((int(index) - 436207616) / 4096) + 1
+                port_name = port_name.replace('Ethernet', 'Eth')
+                if port_idx >= 25 and port_idx<=32:
+                    port_idx = port_idx + 72
+                if port_idx > 122880:
+                    port_idx = math.floor((int(port_idx)-122880)/10)*4+(int(port_idx)-122880)%10
+                if name == 'PortIndex':
+                    ports[port_idx] = port_idx
+                else:
+                    ports[port_idx] = port_name
+                map[name] = ports
+    return map
+
+
+
 def make_redback_ports(incoming_value, host):
     # заполняем словарь типа порта одним и тем же значением (fiber)
     incoming_value['MediumType'] = dict.fromkeys(range(1, 25), 6)

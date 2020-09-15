@@ -3,3 +3,4 @@ venv/
 tests/
 *.pyc
 swtoolz-core.log
+*.log

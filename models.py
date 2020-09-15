@@ -77,4 +77,5 @@ models_by_desc = [
     {'N3K-ATS10-AGGR':'N3K-C3064PQ-10GX'},
     {'QFX 5120':'QFX5200'},
     {'c4948':'WS-C4948E-F'},
+    {'N3K-ATS10-SRV':'N3K-C3132Q-40GX'},
 ]
